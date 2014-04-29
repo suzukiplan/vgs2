@@ -1,0 +1,74 @@
+PROJECT={Project}
+SRCDIR=..\src
+RELDIR=.\Release
+
+OBJS=\
+	$(RELDIR)\vgs2w.obj\
+	$(RELDIR)\vgs2api.obj\
+	$(RELDIR)\game.obj\
+	$(RELDIR)\game.res
+
+CFLAG=\
+	/nologo\
+	/Zi\
+	/Ot\
+	/GS-\
+	/GR-\
+	/GF\
+	/Fd"$(RELDIR)\vc.pdb"\
+	/Fo"$(RELDIR)\\"\
+	/W3\
+	/WX\
+	/MT\
+	/D_CRT_SECURE_NO_WARNINGS\
+	/I..\src\
+	/c
+
+all: MKROM $(RELDIR) $(PROJECT).EXE
+
+clean:
+	rmdir /s /q $(RELDIR)
+
+MKROM:
+	cd ..\romdata && nmake /nologo
+
+$(RELDIR):
+	mkdir $(RELDIR)
+
+$(PROJECT).EXE: $(RELDIR)\$(PROJECT).EXE
+	copy $(RELDIR)\$(PROJECT).EXE $(PROJECT).EXE
+
+$(RELDIR)\$(PROJECT).EXE: $(OBJS)
+	LINK\
+	/NOLOGO\
+	/DEBUG\
+	/OUT:$(RELDIR)\$(PROJECT).EXE\
+	/MAP:$(RELDIR)\VGEAPI.MAP\
+	/PDB:$(RELDIR)\VGEAPI.pdb\
+	/MACHINE:X86\
+	/SUBSYSTEM:WINDOWS\
+	$(OBJS)\
+	dxguid.lib\
+	dsound.lib\
+	WINMM.lib\
+	IMM32.lib\
+	GDI32.lib\
+	USER32.lib\
+	ADVAPI32.lib\
+	KERNEL32.lib
+
+T=vgs2w
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).cpp
+	CL $(CFLAG) $(SRCDIR)\$(T).cpp
+
+T=vgs2api
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
+	CL $(CFLAG) $(SRCDIR)\$(T).c
+
+T=game
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
+	CL $(CFLAG) $(SRCDIR)\$(T).c
+
+$(RELDIR)\game.res: $(SRCDIR)\game.rc
+	RC /fo $(RELDIR)\game.res /I res $(SRCDIR)\game.rc
+

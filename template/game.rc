@@ -1,0 +1,57 @@
+/*
+ *----------------------------------------------------------------------------
+ * Description: GameDaddy resouce description
+ *    Platform: Windows
+ *      Author: {Company}
+ * FileVersion: 1.00
+ *----------------------------------------------------------------------------
+ */
+#define VERSION_TEXT1   1,0,0,0
+#define VERSION_TEXT2  "1,0,0,0\0"
+#define VERSION_TEXT3  "1.0\0"
+
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        102
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION VERSION_TEXT1
+ PRODUCTVERSION VERSION_TEXT1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "CompanyName", "{Company}\0"
+            VALUE "FileDescription", "{Project}\0"
+            VALUE "FileVersion", VERSION_TEXT2
+            VALUE "InternalName", "{Project}\0"
+            VALUE "LegalCopyright", "(C){Company}\0"
+            VALUE "OriginalFilename", "{Project}.EXE\0"
+            VALUE "ProductName", "{Project}\0"
+            VALUE "ProductVersion", VERSION_TEXT3
+        END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+1000 ICON icon.ico
+

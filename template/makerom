@@ -1,0 +1,16 @@
+all: ROMDATA.BIN
+	copy ROMDATA.BIN ..\windows
+
+ROMDATA.BIN:\
+	ESLOT000.PCM\
+	GSLOT000.CHR
+	vgs2rom .\ ROMDATA.BIN
+
+T=000
+GSLOT$(T).CHR: gslot$(T).bmp
+	vgs2bmp gslot$(T).bmp GSLOT$(T).CHR
+
+T=000
+ESLOT$(T).PCM: eslot$(T).wav
+	vgs2wav eslot$(T).wav ESLOT$(T).PCM
+
