@@ -3,7 +3,7 @@
 
 (2)はじめに
 このリポジトリは、SUZUKI PLAN - Video Game System 2(GameDaddy)のSDK（兼ソースコード）です。
- - 対応OS（開発環境）= Windowsのみ
+ - 対応OS（開発環境）= Windowsのみ（※iOS移植時はMac+XCODEが必要）
  - 対応OS（動作環境）= Windows, Android(2.3.3以降), iOS(4.3以降)
 
 (3)使用許諾
