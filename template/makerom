@@ -1,5 +1,6 @@
 all: ROMDATA.BIN
 	copy ROMDATA.BIN ..\windows
+	copy ROMDATA.BIN ..\android\res\raw\romdata.bin
 
 ROMDATA.BIN:\
 	ESLOT000.PCM\

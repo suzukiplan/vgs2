@@ -1,4 +1,4 @@
-package com.{Company}.{Project}
+package com.{Company}.{Project};
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -28,41 +28,16 @@ import android.graphics.PixelFormat;
 import android.util.Log;
 import java.io.InputStream;
 import java.util.List;
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 
 public class {Project} extends Activity
 {
 	public static final String LOG_TAG="{Project}";
-	public static int request;
-	private AdView mAdView;
 	private FrameLayout mLayout;
-	private final int WC = FrameLayout.LayoutParams.WRAP_CONTENT;
-	private boolean mAdViewVisible=false;
 
 	public Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			switch(request) {
-				case 1: // show ads
-					if(null!=mAdView && !mAdViewVisible) {
-						mAdView.setVisibility(View.VISIBLE);
-						mAdViewVisible=true;
-					}
-					break;
-				case 2: // delete ads
-					if(null!=mAdView && mAdViewVisible) {
-						mAdView.setVisibility(View.INVISIBLE);
-						mAdViewVisible=false;
-					}
-					break;
-				default:
-					term();
-					finish();
-			}
-			request=0;
+			term();
+			finish();
 		}
 	};
 
@@ -106,16 +81,6 @@ public class {Project} extends Activity
 				x-=5;
 				int gHeight=400*x/10;
 				mLayout.addView(new PanelView(this,0,(int)height+2+gHeight,(int)width,(int)disp.getHeight(),R.drawable.panel2));
-				getWindow().setContentView(mLayout);
-
-				mAdView = new AdView(this);
-				mAdView.setAdUnitId("ca-app-pub-adcode");
-				mAdView.setAdSize(AdSize.BANNER);
-				final FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(WC,WC);
-				adParams.gravity = (Gravity.TOP|Gravity.CENTER);
-				mLayout.addView(mAdView,adParams);
-				mAdView.loadAd(new AdRequest.Builder().build());
-				mAdViewVisible=true;
 				getWindow().setContentView(mLayout);
 			}
 		} catch(Exception e) {
@@ -240,11 +205,6 @@ class VgeSurfaceView extends SurfaceView implements SurfaceHolder.Callback,Runna
 			} finally {
 				if(null!=canvas) holder.unlockCanvasAndPost(canvas);
 				if(rc!=0) break;
-				rq={Project}.getreq();
-				if(rq!=0) {
-					{Project}.request=rq;
-					act.handler.sendEmptyMessage(0);
-				}
 			}
 		}
 		if(0!=rc) {
