@@ -1161,4 +1161,5 @@ static void coin_add(int x,int y)
 	TBL.c[TBL.ci].fy=y<<8;
 	TBL.c[TBL.ci].vy=-512;
 	TBL.ci++;
+	TBL.ci&=MAX_COIN-1;
 }
