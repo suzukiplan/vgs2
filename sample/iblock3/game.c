@@ -516,7 +516,6 @@ static int game_sound()
 static int game_menu0()
 {
 	int i;
-	vgs2_showAds();
 	vgs2_clear(0);
 	for(i=0;i<160;i+=2) {
 		vgs2_lineBG(i,33,i,90,1);
@@ -568,7 +567,6 @@ static int game_menu()
 		ST.sc=0;
 		ST.round=0;
 		memset(&pi,0,sizeof(pi));
-		vgs2_deleteAds();
 	}
 
 	return 0;
