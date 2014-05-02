@@ -1,5 +1,7 @@
 このサンプルは、Invader Block 3のソースコードとROMデータです。
 これらを用いて、WindowsとAndroidのイメージをビルドする手順を記します。
+この手順を実施する前に、GameDaddy＋前提ソフトウェア（WindowsとAndroid）をインストールしておく必要があります。
+https://github.com/suzukiplan/vgs2/wiki/2.-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95
 
 [ビルド手順]
 Visual C++のコマンドプロンプトを起動して次のコマンドを実行
@@ -38,3 +40,4 @@ Visual C++のコマンドプロンプト:
 > cd c:\myprj\IBLOCK3\android
 > ant debug
 > adb install -r bin\IBLOCK3-debug.apk
+※正規版のInvader Block 3がインストールされている端末だと、adb installに失敗します。
