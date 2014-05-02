@@ -1,5 +1,6 @@
 (1)重要な改訂歴
  - 2014年 4月29日: 初版
+ - 2014年 5月 3日: 使用許諾改訂(権利表示方式を具体化)
 
 (2)はじめに
 このリポジトリは、SUZUKI PLAN - Video Game System 2(GameDaddy)のSDK（兼ソースコード）です。
@@ -12,7 +13,8 @@
  - VGS製アプリの商用 or 非商用については不問です
  - VGS製アプリを商用配布される場合でも、SUZUKI PLANへのライセンス料等の支払いは不要です
  - 本ソフトウェア(GameDaddy)を改変した亜流品（亜流SDK）を作成して頂いて構いません
- - 亜流SDKを配布する場合、公開ドキュメントでその旨を明記してください
+ - VGS製アプリ又は亜流SDKを用いて開発したアプリを配布・販売する場合、panel2.png（以下URL）の表示方法及び表示内容を変更しないでください
+   https://github.com/suzukiplan/vgs2/blob/master/template/panel2.png
  - VGS製アプリ、本ソフトウェア及び亜流SDKを利用して生じた不利益につき、SUZUKI PLANは補償義務を負いません
 
 (4)使い方
