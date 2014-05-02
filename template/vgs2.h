@@ -193,9 +193,8 @@ void vgs2_putSPM(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsig
 void vgs2_putSPH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
 void vgs2_putSPMH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsigned char c);
 
-/* ads */
-void vgs2_showAds();
-void vgs2_deleteAds();
+/* get data */
+const char* vgs2_getdata(unsigned char n,unsigned int* size);
 
 #ifdef __cplusplus
 };

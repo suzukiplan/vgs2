@@ -931,3 +931,25 @@ void vgs2_putSPMH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsi
 		posF+=(_slot[n].xs)*2-xs*2;
 	}
 }
+
+/*
+ *----------------------------------------------------------------------------
+ * get data slot
+ *----------------------------------------------------------------------------
+ */
+const char* vgs2_getdata(unsigned char n,unsigned int* size)
+{
+	const char* ret;
+	int size2;
+	int* sp=size;
+	char name[32];
+	sprintf(name,"DSLOT%03d.DAT",(int)n);
+	if(NULL==sp) {
+		sp=&size2;
+	}
+	ret=getbin(name,sp);
+	if(NULL==ret) {
+		*sp=0;
+	}
+	return ret;
+}
