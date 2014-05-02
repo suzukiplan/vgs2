@@ -526,10 +526,6 @@ static int game_menu0()
 		vgs2_lineBG(0,93-i,160,93-i,5-i);
 	}
 	vgs2_putBG2(0, 0,72, 144,40, 8,40);
-/*	for(i=0;i<3;i++) {
-		vgs2_boxfBG(16,104+i*28,144,124+i*28,1);
-		vgs2_boxBG(16,104+i*28,144,124+i*28,2);
-	}*/
 	myprintSBG(2,22,"GAMEDADDY EDITION");
 	myprintBG(4,190,"(C)2014,SUZUKIPLAN.");
 	score();
@@ -548,8 +544,6 @@ static int game_menu()
 	static unsigned short cnt;
 	struct InputInf ci;
 	int push_flag=0;
-//	int push=0;
-//	int i;
 
 	cnt++;
 
@@ -561,30 +555,6 @@ static int game_menu()
 		ci.cy=pi.cy;
 	}
 	memcpy(&pi,&ci,sizeof(pi));
-
-/*	if(ci.s) {
-		for(i=0;i<3;i++) {
-			if(HITCHK(16,104+i*28,128,20,ci.cx-4,ci.cy-4,8,8)) {
-				vgs2_boxfSP(16,104+i*28,144,124+i*28,4);
-				vgs2_boxSP(16,104+i*28,144,124+i*28,5);
-				if(push_flag) push=i+1;
-				break;
-			}
-		}
-	}
-	myprintSP(40,111,"GAME START");
-	myprintSP(28,139,"LOCAL RANKING");
-	myprintSP(36,167,"GET PREMIUM");
-	score();
-	if(push) {
-		memset(&pi,0,sizeof(pi));
-		switch(push) {
-			case 1:
-				vgs2_eff(EFF_START);
-				ST.flag++;
-				break;
-		}
-	}*/
 
 	if(cnt%40<20) {
 		myprintSP(24,134,"TOUCH TO START");
@@ -1028,13 +998,6 @@ static int game_main()
 	}
 
 	/* info */
-/*	if(TBL.cnt<120) {
-		if(ST.round<10) {
-			myprintSP(52,100,"ROUND %d",ST.round+1);
-		} else {
-			myprintSP(58,100,"ROUND %d",ST.round+1);
-		}
-	}*/
 	score();
 	myprintSSP(4,192,"%dHIT",TBL.mhts);
 	myprintSSP(128,192,"%3d0PTS",TBL.pts);
