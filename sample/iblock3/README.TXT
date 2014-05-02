@@ -1,4 +1,16 @@
-このサンプルは、Invader Block 3のソースコードとROMデータです。
+[Invader Block 3]
+Invader Block 3は、ボールでインベーダーを倒すアクションゲームです。
+SUZUKI PLANが、GameDaddy対応ゲーム第一弾として開発しました。
+GooglePlay、AppStoreで公開中です。
+
+(Android版)
+https://play.google.com/store/apps/details?id=com.suzukiplan.IBLOCK3
+
+(iPhone版)
+https://itunes.apple.com/us/app/invader-block-3/id838888746?mt=8
+
+[本サンプル概要]
+本サンプルは、Invader Block 3のソースコードとROMデータです。
 これらを用いて、WindowsとAndroidのイメージをビルドする手順を記します。
 この手順を実施する前に、GameDaddy＋前提ソフトウェア（WindowsとAndroid）をインストールしておく必要があります。
 https://github.com/suzukiplan/vgs2/wiki/2.-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95
