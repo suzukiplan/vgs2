@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: iOS
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 15-Mar-2014
- * FileVersion: 1.01
+ *        Date: 6-May-2014
+ * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
 #import <iAd/iAd.h>
@@ -71,64 +71,18 @@ void vgsint_setdir(const char* dir);
         ivB.frame=CGRectMake(0,470,320,96);
         [self.view addSubview:ivB];
     } else {
-        vram=[[VGSView alloc] initWithFrame:CGRectMake(0, 50, 320, 400)];
+        vram=[[VGSView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
         [self.view addSubview:vram];
-        UIImage *imageA= [UIImage imageNamed:@"panel1.png"];
+        UIImage *imageA= [UIImage imageNamed:@"panel2.png"];
         UIImageView *ivA= [[UIImageView alloc] initWithImage:imageA];
-        ivA.frame=CGRectMake(0,0,320,50);
+        ivA.frame=CGRectMake(0,400,320,80);
         [self.view addSubview:ivA];
-        UIImage *imageB= [UIImage imageNamed:@"panel3.png"];
-        UIImageView *ivB= [[UIImageView alloc] initWithImage:imageB];
-        ivB.frame=CGRectMake(0,450,320,30);
-        [self.view addSubview:ivB];
     }
-
-    // create ad banner view
-    ADBannerView *adView;
-    adView = [[ADBannerView alloc] init];
-    adView.frame = CGRectMake(0, -adView.frame.size.height, adView.frame.size.width, adView.frame.size.height);
-    adView.delegate = self;
-    adView.autoresizesSubviews = YES;
-    adView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-    [self.view addSubview:adView];
-    adView.alpha = 0.0;
 
     if(iPhone5) {
         // set status bar
         VGSBarView *bar=[[VGSBarView alloc] initWithFrame:CGRectMake(0,0,320,20)];
         [self.view addSubview:bar];
-    }
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner
-{
-    if (!bannerIsVisible) {
-        [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
-        [UIView setAnimationDuration:0.3];
-        if(isIphone5) {
-            banner.frame = CGRectOffset(banner.frame, 0, 20+CGRectGetHeight(banner.frame));
-        } else {
-            banner.frame = CGRectOffset(banner.frame, 0, CGRectGetHeight(banner.frame));
-        }
-        banner.alpha = 1.0;
-        [UIView commitAnimations];
-        bannerIsVisible = YES;
-    }
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
-{
-    if (bannerIsVisible) {
-        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-        [UIView setAnimationDuration:0.3];
-        if(isIphone5) {
-            banner.frame = CGRectOffset(banner.frame, 0, -(20+CGRectGetHeight(banner.frame)));
-        } else {
-            banner.frame = CGRectOffset(banner.frame, 0, -CGRectGetHeight(banner.frame));
-        }
-        banner.alpha = 0.0;
-        [UIView commitAnimations];
-        bannerIsVisible = NO;
     }
 }
 

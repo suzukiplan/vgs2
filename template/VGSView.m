@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: iOS
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 15-Mar-2014
- * FileVersion: 1.01
+ *        Date: 6-May-2014
+ * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
 #import <Foundation/NSURL.h>
@@ -13,7 +13,6 @@
 #import "vgs2.h"
 
 extern unsigned short ADPAL[256];
-extern int g_acode;
 
 static VGSView* sharedInstance = nil;
 static unsigned short imgbuf[2][400 * 320 * 2];
@@ -72,18 +71,6 @@ static void* GameLoop(void* args)
             buf+=320;
         }
         event_flag=true;
-        if(g_acode) {
-            NSURL* url;
-            switch(g_acode) {
-                case 100: // jump to the SUZUKI PLAN apps
-                    url = [ NSURL URLWithString :
-                           @"https://itunes.apple.com/us/artist/yoji-suzuki/id619627004"
-                           ];
-                    [[UIApplication sharedApplication] openURL:url];
-                    break;
-            }
-            g_acode=0;
-        }
     }
     end_flag=true;
     return NULL;
