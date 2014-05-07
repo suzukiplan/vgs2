@@ -7,7 +7,6 @@
  * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
-#import <iAd/iAd.h>
 #import "VGSViewController.h"
 #import "VGSScreenView.h"
 #import "VGSView.h"
