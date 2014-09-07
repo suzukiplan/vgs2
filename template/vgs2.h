@@ -3,8 +3,8 @@
  * Description: GameDaddy - kernel and API header
  *    Platform: Common
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 9-Mar-2014
- * FileVersion: 1.05
+ *        Date: 7-Sept-2014
+ * FileVersion: 1.06
  *----------------------------------------------------------------------------
  */
 #include <stdio.h>
@@ -85,6 +85,7 @@ extern struct _VRAM _vram;
 extern struct _TOUCH _touch;
 extern unsigned char _mute;
 extern unsigned char _pause;
+extern unsigned char _interlace;
 extern int _PAL[256];
 
 /*
@@ -195,6 +196,9 @@ void vgs2_putSPMH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsi
 
 /* get data */
 const char* vgs2_getdata(unsigned char n,unsigned int* size);
+
+/* set interlace */
+void vgs2_interlace(int i);
 
 #ifdef __cplusplus
 };

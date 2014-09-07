@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: Android
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 15-Mar-2014
- * FileVersion: 1.02
+ *        Date: 7-Sept-2014
+ * FileVersion: 1.03
  *----------------------------------------------------------------------------
  */
 #include <pthread.h>
@@ -176,20 +176,46 @@ JNIEXPORT jint JNICALL Java_com_{Company}_{Project}_{Project}_setVram(JNIEnv* en
 	}
 	vp=0;
 	pp=0;
-	for(vy=0,py=0;vy<200;vy++,py+=2) {
-		for(vx=0,px=0;vx<160;vx++,px+=2) {
-			if(_vram.sp[vp]) {
-				ptr[pp]=ADPAL[_vram.sp[vp]];
-				ptr[pp+1]=ADPAL[_vram.sp[vp]];
-				_vram.sp[vp]=0;
-			} else {
-				ptr[pp]=ADPAL[_vram.bg[vp]];
-				ptr[pp+1]=ADPAL[_vram.bg[vp]];
+	if(_interlace) {
+		for(vy=0,py=0;vy<200;vy++,py+=2) {
+			for(vx=0,px=0;vx<160;vx++,px+=2) {
+				if(_vram.sp[vp]) {
+					ptr[pp]=ADPAL[_vram.sp[vp]];
+					ptr[pp+1]=ADPAL[_vram.sp[vp]];
+					ptr[pp+320]=0;
+					ptr[pp+321]=0;
+					_vram.sp[vp]=0;
+				} else {
+					ptr[pp]=ADPAL[_vram.bg[vp]];
+					ptr[pp+1]=ADPAL[_vram.bg[vp]];
+					ptr[pp+320]=0;
+					ptr[pp+321]=0;
+				}
+				vp++;
+				pp+=2;
 			}
-			vp++;
-			pp+=2;
+			pp+=320;
 		}
-		pp+=320;
+	} else {
+		for(vy=0,py=0;vy<200;vy++,py+=2) {
+			for(vx=0,px=0;vx<160;vx++,px+=2) {
+				if(_vram.sp[vp]) {
+					ptr[pp]=ADPAL[_vram.sp[vp]];
+					ptr[pp+1]=ADPAL[_vram.sp[vp]];
+					ptr[pp+320]=ADPAL[_vram.sp[vp]];
+					ptr[pp+321]=ADPAL[_vram.sp[vp]];
+					_vram.sp[vp]=0;
+				} else {
+					ptr[pp]=ADPAL[_vram.bg[vp]];
+					ptr[pp+1]=ADPAL[_vram.bg[vp]];
+					ptr[pp+320]=ADPAL[_vram.bg[vp]];
+					ptr[pp+321]=ADPAL[_vram.bg[vp]];
+				}
+				vp++;
+				pp+=2;
+			}
+			pp+=320;
+		}
 	}
 	AndroidBitmap_unlockPixels(env,bmp);
 

@@ -3,8 +3,8 @@
  * Description: GameDaddy - application program interface
  *    Platform: Common
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 6-Mar-2014
- * FileVersion: 1.01
+ *        Date: 7-Sept-2014
+ * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
 #include "vgs2.h"
@@ -22,6 +22,7 @@ struct _VRAM _vram;
 struct _TOUCH _touch;
 unsigned char _mute;
 unsigned char _pause;
+unsigned char _interlace=1;
 int _PAL[256] = {
 	 0x00000000
 	,0x00003F00
@@ -952,4 +953,14 @@ const char* vgs2_getdata(unsigned char n,unsigned int* size)
 		*sp=0;
 	}
 	return ret;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * set interlace
+ *----------------------------------------------------------------------------
+ */
+void vgs2_interlace(int i)
+{
+	_interlace=i?1:0;
 }
