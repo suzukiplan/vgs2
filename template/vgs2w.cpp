@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: Windows
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 9-Mar-2014
- * FileVersion: 1.03
+ *        Date: 7-Sept-2014
+ * FileVersion: 1.04
  *----------------------------------------------------------------------------
  */
 #include <Windows.h>
@@ -933,17 +933,41 @@ static void vtrans(int pitch,int* ptr)
 	pitch>>=2;
 
 	p=0;
-	for(vy=0;vy<VYSIZE;vy+=2) {
-		for(vx=0;vx<VXSIZE;vx+=2) {
-			if(_vram.sp[p]) {
-				ptr[vy*pitch+vx]=_PAL[_vram.sp[p]];
-				ptr[vy*pitch+vx+1]=_PAL[_vram.sp[p]];
-				_vram.sp[p]=0;
-			} else {
-				ptr[vy*pitch+vx]=_PAL[_vram.bg[p]];
-				ptr[vy*pitch+vx+1]=_PAL[_vram.bg[p]];
+	if(_interlace) {
+		for(vy=0;vy<VYSIZE;vy+=2) {
+			for(vx=0;vx<VXSIZE;vx+=2) {
+				if(_vram.sp[p]) {
+					ptr[vy*pitch+vx]=_PAL[_vram.sp[p]];
+					ptr[vy*pitch+vx+1]=_PAL[_vram.sp[p]];
+					ptr[(vy+1)*pitch+vx]=0;
+					ptr[(vy+1)*pitch+vx+1]=0;
+					_vram.sp[p]=0;
+				} else {
+					ptr[vy*pitch+vx]=_PAL[_vram.bg[p]];
+					ptr[vy*pitch+vx+1]=_PAL[_vram.bg[p]];
+					ptr[(vy+1)*pitch+vx]=0;
+					ptr[(vy+1)*pitch+vx+1]=0;
+				}
+				p++;
 			}
-			p++;
+		}
+	} else {
+		for(vy=0;vy<VYSIZE;vy+=2) {
+			for(vx=0;vx<VXSIZE;vx+=2) {
+				if(_vram.sp[p]) {
+					ptr[vy*pitch+vx]=_PAL[_vram.sp[p]];
+					ptr[vy*pitch+vx+1]=_PAL[_vram.sp[p]];
+					ptr[(vy+1)*pitch+vx]=_PAL[_vram.sp[p]];
+					ptr[(vy+1)*pitch+vx+1]=_PAL[_vram.sp[p]];
+					_vram.sp[p]=0;
+				} else {
+					ptr[vy*pitch+vx]=_PAL[_vram.bg[p]];
+					ptr[vy*pitch+vx+1]=_PAL[_vram.bg[p]];
+					ptr[(vy+1)*pitch+vx]=_PAL[_vram.bg[p]];
+					ptr[(vy+1)*pitch+vx+1]=_PAL[_vram.bg[p]];
+				}
+				p++;
+			}
 		}
 	}
 }
