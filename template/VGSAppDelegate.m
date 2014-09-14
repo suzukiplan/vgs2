@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: iOS
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 15-Mar-2014
- * FileVersion: 1.01
+ *        Date: 14-Sept-2014
+ * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
 #import "VGSAppDelegate.h"
