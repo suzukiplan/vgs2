@@ -11,6 +11,7 @@
 #import "VGSViewController.h"
 #import "VGSView.h"
 #import "VGSWindow.h"
+void vgs2_term();
 
 @implementation VGSAppDelegate
 
@@ -46,6 +47,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     NSLog(@"GameDaddy now be ended.");
+    vgs2_term();
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
