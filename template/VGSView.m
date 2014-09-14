@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: iOS
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 6-May-2014
- * FileVersion: 1.02
+ *        Date: 15-Mar-2014
+ * FileVersion: 1.01
  *----------------------------------------------------------------------------
  */
 #import <Foundation/NSURL.h>
@@ -13,6 +13,7 @@
 #import "vgs2.h"
 
 extern unsigned short ADPAL[256];
+extern unsigned char _interlace;
 
 static VGSView* sharedInstance = nil;
 static unsigned short imgbuf[2][400 * 320 * 2];
@@ -22,8 +23,6 @@ static volatile int bno;
 static volatile bool event_flag=false;
 static volatile bool alive_flag=true;
 static volatile bool end_flag=false;
-
-int get_hiscore(); // game.c
 
 @implementation VGSLayer
 
@@ -51,24 +50,54 @@ static void* GameLoop(void* args)
         buf=(unsigned short*)imgbuf[bno];
         bg=_vram.bg;
         sp=_vram.sp;
-        for(i=0;i<200;i++) { // 160 x 200
-            for(j=0;j<160;j++) {
-                if(*sp) {
-                    *buf=ADPAL[*sp];
-                    buf++;
-                    *buf=ADPAL[*sp];
-                    buf++;
-                    *sp=0;
-                } else {
-                    *buf=ADPAL[*bg];
-                    buf++;
-                    *buf=ADPAL[*bg];
-                    buf++;
+        if(_interlace) {
+            for(i=0;i<200;i++) { // 160 x 200
+                for(j=0;j<160;j++) {
+                    if(*sp) {
+                        *buf=ADPAL[*sp];
+                        *(buf+320)=0;
+                        buf++;
+                        *buf=ADPAL[*sp];
+                        *(buf+320)=0;
+                        buf++;
+                        *sp=0;
+                    } else {
+                        *buf=ADPAL[*bg];
+                        *(buf+320)=0;
+                        buf++;
+                        *buf=ADPAL[*bg];
+                        *(buf+320)=0;
+                        buf++;
+                    }
+                    bg++;
+                    sp++;
                 }
-                bg++;
-                sp++;
+                buf+=320;
             }
-            buf+=320;
+        } else {
+            for(i=0;i<200;i++) { // 160 x 200
+                for(j=0;j<160;j++) {
+                    if(*sp) {
+                        *buf=ADPAL[*sp];
+                        *(buf+320)=ADPAL[*sp];
+                        buf++;
+                        *buf=ADPAL[*sp];
+                        *(buf+320)=ADPAL[*sp];
+                        buf++;
+                        *sp=0;
+                    } else {
+                        *buf=ADPAL[*bg];
+                        *(buf+320)=ADPAL[*bg];
+                        buf++;
+                        *buf=ADPAL[*bg];
+                        *(buf+320)=ADPAL[*bg];
+                        buf++;
+                    }
+                    bg++;
+                    sp++;
+                }
+                buf+=320;
+            }
         }
         event_flag=true;
     }
