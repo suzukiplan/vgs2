@@ -27,6 +27,11 @@ void vgsint_setdir(const char* dir);
 
 - (void)viewDidLoad
 {
+    // fix for iOS8's bug
+    static int viewDidLoaded=0;
+    if(viewDidLoaded) return;
+    viewDidLoaded=1;
+
     [super viewDidLoad];
 
     const float version = [[[UIDevice currentDevice] systemVersion] floatValue];
