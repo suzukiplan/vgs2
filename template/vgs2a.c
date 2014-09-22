@@ -441,10 +441,12 @@ static int init_soundPh2()
  */
 static void cbSound(SLAndroidSimpleBufferQueueItf bq, void *context)
 {
+	lock();
 	if(g_slBufQ) {
 		sndbuf((char*)g_sndBuf,sizeof(g_sndBuf));
 		(*g_slBufQ)->Enqueue(g_slBufQ,g_sndBuf,sizeof(g_sndBuf));
 	}
+	unlock();
 }
 
 /*
