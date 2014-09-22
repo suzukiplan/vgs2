@@ -98,6 +98,8 @@ void eff_flag(struct _EFF* e,unsigned int f);
 void eff_pos(struct _EFF* e,unsigned int f);
 void lock();
 void unlock();
+void lock2();
+void unlock2();
 void make_pallet();
 int gload(unsigned char n,const char* name);
 int eload(unsigned char n,const char* name);

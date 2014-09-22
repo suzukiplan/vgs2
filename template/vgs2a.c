@@ -25,6 +25,7 @@
  */
 static unsigned short ADPAL[256];
 static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t LCKOBJ2=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
 
 /* sound */
@@ -268,13 +269,20 @@ JNIEXPORT void JNICALL Java_com_{Company}_{Project}_{Project}_term(JNIEnv* env,j
 
 	vgs2_term();
 
+	lock2();
+	if(g_slBufQ) {
+		res=(*g_slBufQ)->Clear(g_slBufQ);
+		if(SL_RESULT_SUCCESS!=res) {
+			putlog(__FILE__,__LINE__,"Clear error: result=%d",(int)res);
+		}
+	}
 	if(g_slPlay) {
 		res=(*g_slPlay)->SetPlayState(g_slPlay,SL_PLAYSTATE_STOPPED);
 		if(SL_RESULT_SUCCESS!=res) {
 			putlog(__FILE__,__LINE__,"SetPlayState error: result=%d",(int)res);
-			return;
 		}
 	}
+	unlock2();
 
 	if(g_slPlayObj) {
 		(*g_slPlayObj)->Destroy(g_slPlayObj);
@@ -441,12 +449,12 @@ static int init_soundPh2()
  */
 static void cbSound(SLAndroidSimpleBufferQueueItf bq, void *context)
 {
-	lock();
+	lock2();
 	if(g_slBufQ) {
 		sndbuf((char*)g_sndBuf,sizeof(g_sndBuf));
 		(*g_slBufQ)->Enqueue(g_slBufQ,g_sndBuf,sizeof(g_sndBuf));
 	}
-	unlock();
+	unlock2();
 }
 
 /*
@@ -498,6 +506,26 @@ void lock()
 void unlock()
 {
 	pthread_mutex_unlock(&LCKOBJ);
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * inter thread lock
+ *----------------------------------------------------------------------------
+ */
+void lock2()
+{
+	pthread_mutex_lock(&LCKOBJ2);
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * inter thread unlock
+ *----------------------------------------------------------------------------
+ */
+void unlock2()
+{
+	pthread_mutex_unlock(&LCKOBJ2);
 }
 
 /*
