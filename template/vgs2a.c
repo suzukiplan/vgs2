@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: Android
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 7-Sept-2014
- * FileVersion: 1.03
+ *        Date: 27-Sept-2014
+ * FileVersion: 1.05
  *----------------------------------------------------------------------------
  */
 #include <pthread.h>
@@ -282,6 +282,7 @@ JNIEXPORT void JNICALL Java_com_{Company}_{Project}_{Project}_term(JNIEnv* env,j
 			putlog(__FILE__,__LINE__,"SetPlayState error: result=%d",(int)res);
 		}
 	}
+	g_slBufQ=NULL;
 	unlock2();
 
 	if(g_slPlayObj) {
