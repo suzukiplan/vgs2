@@ -282,6 +282,7 @@ JNIEXPORT void JNICALL Java_com_{Company}_{Project}_{Project}_term(JNIEnv* env,j
 			putlog(__FILE__,__LINE__,"SetPlayState error: result=%d",(int)res);
 		}
 	}
+	g_slBufQ=NULL;
 	unlock2();
 
 	if(g_slPlayObj) {
