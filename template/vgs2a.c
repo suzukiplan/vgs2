@@ -3,8 +3,8 @@
  * Description: GameDaddy - emulator
  *    Platform: Android
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 7-Sept-2014
- * FileVersion: 1.03
+ *        Date: 27-Sept-2014
+ * FileVersion: 1.05
  *----------------------------------------------------------------------------
  */
 #include <pthread.h>
