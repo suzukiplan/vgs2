@@ -395,7 +395,7 @@ static int init_soundPh2()
 	SLDataSource aSrc = {&loc_bufq, &format_pcm};
 	SLDataLocator_OutputMix loc_outmix={SL_DATALOCATOR_OUTPUTMIX,g_slMixObj};
 	SLDataSink aSnk = {&loc_outmix, NULL};
-	const SLInterfaceID ids[2] = {SL_IID_BUFFERQUEUE, SL_IID_EFFECTSEND};
+	const SLInterfaceID ids[2] = {SL_IID_ANDROIDSIMPLEBUFFERQUEUE, SL_IID_EFFECTSEND};
 	const SLboolean req[2] = {SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE};
 
 	res=(*g_slEng)->CreateAudioPlayer(g_slEng,&g_slPlayObj,&aSrc,&aSnk,2,ids,req);
@@ -416,7 +416,7 @@ static int init_soundPh2()
 		return -1;
 	}
 
-	res=(*g_slPlayObj)->GetInterface(g_slPlayObj,SL_IID_BUFFERQUEUE,&g_slBufQ);
+	res=(*g_slPlayObj)->GetInterface(g_slPlayObj,SL_IID_ANDROIDSIMPLEBUFFERQUEUE,&g_slBufQ);
 	if(SL_RESULT_SUCCESS!=res) {
 		putlog(__FILE__,__LINE__,"GetInterface(BufQ) error: result=%d",(int)res);
 		return -1;
