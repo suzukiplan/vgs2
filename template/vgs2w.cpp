@@ -105,7 +105,6 @@ static CRITICAL_SECTION _csSnd;
  */
 extern "C" int __stdcall WinMain(HINSTANCE hIns,HINSTANCE hPIns,LPSTR lpCmd,int nCmdShow)
 {
-	OSVERSIONINFO osinf;
 	HWND hwnd;
 	WNDCLASS wndclass;
 	MSG msg;
@@ -120,19 +119,8 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns,HINSTANCE hPIns,LPSTR lpCmd,int 
 	InitializeCriticalSection(&_lock);
 	CreateDirectory("DATA",NULL);
 	SetCurrentDirectory("DATA");
-	memset(&osinf,0,sizeof(osinf));
-	osinf.dwOSVersionInfoSize=sizeof(osinf);
-	GetVersionEx(&osinf);
 	DeleteFile("LOG.TXT");
-
-	putlog(NULL,0,"Executes \"%s\" on Windows %d.%d %s (%d,%d)"
-		,APPNAME
-		,osinf.dwMajorVersion
-		,osinf.dwMinorVersion
-		,osinf.szCSDVersion
-		,osinf.dwBuildNumber
-		,osinf.dwPlatformId
-		);
+	putlog(NULL,0,"Executes \"%s\" on Windows",APPNAME);
 
 	/* load romdata */
 	if(loadrom("..\\ROMDATA.BIN")) {
