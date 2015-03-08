@@ -435,8 +435,8 @@ int vgs2_deg(int x1,int y1,int x2,int y2)
 int vgs2_deg2rad(int deg)
 {
 	float k;
-	while(deg<0) deg+=360;
-	while(359<deg) deg-=360;
+	deg%=360;
+	if(deg<0) deg+=360;
 	k=(float)deg;
 	k*=3.1415f;
 	k/=1.80f;
@@ -452,8 +452,8 @@ int vgs2_deg2rad(int deg)
 int vgs2_rad2deg(int rad)
 {
 	float r;
-	while(rad<0) rad+=628;
-	while(627<rad) rad-=628;
+	rad%=628;
+	if(rad<0) rad+=628;
 	r=(float)rad;
 	r*=1.80f;
 	r/=3.1415f;
@@ -489,8 +489,8 @@ int vgs2_rand()
  */
 int vgs2_sin(int r)
 {
-	while(r<0) r+=628;
-	while(627<r) r-=628;
+	r%=628;
+	if(r<0) r+=628;
 	return sin256[r];
 }
 
@@ -501,8 +501,8 @@ int vgs2_sin(int r)
  */
 int vgs2_cos(int r)
 {
-	while(r<0) r+=628;
-	while(627<r) r-=628;
+	r%=628;
+	if(r<0) r+=628;
 	return cos256[r];
 }
 
