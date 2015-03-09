@@ -435,8 +435,8 @@ int vgs2_deg(int x1,int y1,int x2,int y2)
 int vgs2_deg2rad(int deg)
 {
 	float k;
-	while(deg<0) deg+=360;
-	while(359<deg) deg-=360;
+	deg%=360;
+	if(deg<0) deg+=360;
 	k=(float)deg;
 	k*=3.1415f;
 	k/=1.80f;
@@ -452,8 +452,8 @@ int vgs2_deg2rad(int deg)
 int vgs2_rad2deg(int rad)
 {
 	float r;
-	while(rad<0) rad+=628;
-	while(627<rad) rad-=628;
+	rad%=628;
+	if(rad<0) rad+=628;
 	r=(float)rad;
 	r*=1.80f;
 	r/=3.1415f;
@@ -489,8 +489,8 @@ int vgs2_rand()
  */
 int vgs2_sin(int r)
 {
-	while(r<0) r+=628;
-	while(627<r) r-=628;
+	r%=628;
+	if(r<0) r+=628;
 	return sin256[r];
 }
 
@@ -501,8 +501,8 @@ int vgs2_sin(int r)
  */
 int vgs2_cos(int r)
 {
-	while(r<0) r+=628;
-	while(627<r) r-=628;
+	r%=628;
+	if(r<0) r+=628;
 	return cos256[r];
 }
 
@@ -930,6 +930,117 @@ void vgs2_putSPMH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsi
 		}
 		posT+=XSIZE-xs;
 		posF+=(_slot[n].xs)*2-xs*2;
+	}
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * draw sprite from slot (rotate)
+ *----------------------------------------------------------------------------
+ */
+void vgs2_putSPR(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r)
+{
+	int x1,y1,x2,y2;
+	int scx,scy,dcx,dcy;
+	int s;
+	int c;
+	int p;
+
+	scx=xs>>1;
+	scy=ys>>1;
+	dcx=scx;
+	dcy=scy;
+	dx+=scx;
+	dy+=scy;
+	s=vgs2_sin(r);
+	c=vgs2_cos(r);
+
+	p=sy*_slot[n].xs+sx;
+	for(y2=0;y2<ys;y2++,p+=_slot[n].xs) {
+		for(x2=0;x2<xs;x2++) {
+			if(_slot[n].dat[p+x2]) {
+				x1=(((x2-dcx)*c - (y2-dcy)*s)>>8)+dx;
+				y1=(((x2-dcx)*s + (y2-dcy)*c)>>8)+dy;
+				vgs2_pixelSP(x1,y1,_slot[n].dat[p+x2]);
+				vgs2_pixelSP(x1+1,y1,_slot[n].dat[p+x2]);
+			}
+		}
+	}
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * draw sprite from slot (expansion)
+ *----------------------------------------------------------------------------
+ */
+void vgs2_putSPE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int dxs,int dys)
+{
+	int i,j;
+	int posF0;
+	int posF1;
+	int posF2;
+
+	double ex=(double)xs/dxs;
+	double ey=(double)ys/dys;
+	double px;
+	double py;
+
+	posF0=sy*_slot[n].xs+sx;
+
+	for(j=0,py=0.0; j<dys; j++,py+=ey) {
+		posF1=posF0+((int)py)*_slot[n].xs;
+		for(i=0,px=0.0; i<dxs; i++,px+=ex) {
+			posF2=posF1+(int)px;
+			if(_slot[n].dat[posF2]) {
+				vgs2_pixelSP(dx+i,dy+j,_slot[n].dat[posF2]);
+			}
+		}
+	}
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * draw sprite from slot (rotate + expansion)
+ *----------------------------------------------------------------------------
+ */
+void vgs2_putSPRE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r,int dxs,int dys)
+{
+	int i,j;
+	int posF0;
+	int posF1;
+	int posF2;
+	int x1,y1;
+	int scx,scy,dcx,dcy;
+	int s;
+	int c;
+
+	scx=xs>>1;
+	scy=ys>>1;
+	dcx=dxs>>1;
+	dcy=dys>>1;
+	dx+=dcx;
+	dy+=dcy;
+	s=vgs2_sin(r);
+	c=vgs2_cos(r);
+
+	double ex=(double)xs/dxs;
+	double ey=(double)ys/dys;
+	double px;
+	double py;
+
+	posF0=sy*_slot[n].xs+sx;
+
+	for(j=0,py=0.0; j<dys; j++,py+=ey) {
+		posF1=posF0+((int)py)*_slot[n].xs;
+		for(i=0,px=0.0; i<dxs; i++,px+=ex) {
+			posF2=posF1+(int)px;
+			if(_slot[n].dat[posF2]) {
+				x1=(((i-dcx)*c - (j-dcy)*s)>>8)+dx;
+				y1=(((i-dcx)*s + (j-dcy)*c)>>8)+dy;
+				vgs2_pixelSP(x1,y1,_slot[n].dat[posF2]);
+				vgs2_pixelSP(x1+1,y1,_slot[n].dat[posF2]);
+			}
+		}
 	}
 }
 
