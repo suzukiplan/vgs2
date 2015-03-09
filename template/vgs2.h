@@ -195,6 +195,9 @@ void vgs2_putSP(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
 void vgs2_putSPM(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsigned char c);
 void vgs2_putSPH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
 void vgs2_putSPMH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsigned char c);
+void vgs2_putSPR(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r);
+void vgs2_putSPE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int dxs,int dys);
+void vgs2_putSPRE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r,int dxs,int dys);
 
 /* get data */
 const char* vgs2_getdata(unsigned char n,unsigned int* size);
