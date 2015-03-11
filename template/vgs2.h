@@ -150,6 +150,9 @@ unsigned char vgs2_getmute();
 /* 1:blue, 2:red, 3:magenta, 4:green, 5:cyan, 6:yellow, 7:white */
 void vgs2_pallet(int c);
 
+/* Set 8bit color pallet */
+int vgs2_pallet256(unsigned char n);
+
 /* clear screen */
 void vgs2_clear(unsigned char c);
 
