@@ -577,6 +577,7 @@ void vgs2_pallet(int c)
 	int b=255;
 	c&=7;
 	if(0==c) return;
+	memset(_PAL,0,sizeof(_PAL));
 	for(i=7;i;i--,b-=32) {
 		switch(c) {
 			case 1: _PAL[i]=b; break;
@@ -589,6 +590,27 @@ void vgs2_pallet(int c)
 		}
 	}
 	make_pallet();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * Set 8 bit color mode
+ *----------------------------------------------------------------------------
+ */
+int vgs2_pallet256(unsigned char n)
+{
+	const char* data;
+	unsigned int size;
+	data=vgs2_getdata(n,&size);
+	if(NULL==data) {
+		return -1;
+	}
+	if(size!=1024) {
+		return -1;
+	}
+	memcpy(_PAL,data,size);
+	make_pallet();
+	return 0;
 }
 
 /*
