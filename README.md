@@ -5,7 +5,7 @@
 
 ## ライセンス
 - 2-Clause BSDライセンスで提供しています
-- LICENSE.txtを参照してください
+- [LICENSE.txt](https://github.com/suzukiplan/vgs2/blob/master/LICENSE.txt)を参照してください
 
 ## 前提ハードウェア
 - Windows PC
@@ -84,7 +84,7 @@ todo: 後で書く
 todo: 後で書く
 
 ## API仕様
-API.md を参照してください。
+[API.md](https://github.com/suzukiplan/vgs2/blob/master/API.md) を参照してください。
 
 ## ハードウェア仕様
 todo: 後で書く
