@@ -113,7 +113,7 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns,HINSTANCE hPIns,LPSTR lpCmd,int 
 	DWORD tCount2;
 	HRESULT res;
 	int i;
-	int cn,pn;
+	int cn,pn,bn;
 	char path[256];
 
 	InitializeCriticalSection(&_lock);
@@ -132,13 +132,16 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns,HINSTANCE hPIns,LPSTR lpCmd,int 
 	/* extract to the slots */
 	cn=0;
 	pn=0;
+	bn=0;
 	for(i=0;i<256;i++) {
 		sprintf(path,"GSLOT%03d.CHR",i);
 		if(0==gload(i,path)) cn++;
 		sprintf(path,"ESLOT%03d.PCM",i);
 		if(0==eload(i,path)) pn++;
+		sprintf(path,"BSLOT%03d.BGM",i);
+		if(0==bload(i,path)) bn++;
 	}
-	putlog(__FILE__,__LINE__,"Data has extracted. (CHR=%d, PCM=%d)",cn,pn);
+	putlog(__FILE__,__LINE__,"Data has extracted. (CHR=%d, PCM=%d, BGM=%d)",cn,pn,bn);
 
 	/* disable IME */
 	if(!ImmDisableIME(GetCurrentThreadId())) {

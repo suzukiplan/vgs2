@@ -3,6 +3,7 @@ all: ROMDATA.BIN
 	copy ROMDATA.BIN ..\android\res\raw\romdata.bin
 
 ROMDATA.BIN:\
+	BSLOT000.BGM\
 	ESLOT000.PCM\
 	GSLOT000.CHR
 	vgs2rom .\ ROMDATA.BIN
@@ -14,4 +15,8 @@ GSLOT$(T).CHR: gslot$(T).bmp
 T=000
 ESLOT$(T).PCM: eslot$(T).wav
 	vgs2wav eslot$(T).wav ESLOT$(T).PCM
+
+T=000
+BSLOT$(T).BGM: bslot$(T).mml
+	vgs2mml bslot$(T).mml BSLOT$(T).BGM
 

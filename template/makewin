@@ -5,6 +5,7 @@ RELDIR=.\Release
 OBJS=\
 	$(RELDIR)\vgs2w.obj\
 	$(RELDIR)\vgs2api.obj\
+	$(RELDIR)\vgs2tone.obj\
 	$(RELDIR)\game.obj\
 	$(RELDIR)\game.res
 
@@ -62,6 +63,10 @@ $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).cpp
 	CL $(CFLAG) $(SRCDIR)\$(T).cpp
 
 T=vgs2api
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
+	CL $(CFLAG) $(SRCDIR)\$(T).c
+
+T=vgs2tone
 $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
 	CL $(CFLAG) $(SRCDIR)\$(T).c
 
