@@ -40,26 +40,40 @@
 - `PATH` : `c:\home\vgs2\bin`
 - `VGS2_HOME` : `c:\home\vgs2`
 
-#### (3) プロジェクト作成 & ビルド(Windows)
+#### (3) プロジェクト作成
 ```cmd
 > vgs2mkpj company Test c:\home\Test
+```
+
+#### (4) ビルド(Windows)
+```cmd
 > c:
 > cd \home\Test\windows
 > nmake
 ```
 
-### (4) ビルド(Android)
-#### cygwin
+#### (5) ビルド(Android)
+##### cygwin
 ```cygwin
 $ cd /cyghome/c/home/Test/android/jni
 $ ndk_build
 ```
 
-#### MS-DOS
+##### MS-DOS (デバッグビルド時)
 ```cmd
 > c:
 > cd \home\Test\android
 > ant debug
+```
+
+##### MS-DOS (リリースビルド時)
+```cmd
+> c:
+> cd \home\Test\android
+> ant release
+> jarsigner -sigalg MD5withRSA -digestalg SHA1 -verbose -keystore my_keystore bin/Test-release-unsigned.apk techkey
+> c:\android\sdk\build-tools\21.1.2\zipalign -v 4 bin\Test-release-unsigned.apk bin\Test-release.apk 
+```
 
 ### Macintosh (iPhoneアプリ開発環境)
 todo: 後で書く
