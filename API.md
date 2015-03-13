@@ -1,323 +1,323 @@
-# APIŠÖ”ƒŠƒtƒ@ƒŒƒ“ƒX
-`SUZUKI PLAN - Video Game System mk-II SR` ‚ª’ñ‹Ÿ‚·‚éAPIŠÖ”‚ÌŽd—l‚ð‹L‚µ‚Ü‚·B
+# APIé–¢æ•°ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹
+`SUZUKI PLAN - Video Game System mk-II SR` ãŒæä¾›ã™ã‚‹APIé–¢æ•°ã®ä»•æ§˜ã‚’è¨˜ã—ã¾ã™ã€‚
 
-## (1)ƒfƒoƒCƒX“ü—Í
+## (1)ãƒ‡ãƒã‚¤ã‚¹å…¥åŠ›
 
 ### vgs2_touch
-> ‰æ–Ê‚Ìƒ^ƒbƒ`iƒ}ƒEƒX‚ÌƒNƒŠƒbƒNjó‘Ô‚ðŽæ“¾‚µ‚Ü‚·B
+> ç”»é¢ã®ã‚¿ãƒƒãƒï¼ˆãƒžã‚¦ã‚¹ã®ã‚¯ãƒªãƒƒã‚¯ï¼‰çŠ¶æ…‹ã‚’å–å¾—ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_touch(int* s,int* cx,int* cy,int* dx,int* dy);
 >
-> `ˆø”`
-> - s: ”ñƒ^ƒbƒ`’†‚Í0, ƒ^ƒbƒ`’†‚Í”ñ0
-> - cx: ƒ^ƒbƒ`‚µ‚Ä‚¢‚éXÀ•Wi”ñƒ^ƒbƒ`’†‚Í•s’è’lj
-> - cy: ƒ^ƒbƒ`‚µ‚Ä‚¢‚éYÀ•Wi”ñƒ^ƒbƒ`’†‚Í•s’è’lj
-> - dx: ƒXƒ‰ƒCƒh‚µ‚½XÀ•W·•ªi”ñƒ^ƒbƒ`’†‚Í•s’è’lj
-> - dy: ƒXƒ‰ƒCƒh‚µ‚½YÀ•W·•ªi”ñƒ^ƒbƒ`’†‚Í•s’è’lj
+> `å¼•æ•°`
+> - s: éžã‚¿ãƒƒãƒä¸­ã¯0, ã‚¿ãƒƒãƒä¸­ã¯éž0
+> - cx: ã‚¿ãƒƒãƒã—ã¦ã„ã‚‹Xåº§æ¨™ï¼ˆéžã‚¿ãƒƒãƒä¸­ã¯ä¸å®šå€¤ï¼‰
+> - cy: ã‚¿ãƒƒãƒã—ã¦ã„ã‚‹Yåº§æ¨™ï¼ˆéžã‚¿ãƒƒãƒä¸­ã¯ä¸å®šå€¤ï¼‰
+> - dx: ã‚¹ãƒ©ã‚¤ãƒ‰ã—ãŸXåº§æ¨™å·®åˆ†ï¼ˆéžã‚¿ãƒƒãƒä¸­ã¯ä¸å®šå€¤ï¼‰
+> - dy: ã‚¹ãƒ©ã‚¤ãƒ‰ã—ãŸYåº§æ¨™å·®åˆ†ï¼ˆéžã‚¿ãƒƒãƒä¸­ã¯ä¸å®šå€¤ï¼‰
 
 ### vgs2_setPause
-> ƒ|[ƒYó‘Ô‚ÌÝ’èA‰ðœ‚ðs‚¢‚Ü‚·B
+> ãƒãƒ¼ã‚ºçŠ¶æ…‹ã®è¨­å®šã€è§£é™¤ã‚’è¡Œã„ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_setPause(unsigned char c);
 >
-> `ˆø”`
-> - c: ƒ|[ƒYó‘Ô‚É‚·‚éê‡‚Í1A‰ðœ‚·‚éê‡‚Í0‚ðŽw’è‚·‚é
+> `å¼•æ•°`
+> - c: ãƒãƒ¼ã‚ºçŠ¶æ…‹ã«ã™ã‚‹å ´åˆã¯1ã€è§£é™¤ã™ã‚‹å ´åˆã¯0ã‚’æŒ‡å®šã™ã‚‹
 
-## (2)ƒtƒ@ƒCƒ‹“üo—Í
+## (2)ãƒ•ã‚¡ã‚¤ãƒ«å…¥å‡ºåŠ›
 
 ### vgs2_fopen
-> - ƒtƒ@ƒCƒ‹‚ðŠJ‚«‚Ü‚·B
-> - ƒtƒ@ƒCƒ‹‚ðŠJ‚­Žž‚ÍA•W€ŠÖ”fopen‚Ì‘ã‚í‚è‚É‚±‚ÌŠÖ”‚ð—p‚¢‚Ä‚­‚¾‚³‚¢B
-> - ƒtƒ@ƒCƒ‹‚Ì“Ç‚Ý‘‚«‚â•Â‚¶‚é‘€ì‚É‚ÍA•W€ŠÖ”ifread, fwrite, fclose“™j‚ð—p‚¢‚Ä‚­‚¾‚³‚¢B
-> - ƒtƒ@ƒCƒ‹–¼‚É‚ÍAƒfƒBƒŒƒNƒgƒŠ‚ðŠÜ‚ß‚È‚¢‚Å‚­‚¾‚³‚¢B
+> - ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¾ã™ã€‚
+> - ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãæ™‚ã¯ã€æ¨™æº–é–¢æ•°fopenã®ä»£ã‚ã‚Šã«ã“ã®é–¢æ•°ã‚’ç”¨ã„ã¦ãã ã•ã„ã€‚
+> - ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿æ›¸ãã‚„é–‰ã˜ã‚‹æ“ä½œã«ã¯ã€æ¨™æº–é–¢æ•°ï¼ˆfread, fwrite, fcloseç­‰ï¼‰ã‚’ç”¨ã„ã¦ãã ã•ã„ã€‚
+> - ãƒ•ã‚¡ã‚¤ãƒ«åã«ã¯ã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å«ã‚ãªã„ã§ãã ã•ã„ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > FILE* vgs2_fopen(const char* n,const char* p);
 >
-> `ˆø”E–ß‚è’l`
-> - fopenŠÖ”‚Æ“¯‚¶‚Å‚·B
+> `å¼•æ•°ãƒ»æˆ»ã‚Šå€¤`
+> - fopené–¢æ•°ã¨åŒã˜ã§ã™ã€‚
 
-## (3)”Šw
-GameDaddy‚Ì”Šw‚ÍA’Êí‚Ì”ŠwŠÖ”‚Æˆá‚¢AŽÀ”‚ð‘S‚ÄŒÅ’è¬”“_”•ûŽ®‚Åˆµ‚¢‚Ü‚·B
+## (3)æ•°å­¦
+GameDaddyã®æ•°å­¦ã¯ã€é€šå¸¸ã®æ•°å­¦é–¢æ•°ã¨é•ã„ã€å®Ÿæ•°ã‚’å…¨ã¦å›ºå®šå°æ•°ç‚¹æ•°æ–¹å¼ã§æ‰±ã„ã¾ã™ã€‚
 
 ### vgs2_abs
-> - â‘Î’l‚ð‹‚ß‚éƒ}ƒNƒ‚Å‚·B
+> - çµ¶å¯¾å€¤ã‚’æ±‚ã‚ã‚‹ãƒžã‚¯ãƒ­ã§ã™ã€‚
 >
-> `ƒ}ƒNƒéŒ¾`
+> `ãƒžã‚¯ãƒ­å®£è¨€`
 >
-> ”define vgs2_abs(x) (x>=0?(x):-(x))
+> ï¼ƒdefine vgs2_abs(x) (x>=0?(x):-(x))
 
 ### vgs2_sgn
-> - Žw’è’l‚ª³”orƒ[ƒ‚Ìê‡‚Í1A•‰”‚Ìê‡‚Í-1‚ð•Ô‚·ƒ}ƒNƒ‚Å‚·B
-> - ˆê”Ê“I‚ÈsgnŠÖ”‚Æˆá‚¢ƒ[ƒ‚ð•Ô‚µ‚Ü‚¹‚ñB
+> - æŒ‡å®šå€¤ãŒæ­£æ•°orã‚¼ãƒ­ã®å ´åˆã¯1ã€è² æ•°ã®å ´åˆã¯-1ã‚’è¿”ã™ãƒžã‚¯ãƒ­ã§ã™ã€‚
+> - ä¸€èˆ¬çš„ãªsgné–¢æ•°ã¨é•ã„ã‚¼ãƒ­ã‚’è¿”ã—ã¾ã›ã‚“ã€‚
 >
-> `ƒ}ƒNƒéŒ¾`
+> `ãƒžã‚¯ãƒ­å®£è¨€`
 >
-> ”define vgs2_sgn(x) (x>=0?(1):(-1))
+> ï¼ƒdefine vgs2_sgn(x) (x>=0?(1):(-1))
 
 ### vgs2_rad
-> - 2“_ŠÔ‚ÌŠp“x‚ðƒ‰ƒWƒAƒ“’l~100i0`627¦¬”“_ˆÈ‰ºØ‚èŽÌ‚Äj‚Å‹‚ß‚Ü‚·B
+> - 2ç‚¹é–“ã®è§’åº¦ã‚’ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ï¼ˆ0ï½ž627â€»å°æ•°ç‚¹ä»¥ä¸‹åˆ‡ã‚Šæ¨ã¦ï¼‰ã§æ±‚ã‚ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_rad(int x1,int y1,int x2,int y2);
 >
-> `ˆø”`
-> - x1, y1: “_1‚ÌÀ•W
-> - x2, y2: “_2‚ÌÀ•W
+> `å¼•æ•°`
+> - x1, y1: ç‚¹1ã®åº§æ¨™
+> - x2, y2: ç‚¹2ã®åº§æ¨™
 >
-> `–ß‚è’l`
-> - 0`627iƒ‰ƒWƒAƒ“’l~100j
+> `æˆ»ã‚Šå€¤`
+> - 0ï½ž627ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ï¼‰
 
 ### vgs2_deg
-> - 2“_ŠÔ‚ÌŠp“xi0`359j‚ð‹‚ß‚Ü‚·B
+> - 2ç‚¹é–“ã®è§’åº¦ï¼ˆ0ï½ž359ï¼‰ã‚’æ±‚ã‚ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_deg(int x1,int y1,int x2,int y2);
 >
-> `ˆø”`
-> - x1, y1: “_1‚ÌÀ•W
-> - x2, y2: “_2‚ÌÀ•W
+> `å¼•æ•°`
+> - x1, y1: ç‚¹1ã®åº§æ¨™
+> - x2, y2: ç‚¹2ã®åº§æ¨™
 >
-> `–ß‚è’l`
-> - 0`359
+> `æˆ»ã‚Šå€¤`
+> - 0ï½ž359
 
 ### vgs2_deg2rad
-> - Šp“x‚ðƒ‰ƒWƒAƒ“’l~100i0`627¦¬”“_ˆÈ‰ºØ‚èŽÌ‚Äj‚É•ÏŠ·‚µ‚Ü‚·B
+> - è§’åº¦ã‚’ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ï¼ˆ0ï½ž627â€»å°æ•°ç‚¹ä»¥ä¸‹åˆ‡ã‚Šæ¨ã¦ï¼‰ã«å¤‰æ›ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_deg2rad(int deg);
 >
-> `ˆø”`
-> - deg: Šp“x
+> `å¼•æ•°`
+> - deg: è§’åº¦
 >
-> `–ß‚è’l`
-> - 0`627iƒ‰ƒWƒAƒ“’l~100j
+> `æˆ»ã‚Šå€¤`
+> - 0ï½ž627ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ï¼‰
 
 ### vgs2_rad2deg
-> - ƒ‰ƒWƒAƒ“’l~100‚ðŠp“xi0`359j‚É•ÏŠ·‚µ‚Ü‚·B
+> - ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ã‚’è§’åº¦ï¼ˆ0ï½ž359ï¼‰ã«å¤‰æ›ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_rad2deg(int rad);
 >
-> `ˆø”`
-> - rad: ƒ‰ƒWƒAƒ“’l~100
+> `å¼•æ•°`
+> - rad: ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100
 >
-> `–ß‚è’l`
-> - 0`359
+> `æˆ»ã‚Šå€¤`
+> - 0ï½ž359
 
 ### vgs2_rands
-> - ‹^Ž——”‚ð‰Šú‰»‚µ‚Ü‚·B
+> - ç–‘ä¼¼ä¹±æ•°ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_rands();
 
 ### vgs2_rand
-> - ‹^Ž——”’l‚ð‹‚ß‚Ü‚·B
+> - ç–‘ä¼¼ä¹±æ•°å€¤ã‚’æ±‚ã‚ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_rand();
 >
-> `–ß‚è’l`
-> - 0`2147483647
+> `æˆ»ã‚Šå€¤`
+> - 0ï½ž2147483647
 
 ### vgs2_sin
-> - ƒ‰ƒWƒAƒ“’l~100‚©‚çƒTƒCƒ“’l~256‚ð‹‚ß‚Ü‚·B
+> - ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ã‹ã‚‰ã‚µã‚¤ãƒ³å€¤Ã—256ã‚’æ±‚ã‚ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_sin(int r);
 >
-> `ˆø”`
-> - r: ƒ‰ƒWƒAƒ“’l~100
+> `å¼•æ•°`
+> - r: ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100
 >
-> `–ß‚è’l`
-> - sin(r€100)~256
+> `æˆ»ã‚Šå€¤`
+> - sin(rÃ·100)Ã—256
 
 ### vgs2_cos
-> - ƒ‰ƒWƒAƒ“’l~100‚©‚çƒRƒTƒCƒ“’l~256‚ð‹‚ß‚Ü‚·B
+> - ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100ã‹ã‚‰ã‚³ã‚µã‚¤ãƒ³å€¤Ã—256ã‚’æ±‚ã‚ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > int vgs2_cos(int r);
 >
-> `ˆø”`
-> - r: ƒ‰ƒWƒAƒ“’l~100
+> `å¼•æ•°`
+> - r: ãƒ©ã‚¸ã‚¢ãƒ³å€¤Ã—100
 >
-> `–ß‚è’l`
-> - cos(r€100)~256
+> `æˆ»ã‚Šå€¤`
+> - cos(rÃ·100)Ã—256
 
-## (4)Œø‰Ê‰¹
+## (4)åŠ¹æžœéŸ³
 
 ### vgs2_eff
-> - Œø‰Ê‰¹‚ðÄ¶‚µ‚Ü‚·B
+> - åŠ¹æžœéŸ³ã‚’å†ç”Ÿã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_eff(unsigned char n);
 >
-> `ˆø”`
-> - n: ESLOT‚ÌƒXƒƒbƒg”Ô†
+> `å¼•æ•°`
+> - n: ESLOTã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
 
 ### vgs2_effstop
-> - “Á’è‚ÌŒø‰Ê‰¹‚ÌÄ¶‚ð’âŽ~‚µ‚Ü‚·B
+> - ç‰¹å®šã®åŠ¹æžœéŸ³ã®å†ç”Ÿã‚’åœæ­¢ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_effstop(unsigned char n);
 >
-> `ˆø”`
-> - n: ESLOT‚ÌƒXƒƒbƒg”Ô†
+> `å¼•æ•°`
+> - n: ESLOTã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
 
 ### vgs2_effstopA
-> - ‘S‚Ä‚ÌŒø‰Ê‰¹‚ÌÄ¶‚ð’âŽ~‚µ‚Ü‚·B
+> - å…¨ã¦ã®åŠ¹æžœéŸ³ã®å†ç”Ÿã‚’åœæ­¢ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_effstopA();
 
 ### vgs2_setmute
-> - ƒ~ƒ…[ƒgó‘Ô‚ðÝ’èor‰ðœ‚µ‚Ü‚·B
+> - ãƒŸãƒ¥ãƒ¼ãƒˆçŠ¶æ…‹ã‚’è¨­å®šorè§£é™¤ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_setmute(unsigned char n);
 >
-> `ˆø”`
-> - n: 0=‰ðœA1=Ý’è
+> `å¼•æ•°`
+> - n: 0=è§£é™¤ã€1=è¨­å®š
 
 ### vgs2_getmute
-> - ƒ~ƒ…[ƒgó‘Ô‚ðŽæ“¾‚µ‚Ü‚·B
+> - ãƒŸãƒ¥ãƒ¼ãƒˆçŠ¶æ…‹ã‚’å–å¾—ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > unsigned char vgs2_getmute();
 >
-> `–ß‚è’l`
-> - ƒ~ƒ…[ƒgó‘Ôi0=‰ðœA1=Ý’èj
+> `æˆ»ã‚Šå€¤`
+> - ãƒŸãƒ¥ãƒ¼ãƒˆçŠ¶æ…‹ï¼ˆ0=è§£é™¤ã€1=è¨­å®šï¼‰
 
-## (5)ƒOƒ‰ƒtƒBƒbƒNƒX
+## (5)ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹
 
 ### vgs2_pallet
-> - ƒx[ƒXƒJƒ‰[‚ðÝ’è‚µ‚Ü‚·B
-> - ƒx[ƒXƒJƒ‰[‚ÍAƒ‚ƒmƒNƒ•\Ž¦‚ÌŠî‘b‚Æ‚È‚éF‚Ì‚±‚Æ‚Å‚·B
-> - ‰æ–Ê‚ÍA–{ŠÖ”‚ÅÝ’è‚µ‚½ƒx[ƒXƒJƒ‰[‚ðŠî‚É‚µ‚½8’i’²‚Ìƒ‚ƒmƒNƒ‚Å•\Ž¦‚³‚ê‚Ü‚·B
+> - ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ã‚’è¨­å®šã—ã¾ã™ã€‚
+> - ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ã¯ã€ãƒ¢ãƒŽã‚¯ãƒ­è¡¨ç¤ºã®åŸºç¤Žã¨ãªã‚‹è‰²ã®ã“ã¨ã§ã™ã€‚
+> - ç”»é¢ã¯ã€æœ¬é–¢æ•°ã§è¨­å®šã—ãŸãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ã‚’åŸºã«ã—ãŸ8æ®µèª¿ã®ãƒ¢ãƒŽã‚¯ãƒ­ã§è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_pallet(int c);
 >
-> `ˆø”`
-> - c: ƒx[ƒXƒJƒ‰[i1`7j
->   - 1:blue (Â)
->   - 2:red (Ô)
->   - 3:magenta (Ž‡)
->   - 4:green (—Î)
->   - 5:cyan (…F)
->   - 6:yellow (‰©F)
->   - 7:white (”’)
+> `å¼•æ•°`
+> - c: ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ï¼ˆ1ï½ž7ï¼‰
+>   - 1:blue (é’)
+>   - 2:red (èµ¤)
+>   - 3:magenta (ç´«)
+>   - 4:green (ç·‘)
+>   - 5:cyan (æ°´è‰²)
+>   - 6:yellow (é»„è‰²)
+>   - 7:white (ç™½)
 
 ### vgs2_pallet256
-> - 8bitƒJƒ‰[i256Fjƒ‚[ƒh‚É‚µ‚Ü‚·B
-> - ƒpƒŒƒbƒgî•ñ‚Íƒf[ƒ^ƒXƒƒbƒg‚ÉŽ‚Â•K—v‚ª‚ ‚è‚Ü‚·B
-> - ƒf[ƒ^ƒXƒƒbƒg‚É‚ÍA1F‚ ‚½‚è32bitiARGBj‚ÌFî•ñ ~ 256Fi‡Œv `1024byte` j‚ÌƒoƒCƒiƒŠƒf[ƒ^‚ªŠi”[‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚è‚Ü‚·B
+> - 8bitã‚«ãƒ©ãƒ¼ï¼ˆ256è‰²ï¼‰ãƒ¢ãƒ¼ãƒ‰ã«ã—ã¾ã™ã€‚
+> - ãƒ‘ãƒ¬ãƒƒãƒˆæƒ…å ±ã¯ãƒ‡ãƒ¼ã‚¿ã‚¹ãƒ­ãƒƒãƒˆã«æŒã¤å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+> - ãƒ‡ãƒ¼ã‚¿ã‚¹ãƒ­ãƒƒãƒˆã«ã¯ã€1è‰²ã‚ãŸã‚Š32bitï¼ˆARGBï¼‰ã®è‰²æƒ…å ± Ã— 256è‰²ï¼ˆåˆè¨ˆ `1024byte` ï¼‰ã®ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_pallet256(unsigned char n);
 >
-> `ˆø”`
-> - n: ƒpƒŒƒbƒgî•ñ‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒf[ƒ^ƒXƒƒbƒg”Ô†
+> `å¼•æ•°`
+> - n: ãƒ‘ãƒ¬ãƒƒãƒˆæƒ…å ±ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
 
 ### vgs2_interlace
-> - ƒCƒ“ƒ^ƒŒ[ƒXEƒXƒLƒƒƒ“‚ÌON/OFF‚ðÝ’è‚µ‚Ü‚·B
-> - ƒAƒvƒŠ‹N“®Žž‚ÌƒfƒtƒHƒ‹ƒg‚ÍON‚Å‚·B
+> - ã‚¤ãƒ³ã‚¿ãƒ¬ãƒ¼ã‚¹ãƒ»ã‚¹ã‚­ãƒ£ãƒ³ã®ON/OFFã‚’è¨­å®šã—ã¾ã™ã€‚
+> - ã‚¢ãƒ—ãƒªèµ·å‹•æ™‚ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ONã§ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_interlace(int i);
 >
-> `ˆø”`
-> - i: ƒCƒ“ƒ^ƒŒ[ƒX‚ÌON(1)‚Ü‚½‚ÍOFF(0)
+> `å¼•æ•°`
+> - i: ã‚¤ãƒ³ã‚¿ãƒ¬ãƒ¼ã‚¹ã®ON(1)ã¾ãŸã¯OFF(0)
 
 ### vgs2_clear
-> - BG–Ê‚ðƒNƒŠƒA‚µ‚Ü‚·B
+> - BGé¢ã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_clear(unsigned char c);
 >
-> `ˆø”`
+> `å¼•æ•°`
 > 
-> - c: ƒpƒŒƒbƒg”Ô†i0`7j
+> - c: ãƒ‘ãƒ¬ãƒƒãƒˆç•ªå·ï¼ˆ0ï½ž7ï¼‰
 
 ### vgs2_scroll
-> - BG–Ê‚ðƒXƒNƒ[ƒ‹iƒ‰ƒXƒ^ƒXƒNƒ[ƒ‹j‚µ‚Ü‚·B
+> - BGé¢ã‚’ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ï¼ˆãƒ©ã‚¹ã‚¿ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ï¼‰ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > void vgs2_scroll(int x,int y);
 >
-> `ˆø”`
+> `å¼•æ•°`
 > 
-> - x,y: ƒXƒNƒ[ƒ‹’liƒsƒNƒZƒ‹’PˆÊj
+> - x,y: ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«å€¤ï¼ˆãƒ”ã‚¯ã‚»ãƒ«å˜ä½ï¼‰
 
 ### vgs2_pixel
-> - “_‚ð•`‰æ‚µ‚Ü‚·B
+> - ç‚¹ã‚’æç”»ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 > - void vgs2_pixel(unsigned char* p,int x,int y,unsigned char c);
-> - ”define vgs2_pixelBG(X,Y,C) vgs2_pixel(_vram.bg,X,Y,C)
-> - ”define vgs2_pixelSP(X,Y,C) vgs2_pixel(_vram.sp,X,Y,C)
+> - ï¼ƒdefine vgs2_pixelBG(X,Y,C) vgs2_pixel(_vram.bg,X,Y,C)
+> - ï¼ƒdefine vgs2_pixelSP(X,Y,C) vgs2_pixel(_vram.sp,X,Y,C)
 >
-> `ˆø”`
-> - p: _vram.bg(BG–Ê) or _vram.sp(ƒXƒvƒ‰ƒCƒg–Ê)
-> - x,y: À•W
-> - c: ƒpƒŒƒbƒg”Ô†
+> `å¼•æ•°`
+> - p: _vram.bg(BGé¢) or _vram.sp(ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆé¢)
+> - x,y: åº§æ¨™
+> - c: ãƒ‘ãƒ¬ãƒƒãƒˆç•ªå·
 
 ### vgs2_line
-> - ü‚ð•`‰æ‚µ‚Ü‚·B
+> - ç·šã‚’æç”»ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 > - void vgs2_line(unsigned char* p,int fx,int fy,int tx,int ty,unsigned char c);
-> - ”define vgs2_lineBG(FX,FY,TX,TY,C) vgs2_line(_vram.bg,FX,FY,TX,TY,C)
-> - ”define vgs2_lineSP(FX,FY,TX,TY,C) vgs2_line(_vram.sp,FX,FY,TX,TY,C)
+> - ï¼ƒdefine vgs2_lineBG(FX,FY,TX,TY,C) vgs2_line(_vram.bg,FX,FY,TX,TY,C)
+> - ï¼ƒdefine vgs2_lineSP(FX,FY,TX,TY,C) vgs2_line(_vram.sp,FX,FY,TX,TY,C)
 >
-> `ˆø”`
-> - p: _vram.bg(BG–Ê) or _vram.sp(ƒXƒvƒ‰ƒCƒg–Ê)
-> - fx,fy: À•W(from)
-> - tx,ty: À•W(to)
-> - c: ƒpƒŒƒbƒg”Ô†
+> `å¼•æ•°`
+> - p: _vram.bg(BGé¢) or _vram.sp(ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆé¢)
+> - fx,fy: åº§æ¨™(from)
+> - tx,ty: åº§æ¨™(to)
+> - c: ãƒ‘ãƒ¬ãƒƒãƒˆç•ªå·
 
 ### vgs2_circle
-> - ‰~‚ð•`‰æ‚µ‚Ü‚·B
+> - å††ã‚’æç”»ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 > - void vgs2_circle(char*p, int x,int y,int r, unsigned char c);
-> - ”define vgs2_circleBG(X,Y,R,C) vgs2_circle(_vram.bg,X,Y,R,C)
-> - ”define vgs2_circleSP(X,Y,R,C) vgs2_circle(_vram.sp,X,Y,R,C)
+> - ï¼ƒdefine vgs2_circleBG(X,Y,R,C) vgs2_circle(_vram.bg,X,Y,R,C)
+> - ï¼ƒdefine vgs2_circleSP(X,Y,R,C) vgs2_circle(_vram.sp,X,Y,R,C)
 >
-> `ˆø”`
-> - p: _vram.bg(BG–Ê) or _vram.sp(ƒXƒvƒ‰ƒCƒg–Ê)
-> - x,y: À•W
-> - r: ”¼Œa
-> - c: ƒpƒŒƒbƒg”Ô†
+> `å¼•æ•°`
+> - p: _vram.bg(BGé¢) or _vram.sp(ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆé¢)
+> - x,y: åº§æ¨™
+> - r: åŠå¾„
+> - c: ãƒ‘ãƒ¬ãƒƒãƒˆç•ªå·
 
 ### vgs2_box
-> - vgs2_line‚ð—p‚¢‚Ä‹éŒ`‚ð•`‰æ‚·‚éƒ}ƒNƒ‚Å‚·B
+> - vgs2_lineã‚’ç”¨ã„ã¦çŸ©å½¢ã‚’æç”»ã™ã‚‹ãƒžã‚¯ãƒ­ã§ã™ã€‚
 >
-> `ƒ}ƒNƒéŒ¾`
-> ”define vgs2_boxBG(FX,FY,TX,TY,C) \
+> `ãƒžã‚¯ãƒ­å®£è¨€`
+> ï¼ƒdefine vgs2_boxBG(FX,FY,TX,TY,C) \
 >
 > vgs2_line(_vram.bg,FX,FY,TX,FY,C);\
 >
@@ -327,7 +327,7 @@ GameDaddy‚Ì”Šw‚ÍA’Êí‚Ì”ŠwŠÖ”‚Æˆá‚¢AŽÀ”‚ð‘S‚ÄŒÅ’è¬”“_”•ûŽ®‚Åˆµ‚¢‚Ü‚·B
 >
 > vgs2_line(_vram.bg,TX,FY,TX,TY,C)
 >
-> ”define vgs2_boxSP(FX,FY,TX,TY,C) \
+> ï¼ƒdefine vgs2_boxSP(FX,FY,TX,TY,C) \
 >
 > vgs2_line(_vram.sp,FX,FY,TX,FY,C);\
 >
@@ -338,40 +338,40 @@ GameDaddy‚Ì”Šw‚ÍA’Êí‚Ì”ŠwŠÖ”‚Æˆá‚¢AŽÀ”‚ð‘S‚ÄŒÅ’è¬”“_”•ûŽ®‚Åˆµ‚¢‚Ü‚·B
 > vgs2_line(_vram.sp,TX,FY,TX,TY,C)
 
 ### vgs2_boxf
-> - “h‚è‚Â‚Ô‚µ‹éŒ`‚ð•`‰æ‚µ‚Ü‚·B
+> - å¡—ã‚Šã¤ã¶ã—çŸ©å½¢ã‚’æç”»ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 > - void vgs2_boxf(unsigned char* p,int fx,int fy,int tx,int ty,unsigned char c);
-> - ”define vgs2_boxfBG(FX,FY,TX,TY,C) vgs2_boxf(_vram.bg,FX,FY,TX,TY,C)
-> - ”define vgs2_boxfSP(FX,FY,TX,TY,C) vgs2_boxf(_vram.sp,FX,FY,TX,TY,C)
+> - ï¼ƒdefine vgs2_boxfBG(FX,FY,TX,TY,C) vgs2_boxf(_vram.bg,FX,FY,TX,TY,C)
+> - ï¼ƒdefine vgs2_boxfSP(FX,FY,TX,TY,C) vgs2_boxf(_vram.sp,FX,FY,TX,TY,C)
 >
-> `ˆø”`
-> - p: _vram.bg(BG–Ê) or _vram.sp(ƒXƒvƒ‰ƒCƒg–Ê)
-> - fx,fy: À•W(from)
-> - tx,ty: À•W(to)
-> - c: ƒpƒŒƒbƒg”Ô†
+> `å¼•æ•°`
+> - p: _vram.bg(BGé¢) or _vram.sp(ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆé¢)
+> - fx,fy: åº§æ¨™(from)
+> - tx,ty: åº§æ¨™(to)
+> - c: ãƒ‘ãƒ¬ãƒƒãƒˆç•ªå·
 
 ### vgs2_putBG
-> - GSLOT‚Ì“à—e‚ðBG–Ê‚Ö‹éŒ`“]‘—‚µ‚Ü‚·B
+> - GSLOTã®å†…å®¹ã‚’BGé¢ã¸çŸ©å½¢è»¢é€ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 > - void vgs2_putBG(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
 > - void vgs2_putBG2(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
 >
-> `”õl`
-> - vgs2_putBG: ƒpƒŒƒbƒg0‚ðŠÜ‚ß‚Ä•`‰æ‚·‚é
-> - vgs2_putBG2: ƒpƒŒƒbƒg0‚ð“§–¾F‚Æ‚µ‚Ä•`‰æ‚·‚é
+> `å‚™è€ƒ`
+> - vgs2_putBG: ãƒ‘ãƒ¬ãƒƒãƒˆ0ã‚’å«ã‚ã¦æç”»ã™ã‚‹
+> - vgs2_putBG2: ãƒ‘ãƒ¬ãƒƒãƒˆ0ã‚’é€æ˜Žè‰²ã¨ã—ã¦æç”»ã™ã‚‹
 >
-> `ˆø”`
-> - n: GSLOT‚ÌƒXƒƒbƒg”Ô†
-> - sx,sy: “]‘—Œ³À•WiGSLOTj
-> - xs,ys: ƒTƒCƒY
-> - dx,dy: “]‘—æÀ•WiBG–Êj
+> `å¼•æ•°`
+> - n: GSLOTã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
+> - sx,sy: è»¢é€å…ƒåº§æ¨™ï¼ˆGSLOTï¼‰
+> - xs,ys: ã‚µã‚¤ã‚º
+> - dx,dy: è»¢é€å…ˆåº§æ¨™ï¼ˆBGé¢ï¼‰
 
 ### vgs2_putSP
-> - GSLOT‚Ì“à—e‚ðƒXƒvƒ‰ƒCƒg–Ê‚Ö‹éŒ`“]‘—‚µ‚Ü‚·B
+> - GSLOTã®å†…å®¹ã‚’ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆé¢ã¸çŸ©å½¢è»¢é€ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 > - void vgs2_putSP(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
 > - void vgs2_putSPM(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsigned char c);
 > - void vgs2_putSPH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
@@ -380,39 +380,39 @@ GameDaddy‚Ì”Šw‚ÍA’Êí‚Ì”ŠwŠÖ”‚Æˆá‚¢AŽÀ”‚ð‘S‚ÄŒÅ’è¬”“_”•ûŽ®‚Åˆµ‚¢‚Ü‚·B
 > - void vgs2_putSPE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int dxs,int dys);
 > - void vgs2_putSPRE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r,int dxs,int dys);
 >
-> `”õl`
-> - vgs2_putSPM: ”ñ“§–¾F‚ðƒ}ƒXƒNi’PF•`‰æj‚Æ‚·‚é
-> - vgs2_putSPH: 1/2ƒTƒCƒY‚Å“]‘—‚·‚é
-> - vgs2_putSPMH: vgs2_putSPM + vgs2_putSPHi‘g‚Ý‡‚í‚¹j
-> - vgs2_putSPR: ‰ñ“]‚³‚¹‚é
-> - vgs2_putSPE: Šg‘åik¬j‚·‚é
-> - vgs2_putSPRE: vgs2_putSPR +@vgs2_putSPEi‘g‚Ý‡‚í‚¹j 
+> `å‚™è€ƒ`
+> - vgs2_putSPM: éžé€æ˜Žè‰²ã‚’ãƒžã‚¹ã‚¯ï¼ˆå˜è‰²æç”»ï¼‰ã¨ã™ã‚‹
+> - vgs2_putSPH: 1/2ã‚µã‚¤ã‚ºã§è»¢é€ã™ã‚‹
+> - vgs2_putSPMH: vgs2_putSPM + vgs2_putSPHï¼ˆçµ„ã¿åˆã‚ã›ï¼‰
+> - vgs2_putSPR: å›žè»¢ã•ã›ã‚‹
+> - vgs2_putSPE: æ‹¡å¤§ï¼ˆç¸®å°ï¼‰ã™ã‚‹
+> - vgs2_putSPRE: vgs2_putSPR +ã€€vgs2_putSPEï¼ˆçµ„ã¿åˆã‚ã›ï¼‰ 
 >
-> `ˆø”`
-> - n: GSLOT‚ÌƒXƒƒbƒg”Ô†
-> - sx,sy: “]‘—Œ³À•WiGSLOTj
-> - xs,ys: ƒTƒCƒY
-> - dx,dy: “]‘—æÀ•WiƒXƒvƒ‰ƒCƒg–Êj
-> - c: ƒ}ƒXƒNŽž‚ÌƒpƒŒƒbƒg”Ô†
-> - r: ‰ñ“]Špiƒ‰ƒWƒAƒ“~100j
-> - dxs,dys: “]‘—æƒTƒCƒY
+> `å¼•æ•°`
+> - n: GSLOTã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
+> - sx,sy: è»¢é€å…ƒåº§æ¨™ï¼ˆGSLOTï¼‰
+> - xs,ys: ã‚µã‚¤ã‚º
+> - dx,dy: è»¢é€å…ˆåº§æ¨™ï¼ˆã‚¹ãƒ—ãƒ©ã‚¤ãƒˆé¢ï¼‰
+> - c: ãƒžã‚¹ã‚¯æ™‚ã®ãƒ‘ãƒ¬ãƒƒãƒˆç•ªå·
+> - r: å›žè»¢è§’ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³Ã—100ï¼‰
+> - dxs,dys: è»¢é€å…ˆã‚µã‚¤ã‚º
 
-## (6)ƒ†[ƒeƒBƒŠƒeƒB
+## (6)ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 
 ### vgs2_getdata
-> - DSLOT‚Ì“à—e‚ðŽæ“¾‚µ‚Ü‚·B
+> - DSLOTã®å†…å®¹ã‚’å–å¾—ã—ã¾ã™ã€‚
 >
-> `ƒvƒƒgƒ^ƒCƒv`
+> `ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—`
 >
 > const char* vgs2_getdata(unsigned char n,unsigned int* size);
 >
-> `ˆø”`
-> - n: DSLOT‚ÌƒXƒƒbƒg”Ô†
-> - size: ƒTƒCƒYioutput onlyj
+> `å¼•æ•°`
+> - n: DSLOTã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
+> - size: ã‚µã‚¤ã‚ºï¼ˆoutput onlyï¼‰
 >
-> `–ß‚è’l`
-> - NULL: Žw’è‚µ‚½DSLOT‚ª‘¶Ý‚µ‚È‚¢
-> - NULLˆÈŠO: DSLOT‚Ìæ“ªƒ|ƒCƒ“ƒ^
+> `æˆ»ã‚Šå€¤`
+> - NULL: æŒ‡å®šã—ãŸDSLOTãŒå­˜åœ¨ã—ãªã„
+> - NULLä»¥å¤–: DSLOTã®å…ˆé ­ãƒã‚¤ãƒ³ã‚¿
 >
-> `”õl`
-> - –ß‚è’l‚Å•Ô‚³‚ê‚éƒ|ƒCƒ“ƒ^‚ÍAƒAƒ‰ƒCƒƒ“ƒg’²®‚µ‚Ä‚¢‚Ü‚¹‚ñB
+> `å‚™è€ƒ`
+> - æˆ»ã‚Šå€¤ã§è¿”ã•ã‚Œã‚‹ãƒã‚¤ãƒ³ã‚¿ã¯ã€ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆèª¿æ•´ã—ã¦ã„ã¾ã›ã‚“ã€‚
