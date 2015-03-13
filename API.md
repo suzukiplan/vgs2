@@ -416,3 +416,46 @@ GameDaddyの数学は、通常の数学関数と違い、実数を全て固定�
 >
 > `備考`
 > - 戻り値で返されるポインタは、アライメント調整していません。
+
+## (7)BGM
+
+### vgs2_bplay
+> - BGMを再生します
+>
+> `プロトタイプ`
+>
+> void vgs2_bplay(unsigned char n);
+>
+> - n: BSLOTのスロット番号
+
+### vgs2_bchk
+> - BGMデータ（BSLOT）の有無をチェックします
+>
+> `プロトタイプ`
+>
+> void vgs2_bchk(unsigned char n);
+>
+> - n: BSLOTのスロット番号
+
+### vgs2_bstop
+> - BGMを停止します
+>
+> `プロトタイプ`
+>
+> void vgs2_bstop();
+
+### vgs2_bresume
+> - BGMを停止したところから再開します
+>
+> `プロトタイプ`
+>
+> void vgs2_bresume();
+
+### vgs2_bfade
+> - BGMをフェードアウトします
+>
+> `プロトタイプ`
+>
+> void vgs2_bfade(unsigned int hz);
+>
+> - hz: マスターボリュームをデクリメントする間隔（Hz単位: 1秒=22050Hz）
