@@ -24,10 +24,9 @@
 ### Macintosh
 - XCODE
 
-## セットアップ
-### Windows (Windows + Androidアプリ開発環境)
+## セットアップ（Windows + Androidアプリ開発環境）
 
-#### (1) VGS mk-II SRのセットアップ
+### (1) VGS mk-II SRのセットアップ
 ```cmd
 > c:
 > cd \home
@@ -36,37 +35,40 @@
 > nmake
 ```
 
-#### (2) 環境変数の設定
+### (2) 環境変数の設定
 - `PATH` : `c:\home\vgs2\bin`
 - `VGS2_HOME` : `c:\home\vgs2`
 
-#### (3) プロジェクト作成
+## プロジェクト作成
 ```cmd
 > vgs2mkpj company Test c:\home\Test
 ```
 
-#### (4) ビルド(Windows)
+## ビルド
+#### (1) Windows版のビルド
 ```cmd
 > c:
 > cd \home\Test\windows
 > nmake
 ```
 
-#### (5) ビルド(Android)
-##### cygwin
+_※Windows版のビルドではROMDATA.BINの作成も行います_
+
+### (2) Android版のビルド
+#### cygwin
 ```cygwin
 $ cd /cyghome/c/home/Test/android/jni
 $ ndk_build
 ```
 
-##### MS-DOS (デバッグビルド時)
+#### MS-DOS (デバッグビルド時)
 ```cmd
 > c:
 > cd \home\Test\android
 > ant debug
 ```
 
-##### MS-DOS (リリースビルド時)
+#### MS-DOS (リリースビルド時)
 ```cmd
 > c:
 > cd \home\Test\android
@@ -75,7 +77,7 @@ $ ndk_build
 > c:\android\sdk\build-tools\21.1.2\zipalign -v 4 bin\Test-release-unsigned.apk bin\Test-release.apk 
 ```
 
-### Macintosh (iPhoneアプリ開発環境)
+### (3) iPhone版のビルド
 todo: 後で書く
 
 ## アプリの開発方法
