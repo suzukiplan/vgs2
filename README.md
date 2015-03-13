@@ -52,7 +52,7 @@
 > nmake
 ```
 
-_※Windows版のビルドではROMDATA.BINの作成も行います_
+_※Windows版のビルドではAndroid版のROMDATA.BINの作成も行います_
 
 ### (2) Android版のビルド
 #### cygwin
