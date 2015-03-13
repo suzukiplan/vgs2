@@ -34,6 +34,17 @@ extern "C" {
 #define SAMPLE_CH	1
 #define SAMPLE_BUFS	4410
 
+#define NTYPE_ENV1		1
+#define NTYPE_ENV2		2
+#define NTYPE_VOL		3
+#define NTYPE_MVOL		4
+#define NTYPE_KEYON		5
+#define NTYPE_KEYOFF	6
+#define NTYPE_WAIT		7
+#define NTYPE_PDOWN		8
+#define NTYPE_JUMP		9
+#define NTYPE_LABEL		10
+
 /*
  *----------------------------------------------------------------------------
  * internal tables
@@ -63,6 +74,50 @@ struct _VRAM {
 	unsigned char sp[0x10000];
 };
 
+struct _NOTE {
+	unsigned char type;
+	unsigned char op1;
+	unsigned char op2;
+	unsigned char op3;
+	unsigned int val;
+};
+
+struct _PSGCH {
+	short* tone;
+	unsigned char vol;
+	unsigned char key;
+	unsigned char keyOn;
+	unsigned char mute;
+	unsigned int cur;
+	unsigned int count;
+	unsigned int env1;
+	unsigned int env2;
+	unsigned char toneT;
+	unsigned char toneK;
+	unsigned int pdown;
+	unsigned int pcnt;
+};
+
+struct _PSG {
+	struct _NOTE* notes;
+	unsigned char play;
+	unsigned char mask;
+	unsigned short mvol;
+	unsigned int waitTime;
+	short wav[6];
+	int nidx;
+	int stopped;
+	unsigned int fade;
+	unsigned int fcnt;
+	struct _PSGCH ch[6];
+	int mute;
+	int loop;
+	int fade2;
+	unsigned int timeI;
+	unsigned int timeL;
+	unsigned int timeP;
+};
+
 struct _TOUCH {
 	int s;
 	int t;
@@ -87,6 +142,10 @@ extern unsigned char _mute;
 extern unsigned char _pause;
 extern unsigned char _interlace;
 extern int _PAL[256];
+extern short* TONE1[85];
+extern short* TONE2[85];
+extern short* TONE3[85];
+extern short* TONE4[85];
 
 /*
  *----------------------------------------------------------------------------
@@ -103,6 +162,7 @@ void unlock2();
 void make_pallet();
 int gload(unsigned char n,const char* name);
 int eload(unsigned char n,const char* name);
+int bload(unsigned char n,const char* name);
 
 /*
  *----------------------------------------------------------------------------
@@ -207,6 +267,13 @@ const char* vgs2_getdata(unsigned char n,unsigned int* size);
 
 /* set interlace */
 void vgs2_interlace(int i);
+
+/* BGM */
+void vgs2_bplay(unsigned char n);
+int vgs2_bchk(unsigned char n);
+void vgs2_bstop();
+void vgs2_bresume();
+void vgs2_bfade(unsigned int hz);
 
 #ifdef __cplusplus
 };

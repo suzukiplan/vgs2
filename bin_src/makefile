@@ -1,5 +1,6 @@
 all:\
 	..\bin \
+	..\bin\vgs2mml.exe \
 	..\bin\vgs2bmp.exe \
 	..\bin\vgs2mkpj.exe \
 	..\bin\vgs2rom.exe \
@@ -15,6 +16,8 @@ clean:
 	-@del vgs2rom.exe
 	-@del vgs2wav.obj
 	-@del vgs2wav.exe
+	-@del vgs2mml.obj
+	-@del vgs2mml.exe
 
 ..\bin:
 	mkdir ..\bin
@@ -35,6 +38,11 @@ T=vgs2rom
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2wav
+..\bin\$(T).exe: $(T).c
+	CL /MT $(T).c
+	copy $(T).exe ..\bin\$(T).exe
+
+T=vgs2mml
 ..\bin\$(T).exe: $(T).c
 	CL /MT $(T).c
 	copy $(T).exe ..\bin\$(T).exe

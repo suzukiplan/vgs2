@@ -8,6 +8,7 @@
  *----------------------------------------------------------------------------
  */
 #include "vgs2.h"
+#include "miniz.h"
 
 /*
  *----------------------------------------------------------------------------
@@ -18,8 +19,12 @@ int BN;
 struct _BINREC* BR;
 struct _SLOT _slot[256];
 struct _EFF _eff[256];
+char* _note[256];
+static uLong _notelen[256];
+struct _NOTE _notebuf[65536];
 struct _VRAM _vram;
 struct _TOUCH _touch;
+struct _PSG _psg;
 unsigned char _mute;
 unsigned char _pause;
 unsigned char _interlace=1;
@@ -48,6 +53,8 @@ static short cos256[628]={256,255,255,255,255,255,255,255,255,254,254,254,254,25
  * file static functions
  *----------------------------------------------------------------------------
  */
+static void setNote(unsigned char cn,unsigned char t,unsigned char n);
+static int getNextNote();
 static char* getbin(const char* name,int* size);
 static int gclip(unsigned char n,int* sx,int* sy,int* xs,int* ys,int* dx,int* dy);
 static float myatan2(int a, int b);
@@ -62,6 +69,7 @@ void sndbuf(char* buf,size_t size)
 {
 	static int an;
 	int i,j;
+	int pw;
 	int wav;
 	int cs;
 	short* bp;
@@ -72,6 +80,8 @@ void sndbuf(char* buf,size_t size)
 	if(_pause || _mute) {
 		return;
 	}
+
+	lock();
 
 	for(i=0;i<256;i++) {
 		if(_eff[i].flag) {
@@ -102,6 +112,164 @@ void sndbuf(char* buf,size_t size)
 			eff_pos(&_eff[i],0);
 		}
 	}
+
+	/* BGM */
+	if(_psg.play && _psg.notes) {
+		if(0==_psg.waitTime) {
+			_psg.waitTime=getNextNote();
+			if(0==_psg.waitTime) {
+				unlock();
+				return; /* no data */
+			}
+		}
+		if(_psg.mvol) {
+			for(i=0;i<(int)size;i+=2) {
+				for(j=0;j<6;j++) {
+					if(_psg.ch[j].tone) {
+						_psg.ch[j].cur%=_psg.ch[j].tone[0];
+						wav=_psg.ch[j].tone[1+_psg.ch[j].cur];
+						_psg.ch[j].cur+=2;
+						wav*=(_psg.ch[j].vol * _psg.mvol);
+						if(_psg.ch[j].keyOn) {
+							if(_psg.ch[j].count<_psg.ch[j].env1) {
+								_psg.ch[j].count++;
+								pw=(_psg.ch[j].count*100)/_psg.ch[j].env1;
+							} else {
+								pw=100;
+							}
+						} else {
+							if(_psg.ch[j].count<_psg.ch[j].env2) {
+								_psg.ch[j].count++;
+								pw=100-(_psg.ch[j].count*100)/_psg.ch[j].env2;
+							} else {
+								pw=0;
+							}
+						}
+						bp=(short*)(&buf[i]);
+						wav=(wav*pw/100);
+						wav+=*bp;
+						if(32767<wav) wav=32767;
+						else if(wav<-32768) wav=-32768;
+						(*bp)=(short)wav;
+						_psg.wav[j]=pw;
+						if(_psg.ch[j].pdown) {
+							_psg.ch[j].pcnt++;
+							if(_psg.ch[j].pdown<_psg.ch[j].pcnt) {
+								_psg.ch[j].pcnt=0;
+								if(_psg.ch[j].toneK) {
+									_psg.ch[j].toneK--;
+								}
+								setNote(j&0xff,_psg.ch[j].toneT,_psg.ch[j].toneK);
+							}
+						}
+					}
+				}
+				_psg.waitTime--;
+				if(0==_psg.waitTime) {
+					_psg.waitTime=getNextNote();
+					if(0==_psg.waitTime) {
+						unlock();
+						return; /* no data */
+					}
+				}
+				/* fade out */
+				if(_psg.fade) {
+					_psg.fcnt++;
+					if(_psg.fade<_psg.fcnt) {
+						_psg.mvol--;
+						_psg.fcnt=0;
+					}
+				}
+			}
+		}
+	} else {
+		for(i=0;i<6;i++) {
+			_psg.wav[i]=0;
+		}
+		_psg.stopped=1;
+	}
+
+	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * set tone and tune
+ *----------------------------------------------------------------------------
+ */
+static void setNote(unsigned char cn,unsigned char t,unsigned char n)
+{
+	switch(t) {
+		case 0: /* SANKAKU */
+			_psg.ch[cn].tone=TONE1[n%85];
+			break;
+		case 1: /* NOKOGIR */
+			_psg.ch[cn].tone=TONE2[n%85];
+			break;
+		case 2: /* KUKEI */
+			_psg.ch[cn].tone=TONE3[n%85];
+			break;
+		default: /* NOIZE */
+			_psg.ch[cn].tone=TONE4[n%85];
+			break;
+	}
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * get next waittime
+ *----------------------------------------------------------------------------
+ */
+static int getNextNote()
+{
+	int ret;
+	if(_psg.notes[_psg.nidx].type==NTYPE_WAIT && 0==_psg.notes[_psg.nidx].val) {
+		return 0;
+	}
+	for(;NTYPE_WAIT!=_psg.notes[_psg.nidx].type;_psg.nidx++) {
+		switch(_psg.notes[_psg.nidx].type) {
+			case NTYPE_ENV1: /* op1=ch, val=env1 */
+				_psg.ch[_psg.notes[_psg.nidx].op1].env1=_psg.notes[_psg.nidx].val;
+				break;
+			case NTYPE_ENV2: /* op1=ch, val=env1 */
+				_psg.ch[_psg.notes[_psg.nidx].op1].env2=_psg.notes[_psg.nidx].val;
+				break;
+			case NTYPE_VOL: /* op1=ch, val=vol */
+				_psg.ch[_psg.notes[_psg.nidx].op1].vol=_psg.notes[_psg.nidx].val;
+				break;
+			case NTYPE_MVOL: /* val=mvol */
+				_psg.mvol=_psg.notes[_psg.nidx].val;
+				break;
+			case NTYPE_KEYON: /* op1=ch, op2=tone, op3=key */
+				_psg.ch[_psg.notes[_psg.nidx].op1].keyOn=1;
+				_psg.ch[_psg.notes[_psg.nidx].op1].count=0;
+				_psg.ch[_psg.notes[_psg.nidx].op1].cur=0;
+				_psg.ch[_psg.notes[_psg.nidx].op1].toneT=_psg.notes[_psg.nidx].op2;
+				_psg.ch[_psg.notes[_psg.nidx].op1].toneK=_psg.notes[_psg.nidx].op3;
+				setNote(_psg.notes[_psg.nidx].op1,_psg.notes[_psg.nidx].op2,_psg.notes[_psg.nidx].op3);
+				break;
+			case NTYPE_KEYOFF: /* op1=ch */
+				_psg.ch[_psg.notes[_psg.nidx].op1].keyOn=0;
+				_psg.ch[_psg.notes[_psg.nidx].op1].count=0;
+				break;
+			case NTYPE_PDOWN: /* op1=ch, val=Hz */
+				_psg.ch[_psg.notes[_psg.nidx].op1].pdown=_psg.notes[_psg.nidx].val;
+				_psg.ch[_psg.notes[_psg.nidx].op1].pcnt=0;
+				break;
+			case NTYPE_JUMP: /* val=address */
+				_psg.nidx=_psg.notes[_psg.nidx].val;
+				break;
+			case NTYPE_LABEL:
+				break;
+			default:
+				return 0;
+		}
+	}
+	ret=_psg.notes[_psg.nidx].val;
+	if(ret) {
+		_psg.nidx++;
+	}
+	return ret;
 }
 
 /*
@@ -239,6 +407,22 @@ ENDPROC:
 		_eff[n].size=0;
 	}
 	return rc;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * extract a BGM data
+ *----------------------------------------------------------------------------
+ */
+int bload(unsigned char n,const char* name)
+{
+	int size;
+	_note[n]=(char*)getbin(name,&size);
+	if(NULL==_note[n]) {
+		return -1;
+	}
+	_notelen[n]=(uLong)size;
+	return 0;
 }
 
 /*
@@ -1096,4 +1280,74 @@ const char* vgs2_getdata(unsigned char n,unsigned int* size)
 void vgs2_interlace(int i)
 {
 	_interlace=i?1:0;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * play BGM
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bplay(unsigned char n)
+{
+	uLong nblen;
+	vgs2_bstop();
+	lock();
+	memset(&_psg,0,sizeof(_psg));
+	_psg.notes=_notebuf;
+	nblen=(uLong)sizeof(_notebuf);
+	uncompress((unsigned char *)_notebuf, &nblen, _note[n], _notelen[n]);
+	unlock();
+	_psg.play=1;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * check existing BGM
+ *----------------------------------------------------------------------------
+ */
+int vgs2_bchk(unsigned char n)
+{
+	if(_note[n]) return 1;
+	return 0;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * stop BGM
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bstop()
+{
+	lock();
+	if(_psg.play && _psg.notes) {
+		_psg.stopped=0;
+		_psg.play=0;
+	}
+	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * resume playing the BGM
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bresume()
+{
+	lock();
+	if(0==_psg.play) {
+		_psg.play=1;
+	}
+	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * fade out the BGM
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bfade(unsigned int hz)
+{
+	lock();
+	_psg.fade=hz;
+	unlock();
 }

@@ -65,7 +65,7 @@ int vgsint_init(const char* rompath)
     FILE* fp;
     int fsize;
     int i,j,size;
-    int cn,pn;
+    int cn,pn,bn;
     unsigned char s[4];
     char path[80];
     struct stat stbuf;
@@ -143,13 +143,16 @@ int vgsint_init(const char* rompath)
 	/* load to slot */
 	cn=0;
 	pn=0;
+	bn=0;
 	for(i=0;i<256;i++) {
 		sprintf(path,"GSLOT%03d.CHR",i);
 		if(0==gload(i,path)) cn++;
 		sprintf(path,"ESLOT%03d.PCM",i);
 		if(0==eload(i,path)) pn++;
+		sprintf(path,"BSLOT%03d.BGM",i);
+		if(0==bload(i,path)) bn++;
 	}
-	sprintf(log,"Data has extracted. (CHR=%d, PCM=%d)",cn,pn);
+	sprintf(log,"Data has extracted. (CHR=%d, PCM=%d, BGM=%d)",cn,pn,bn);
     puts(log);
 
 	/* initialize UP */

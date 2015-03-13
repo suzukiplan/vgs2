@@ -61,7 +61,7 @@ JNIEXPORT jint JNICALL Java_com_{Company}_{Project}_{Project}_setRomData(JNIEnv*
 	int fsize;
 	char* bin;
 	int i,j;
-	int cn,pn;
+	int cn,pn,bn;
 	char s[4];
 	char path[16];
 
@@ -120,13 +120,16 @@ JNIEXPORT jint JNICALL Java_com_{Company}_{Project}_{Project}_setRomData(JNIEnv*
 
 	cn=0;
 	pn=0;
+	bn=0;
 	for(i=0;i<256;i++) {
 		sprintf(path,"GSLOT%03d.CHR",i);
 		if(0==gload(i,path)) cn++;
 		sprintf(path,"ESLOT%03d.PCM",i);
 		if(0==eload(i,path)) pn++;
+		sprintf(path,"BSLOT%03d.BGM",i);
+		if(0==bload(i,path)) bn++;
 	}
-	putlog(__FILE__,__LINE__,"Data has extracted. (CHR=%d, PCM=%d)",cn,pn);
+	putlog(__FILE__,__LINE__,"Data has extracted. (CHR=%d, PCM=%d, BGM=%d)",cn,pn,bn);
 	return 0;
 }
 

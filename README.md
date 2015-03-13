@@ -1,12 +1,74 @@
-# SUZUKI PLAN - Video Game System mk-II (GameDaddy)
+# Video Game System mk-II SR
 
 ## 概要
-- `SUZUKI PLAN - Video Game System mk-II (GameDaddy)`は、`C/C++` 言語で `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
-- 詳細はこのリポジトリの wiki を参照してください
-- 使用難易度は、近代のプログラマにとっては高めですが、マイコン世代の方にとっては（最近のものと比べれば）逆に簡単になっております。
+`SUZUKI PLAN - Video Game System mk-II SR`は、`C/C++` 言語で `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
 
-## ブランチ運用ルール
-- suzukiplanによる公式な修正は基本的にブランチ名 E{数字} を用い master へマージする
-- suzukiplanによるお遊びの修正は基本的に任意のブランチ名を用いる
-- 第三者がPull Requestを送信する場合はブランチ名 E{数字} 以外を用いてください
-- 第三者のPull Requestのmasterへのマージはsuzukiplanによるレビューを必須とする
+## ライセンス
+- 2-Clause BSDライセンスで提供しています
+- LICENSE.txtを参照してください
+
+## 前提ハードウェア
+- Windows PC
+- Android phone
+- Macintosh
+- iOS device
+
+## 前提ソフトウェア
+### Windows
+- Microsoft Visual C++ (コマンドラインで使えるdesktop版)
+- Java Developer Kit
+- Android SDK + Apache Ant
+- Android NDK
+- GitHub
+
+### Macintosh
+- XCODE
+
+## セットアップ
+### Windows (Windows + Androidアプリ開発環境)
+
+#### (1) VGS mk-II SRのセットアップ
+```cmd
+> c:
+> cd \home
+> git clone https://github.com/suzukiplan/vgs2.git vgs2
+> cd vgs2\bin_src
+> nmake
+```
+
+#### (2) 環境変数の設定
+- `PATH` : `c:\home\vgs2\bin`
+- `VGS2_HOME` : `c:\home\vgs2`
+
+#### (3) プロジェクト作成 & ビルド(Windows)
+```cmd
+> vgs2mkpj company Test c:\home\Test
+> c:
+> cd \home\Test\windows
+> nmake
+```
+
+### (4) ビルド(Android)
+#### cygwin
+```cygwin
+$ cd /cyghome/c/home/Test/android/jni
+$ ndk_build
+```
+
+#### MS-DOS
+```cmd
+> c:
+> cd \home\Test\android
+> ant debug
+
+### Macintosh (iPhoneアプリ開発環境)
+todo: 後で書く
+
+## アプリの開発方法
+todo: 後で書く
+
+## API仕様
+API.md を参照してください。
+
+## ハードウェア仕様
+todo: 後で書く
