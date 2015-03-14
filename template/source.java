@@ -1,3 +1,10 @@
+/* (C)2015, SUZUKI PLAN.
+ *----------------------------------------------------------------------------
+ * Description: VGS mk-II SR - emulator
+ *    Platform: Android
+ *      Author: Yoji Suzuki (SUZUKI PLAN)
+ *----------------------------------------------------------------------------
+ */
 package com.{Company}.{Project};
 import android.app.Activity;
 import android.content.Context;

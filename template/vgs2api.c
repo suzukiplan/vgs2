@@ -1,10 +1,8 @@
-/* (C)2014, SUZUKI PLAN.
+/* (C)2015, SUZUKI PLAN.
  *----------------------------------------------------------------------------
- * Description: GameDaddy - application program interface
+ * Description: VGS mk-II SR - application program interface
  *    Platform: Common
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 7-Sept-2014
- * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
 #include "vgs2.h"

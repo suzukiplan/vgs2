@@ -1,10 +1,8 @@
-/* (C)2014, SUZUKI PLAN.
+/* (C)2015, SUZUKI PLAN.
  *----------------------------------------------------------------------------
- * Description: GameDaddy - kernel and API header
+ * Description: VGS mk-II SR - kernel and API header
  *    Platform: Common
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 7-Sept-2014
- * FileVersion: 1.06
  *----------------------------------------------------------------------------
  */
 #include <stdio.h>
