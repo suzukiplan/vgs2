@@ -6,7 +6,7 @@
 - 使用するプログラム言語は `C/C++言語` のみです
 
 ## アプリ開発の流れ
-- 最初に `Windows` 上でアプリを開発し、完成したら `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
+- `Windows版` のアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
 - [プロジェクト作成](https://github.com/suzukiplan/vgs2#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E4%BD%9C%E6%88%90) の手順でプロジェクトを作成
 - 自プロジェクトの [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) にゲームの処理を記述
   - `vgs2_init` に初期化処理を記述
