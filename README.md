@@ -75,7 +75,7 @@
 ### (2) Android版のビルド
 #### cygwin
 ```cygwin
-$ cd /cyghome/c/home/Test/android/jni
+$ cd /cygdrive/c/home/Test/android/jni
 $ ndk_build
 ```
 
