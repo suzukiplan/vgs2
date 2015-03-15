@@ -1,10 +1,8 @@
-/* (C)2014, SUZUKI PLAN.
+/* (C)2015, SUZUKI PLAN.
  *----------------------------------------------------------------------------
- * Description: GameDaddy - emulator
+ * Description: VGS mk-II SR - emulator
  *    Platform: iOS
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 14-Sept-2014
- * FileVersion: 1.02
  *----------------------------------------------------------------------------
  */
 #import "VGSAppDelegate.h"

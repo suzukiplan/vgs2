@@ -1,10 +1,8 @@
-/* (C)2014, SUZUKI PLAN.
+/* (C)2015, SUZUKI PLAN.
  *----------------------------------------------------------------------------
- * Description: GameDaddy - emulator
+ * Description: VGS mk-II SR - emulator
  *    Platform: Android
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 27-Sept-2014
- * FileVersion: 1.05
  *----------------------------------------------------------------------------
  */
 #include <pthread.h>

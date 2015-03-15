@@ -1,10 +1,8 @@
-/* (C)2012, SUZUKI PLAN.
+/* (C)2015, SUZUKI PLAN.
  *----------------------------------------------------------------------------
- * Description: GameDaddy - Tones
+ * Description: VGS mk-II SR - Tones
  *    Platform: Common
  *      Author: Yoji Suzuki (SUZUKI PLAN)
- *        Date: 12-Mar-2015
- * FileVersion: 1.00
  *----------------------------------------------------------------------------
  */
 
