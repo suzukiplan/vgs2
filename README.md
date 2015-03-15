@@ -9,14 +9,15 @@
 - `Windows版` のアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
 - [プロジェクト作成](https://github.com/suzukiplan/vgs2#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E4%BD%9C%E6%88%90) の手順でプロジェクトを作成
 - 自プロジェクトの [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) にゲームの処理を記述
-  - `vgs2_init` に初期化処理を記述
-  - `vgs2_loop` にメインループの処理(1/60秒間隔で実行される)を記述
-  - `vgs2_pause` にポーズループの処理(ポーズ時に1/60秒間隔で実行される)を記述
-  - `vgs2_term` に終了時処理を記述
+  - `vgs2_init` : 初期化処理を記述
+  - `vgs2_loop` : メインループの処理(1/60秒間隔で実行される)を記述
+  - `vgs2_pause` : ポーズループの処理(ポーズ時に1/60秒間隔で実行される)を記述
+  - `vgs2_term` : 終了時処理を記述
   - [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) 中では 標準関数、OSに依存しない独自実装関数、`VGS mk-II SR` の [API関数](https://github.com/suzukiplan/vgs2/blob/master/API.md) を利用できます
-- `GSLOTxxx.CHR` に画像リソースを準備
-- `ESLOTxxx.PCM` に効果音リソースを準備
-- `BSLOTxxx.BGM` に音楽リソースを準備
+- グラフィックと音のリソースを準備
+  - `GSLOTxxx.CHR` に画像リソースを準備
+  - `ESLOTxxx.PCM` に効果音リソースを準備
+  - `BSLOTxxx.BGM` に音楽リソースを準備
 - `vgs2rom` コマンドで ROMDATA.BIN を生成
 - [ビルド](https://github.com/suzukiplan/vgs2#%E3%83%93%E3%83%AB%E3%83%89)
 
@@ -102,4 +103,29 @@ todo: 後で書く
 [API.md](https://github.com/suzukiplan/vgs2/blob/master/API.md) を参照してください。
 
 ## ハードウェア仕様
-todo: 後で書く
+- 最大同時発色数: 16777216色中256色
+- 解像度: 160 x 200
+- VRAM: スプライト1面 + BG1面
+- PPU
+  - スプライト機能
+    - GSLOTからの矩形転送
+      - 回転
+      - 1/2縮小（高速）
+      - 任意サイズの拡大・縮小
+      - マスク
+    - 図形描画
+  - BG機能
+    - GSLOTからの矩形転送
+    - 図形描画
+    - ラスタスクロール
+- SPU(BGM音源): _初代SUZUKI PLAN - Video Game Systemと同じ_
+  - 全ストア型の波形メモリ音源
+  - 音色数: 4 (三角波、ノコギリ波、矩形波、ノイズ）
+　- チャネル数: 6
+　- 周波数: 22050Hz
+  - ビットレート: 16bit
+  - モノラル
+- スロット仕様
+  - グラフィックス(GSLOT): 最大256x256ピクセル x 256枚
+  - 効果音（ESLOT）: 22050Hz, 16bit, 1ch(モノラル) x 256個
+  - BGM（BSLOT）: 最大65,536ノート × 256個
