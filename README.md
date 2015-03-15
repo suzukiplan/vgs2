@@ -1,7 +1,24 @@
 # Video Game System mk-II SR
 
 ## 概要
-`SUZUKI PLAN - Video Game System mk-II SR`は、`C/C++` 言語で `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
+- `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
+- `Windows` , `Android` 及び `iOS` 全てのプラットフォームのゲームの実装を一本化できる特徴があります
+- 使用するプログラム言語は `C/C++言語` のみです
+
+## アプリ開発の流れ
+- `Windows版` のアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
+- [プロジェクト作成](https://github.com/suzukiplan/vgs2#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E4%BD%9C%E6%88%90) の手順でプロジェクトを作成
+- 自プロジェクトの [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) にゲームの処理を記述
+  - `vgs2_init` に初期化処理を記述
+  - `vgs2_loop` にメインループの処理(1/60秒間隔で実行される)を記述
+  - `vgs2_pause` にポーズループの処理(ポーズ時に1/60秒間隔で実行される)を記述
+  - `vgs2_term` に終了時処理を記述
+  - [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) 中では 標準関数、OSに依存しない独自実装関数、`VGS mk-II SR` の [API関数](https://github.com/suzukiplan/vgs2/blob/master/API.md) を利用できます
+- `GSLOTxxx.CHR` に画像リソースを準備
+- `ESLOTxxx.PCM` に効果音リソースを準備
+- `BSLOTxxx.BGM` に音楽リソースを準備
+- `vgs2rom` コマンドで ROMDATA.BIN を生成
+- [ビルド](https://github.com/suzukiplan/vgs2#%E3%83%93%E3%83%AB%E3%83%89)
 
 ## ライセンス
 - 2-Clause BSDライセンスで提供しています
@@ -52,12 +69,13 @@
 > nmake
 ```
 
-_※Windows版のビルドではAndroid版のROMDATA.BINの作成も行います_
+- `Windows版` のビルドでは `Android版` の `ROMDATA.BIN` の作成も行います
+- `ROMDATA.BIN` のビルド手続きは、`C:\home\Test\romdata` 以下にある [makefile](https://github.com/suzukiplan/vgs2/blob/master/template/makerom) に記述されています
 
 ### (2) Android版のビルド
 #### cygwin
 ```cygwin
-$ cd /cyghome/c/home/Test/android/jni
+$ cd /cygdrive/c/home/Test/android/jni
 $ ndk_build
 ```
 
@@ -78,9 +96,6 @@ $ ndk_build
 ```
 
 ### (3) iPhone版のビルド
-todo: 後で書く
-
-## アプリの開発方法
 todo: 後で書く
 
 ## API仕様
