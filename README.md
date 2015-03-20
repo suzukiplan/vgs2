@@ -37,7 +37,7 @@
 - Java Developer Kit
 - Android SDK + Apache Ant
 - Android NDK
-- GitHub
+- Git
 
 ### Macintosh
 - XCODE
