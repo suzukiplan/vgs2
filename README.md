@@ -37,7 +37,7 @@
 - Java Developer Kit
 - Android SDK + Apache Ant
 - Android NDK
-- GitHub
+- Git
 
 ### Macintosh
 - XCODE
@@ -121,8 +121,8 @@ todo: 後で書く
 - SPU(BGM音源): _初代SUZUKI PLAN - Video Game Systemと同じ_
   - 全ストア型の波形メモリ音源
   - 音色数: 4 (三角波、ノコギリ波、矩形波、ノイズ）
-　- チャネル数: 6
-　- 周波数: 22050Hz
+  - チャネル数: 6
+  - 周波数: 22050Hz
   - ビットレート: 16bit
   - モノラル
 - スロット仕様
