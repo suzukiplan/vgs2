@@ -79,8 +79,6 @@ void sndbuf(char* buf,size_t size)
 		return;
 	}
 
-	lock();
-
 	for(i=0;i<256;i++) {
 		if(_eff[i].flag) {
 			if(1<_eff[i].flag) {
@@ -112,6 +110,7 @@ void sndbuf(char* buf,size_t size)
 	}
 
 	/* BGM */
+	lock();
 	if(_psg.play && _psg.notes) {
 		if(0==_psg.waitTime) {
 			_psg.waitTime=getNextNote();
@@ -186,7 +185,6 @@ void sndbuf(char* buf,size_t size)
 		}
 		_psg.stopped=1;
 	}
-
 	unlock();
 }
 
