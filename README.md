@@ -24,7 +24,7 @@
 ## ライセンス
 - 2-Clause BSDライセンスで提供しています
 - [LICENSE.txt](https://github.com/suzukiplan/vgs2/blob/master/LICENSE.txt)を参照してください
-- 本リポジトリに含まれるソースコードの 一部 若しくは 全部 を流用 又は `VGS mk-II SR`を用いて製作されたプログラムを配布又は販売する場合、プログラムの利用者が参照できるドキュメント（スマートフォンアプリの場合は公開するアプリストアに掲載される説明文）に [LICENSE.txt](https://github.com/suzukiplan/vgs2/blob/master/LICENSE.txt) 記載の Copyright 表記を記載してください
+- 本リポジトリに含まれるソースコードの 一部 若しくは 全部 を流用 又は `VGS mk-II SR`を用いて製作されたプログラムを配布又は販売する場合、プログラムの利用者が参照できるドキュメント（スマートフォンアプリの場合は公開するアプリストアに掲載される説明文 又は アプリ内で参照できるテキスト）に [LICENSE.txt](https://github.com/suzukiplan/vgs2/blob/master/LICENSE.txt) 記載の Copyright 表記を記載してください
 - 本リポジトリに含まれるソースコードの 一部 若しくは 全部 を流用 又は `VGS mk-II SR`を用いて製作されたプログラムを配布又は販売の結果発生した損失や損害等につき、当方は一切の責任を負わないものとします
 
 ## 前提ハードウェア
