@@ -1,4 +1,7 @@
 # Video Game System mk-II SR
+- まだ開発途中です
+- AZ（仮）がリリース後に正式リリースということにします
+- AZ（仮）の開発状況: http://suzukiplan.blogspot.jp/search/label/AZ
 
 ## 概要
 - `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
