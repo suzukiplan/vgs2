@@ -114,6 +114,8 @@ struct _PSG {
 	unsigned int timeI;
 	unsigned int timeL;
 	unsigned int timeP;
+	int addKey[6];
+	int addOff[6];
 };
 
 struct _TOUCH {
@@ -272,6 +274,8 @@ int vgs2_bchk(unsigned char n);
 void vgs2_bstop();
 void vgs2_bresume();
 void vgs2_bfade(unsigned int hz);
+void vgs2_bkey(int n);
+void vgs2_bkoff(int cn,int off);
 
 #ifdef __cplusplus
 };

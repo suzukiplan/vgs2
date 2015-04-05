@@ -195,6 +195,7 @@ void sndbuf(char* buf,size_t size)
  */
 static void setNote(unsigned char cn,unsigned char t,unsigned char n)
 {
+	n+=_psg.addKey[cn];
 	switch(t) {
 		case 0: /* SANKAKU */
 			_psg.ch[cn].tone=TONE1[n%85];
@@ -1346,4 +1347,33 @@ void vgs2_bfade(unsigned int hz)
 	lock();
 	_psg.fade=hz;
 	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * chage key
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bkey(int n)
+{
+	int i;
+	for(i=0;i<6;i++) {
+		if(_psg.addOff[i]==0) {
+			_psg.addKey[i]=n;
+		}
+	}
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * not chage key
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bkoff(int cn,int off)
+{
+	if(cn<0 || 6<=cn) return;
+	_psg.addOff[cn]=off;
+	if(off) {
+		_psg.addKey[cn]=0;
+	}
 }
