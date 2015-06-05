@@ -276,7 +276,6 @@ void vgs2_circle(char*p, int x,int y,int r, unsigned char c);
     vgs2_line(_vram.bg,FX,TY,TX,TY,C);\
     vgs2_line(_vram.bg,FX,FY,FX,TY,C);\
     vgs2_line(_vram.bg,TX,FY,TX,TY,C)
-
 #define vgs2_boxSP(FX,FY,TX,TY,C) \
     vgs2_line(_vram.sp,FX,FY,TX,FY,C);\
     vgs2_line(_vram.sp,FX,TY,TX,TY,C);\
