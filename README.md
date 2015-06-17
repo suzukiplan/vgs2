@@ -51,7 +51,7 @@
 > cd \home
 > git clone https://github.com/suzukiplan/vgs2.git vgs2
 > cd vgs2\bin_src
-> nmake
+> make
 ```
 
 ### (2) 環境変数の設定
