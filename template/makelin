@@ -1,4 +1,4 @@
-PROJECT=Test4
+PROJECT={Project}
 SRCDIR=../src
 RELDIR=./Release
 CC=/usr/bin/gcc
