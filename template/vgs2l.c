@@ -19,6 +19,9 @@ int main(int argc,char* argv[])
 	char s[4];
 	char path[16];
 	int cn,pn,bn;
+	unsigned short* ptr;
+	int vx,vy,px,py,vp,pp;
+	unsigned int n;
 
 	puts("Start VGS mk-II SR for Linux.");
 
@@ -107,16 +110,85 @@ int main(int argc,char* argv[])
 		fprintf(stderr,"Could not create the surface.\n");
 		return 1;
 	}
+	if(2!=surface->format->BytesPerPixel) {
+		fprintf(stderr,"This display does not support 16bit color.\n");
+		return 1;
+	}
+	printf("Created surface: %dx%d\n",surface->w,surface->h);
 
 	/* Initialize user program */
 	if(vgs2_init()) {
 		fprintf(stderr,"Initialization of the app has failed.\n");
 		return 2;
 	}
+	make_pallet();
 
-	do {
+	n=0;
+	while(1) {
 		SDL_PollEvent(&event);
-	} while(event.type!=SDL_QUIT);
+		if(event.type==SDL_QUIT) break;
+		if(_pause) {
+			if(vgs2_pause()) break;
+		} else {
+			if(vgs2_loop()) break;
+		}
+		for(i=0;i<16;i++) {
+			for(j=0;j<16;j++) {
+				vgs2_boxfBG(i*16,j*16,i*16+12,j*16+12,i*16+j);
+			}
+		}
+		if(SDL_MUSTLOCK(surface) && SDL_LockSurface(surface)<0) {
+			fprintf(stderr,"Skip frame: could not locked surface.\n");
+			usleep(100000);
+			continue;
+		}
+		if(_interlace) {
+			ptr=(unsigned short*)surface->pixels;
+			vp=0;
+			pp=0;
+			for(vy=0,py=0;vy<YSIZE;vy++,py+=2) {
+				for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
+					if(_vram.sp[vp]) {
+						ptr[pp]=ADPAL[_vram.sp[vp]];
+						ptr[pp+1]=ADPAL[_vram.sp[vp]];
+						ptr[pp+320]=0;
+						ptr[pp+321]=0;
+					}
+					vp++;
+					pp+=2;
+				}
+				pp+=320;
+			}
+		} else {
+			for(vy=0,py=0;vy<YSIZE;vy++,py+=2) {
+				for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
+					if(_vram.sp[vp]) {
+						ptr[pp]=ADPAL[_vram.sp[vp]];
+						ptr[pp+1]=ADPAL[_vram.sp[vp]];
+						ptr[pp+320]=ADPAL[_vram.sp[vp]];
+						ptr[pp+321]=ADPAL[_vram.sp[vp]];
+					}
+					vp++;
+					pp+=2;
+				}
+				pp+=320;
+			}
+		}
+		if(SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
+		SDL_UpdateRect(surface,0,0,320,400);
+		n++;
+		switch(n%3) {
+			case 0:
+			case 1:
+				usleep(17000);
+				break;
+			case 2:
+				usleep(16000);
+				break;
+		}
+	}
+	puts("End.");
+	vgs2_term();
 	SDL_Quit();
 	return 0;
 }
@@ -194,5 +266,4 @@ void vgs2_deleteAds()
 {
 	REQ=2;
 }
-
 
