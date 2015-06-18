@@ -1,4 +1,4 @@
-PROJECT={Project}
+PROJECT=Test4
 SRCDIR=../src
 RELDIR=./Release
 CC=/usr/bin/gcc
@@ -11,6 +11,7 @@ OBJS=\
 
 LIBS=\
 	-lc\
+	-lSDL\
 	-lpthread
 
 CFLAG=\
