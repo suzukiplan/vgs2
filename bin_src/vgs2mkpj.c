@@ -433,7 +433,7 @@ int main(int argc,char* argv[])
 	|| NULL!=strstr(argv[3],"\\\\")
 	) {
 #else
-	if(63<len || '/'!=argv[3][0]) {
+	if(63<len) {
 #endif
 		puts("ERROR: invalid directory.");
 		return 1;
