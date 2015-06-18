@@ -389,6 +389,9 @@ int main(int argc,char* argv[])
 	int toknum;
 	FILE* fp;
 	char* cp;
+#ifdef _WIN32
+	int i;
+#endif
 
 	umask(0);
 
@@ -448,6 +451,9 @@ int main(int argc,char* argv[])
 		if(NULL!=(cp=strchr(buf,'#'))) {
 			*cp='\0';
 		}
+#ifdef _WIN32
+		for(i=0;buf[i];i++) if('/'==buf[i]) buf[i]='\\';
+#endif
 		trimstring(buf);
 		replace(buf,"{Company}",argv[1]);
 		replace(buf,"{Project}",argv[2]);
