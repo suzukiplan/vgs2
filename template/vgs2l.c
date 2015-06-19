@@ -25,7 +25,7 @@ int main(int argc,char* argv[])
 	SDL_Event event;
 	FILE* fp;
 	int i,j;
-	char s[4];
+	unsigned char s[4];
 	char path[16];
 	int cn,pn,bn;
 	unsigned short* ptr;
@@ -85,7 +85,7 @@ int main(int argc,char* argv[])
 		BR[i].size<<=8;
 		BR[i].size|=s[3];
 		if(NULL==(BR[i].data=(char*)malloc(BR[i].size))) {
-			fprintf(stderr,"Could not allocate ROM data area: errno=%d\n",errno);
+			fprintf(stderr,"Could not allocate ROM data area: errno=%d (size=%d)\n",errno,BR[i].size);
 			fclose(fp);
 			return 1;
 		}
@@ -168,11 +168,6 @@ int main(int argc,char* argv[])
 			if(vgs2_pause()) break;
 		} else {
 			if(vgs2_loop()) break;
-		}
-		for(i=0;i<16;i++) {
-			for(j=0;j<16;j++) {
-				vgs2_boxfBG(i*16,j*16,i*16+12,j*16+12,i*16+j);
-			}
 		}
 		if(SDL_MUSTLOCK(surface) && SDL_LockSurface(surface)<0) {
 			fprintf(stderr,"Skip frame: could not locked surface.\n");
