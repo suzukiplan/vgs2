@@ -32,6 +32,8 @@ int main(int argc,char* argv[])
 	int vx,vy,px,py,vp,pp;
 	unsigned int n;
 	unsigned int ticks;
+	int mx;
+	int my;
 
 	puts("Start VGS mk-II SR for Linux.");
 
@@ -138,6 +140,30 @@ int main(int argc,char* argv[])
 		ticks=SDL_GetTicks();
 		SDL_PollEvent(&event);
 		if(event.type==SDL_QUIT) break;
+		if(SDL_GetMouseState(&mx,&my)&SDL_BUTTON(1)) {
+			mx/=2;
+			my/=2;
+			if(!_touch.s) {
+				_touch.dx=0;
+				_touch.dy=0;
+				_touch.px=mx;
+				_touch.py=my;
+				_touch.cx=mx;
+				_touch.cy=my;
+			} else {
+				_touch.dx=mx-_touch.px;
+				_touch.dy=my-_touch.py;
+				_touch.px=_touch.cx;
+				_touch.py=_touch.cy;
+				_touch.cx=mx;
+				_touch.cy=my;
+			}
+			_touch.s=1;
+			_touch.t++;
+		} else {
+			_touch.s=0;
+			_touch.t=0;
+		}
 		if(_pause) {
 			if(vgs2_pause()) break;
 		} else {
@@ -164,6 +190,12 @@ int main(int argc,char* argv[])
 						ptr[pp+1]=ADPAL[_vram.sp[vp]];
 						ptr[pp+320]=0;
 						ptr[pp+321]=0;
+						_vram.sp[vp]=0;
+					} else {
+						ptr[pp]=ADPAL[_vram.bg[vp]];
+						ptr[pp+1]=ADPAL[_vram.bg[vp]];
+						ptr[pp+320]=0;
+						ptr[pp+321]=0;
 					}
 					vp++;
 					pp+=2;
@@ -172,35 +204,41 @@ int main(int argc,char* argv[])
 			}
 		} else {
 			for(vy=0,py=0;vy<YSIZE;vy++,py+=2) {
-			for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
-				if(_vram.sp[vp]) {
-					ptr[pp]=ADPAL[_vram.sp[vp]];
-					ptr[pp+1]=ADPAL[_vram.sp[vp]];
-					ptr[pp+320]=ADPAL[_vram.sp[vp]];
-					ptr[pp+321]=ADPAL[_vram.sp[vp]];
+				for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
+					if(_vram.sp[vp]) {
+						ptr[pp]=ADPAL[_vram.sp[vp]];
+						ptr[pp+1]=ADPAL[_vram.sp[vp]];
+						ptr[pp+320]=ADPAL[_vram.sp[vp]];
+						ptr[pp+321]=ADPAL[_vram.sp[vp]];
+						_vram.sp[vp]=0;
+					} else {
+						ptr[pp]=ADPAL[_vram.bg[vp]];
+						ptr[pp+1]=ADPAL[_vram.bg[vp]];
+						ptr[pp+320]=ADPAL[_vram.bg[vp]];
+						ptr[pp+321]=ADPAL[_vram.bg[vp]];
+					}
+					vp++;
+					pp+=2;
 				}
-				vp++;
-				pp+=2;
+				pp+=320;
 			}
-			pp+=320;
 		}
-	}
-	if(SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
-	SDL_UpdateRect(surface,0,0,320,400);
-	n++;
-	ticks=SDL_GetTicks()-ticks;
-	switch(n%3) {
-		case 0:
-		case 1:
-			if(ticks<17) {
-				msleep(17-ticks);
-			}
-			break;
-		case 2:
-			if(ticks<16) {
-				msleep(16-ticks);
-			}
-			break;
+		if(SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
+		SDL_UpdateRect(surface,0,0,320,400);
+		n++;
+		ticks=SDL_GetTicks()-ticks;
+		switch(n%3) {
+			case 0:
+			case 1:
+				if(ticks<17) {
+					msleep(17-ticks);
+				}
+				break;
+			case 2:
+				if(ticks<16) {
+					msleep(16-ticks);
+				}
+				break;
 		}
 	}
 	puts("End.");
