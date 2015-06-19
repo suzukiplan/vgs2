@@ -3,12 +3,21 @@
 #include <errno.h>
 #include <sys/timeb.h>
 #include <stdio.h>
+#include <time.h>
 #include <SDL/SDL.h>
 #include "vgs2.h"
 
 static unsigned short ADPAL[256];
 static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
+
+static void msleep(int msec)
+{
+	struct timeval tv;
+	tv.tv_sec=0;
+	tv.tv_usec=msec*1000;
+	select(0,NULL,NULL,NULL,&tv);
+}
 
 int main(int argc,char* argv[])
 {
@@ -22,6 +31,7 @@ int main(int argc,char* argv[])
 	unsigned short* ptr;
 	int vx,vy,px,py,vp,pp;
 	unsigned int n;
+	unsigned int ticks;
 
 	puts("Start VGS mk-II SR for Linux.");
 
@@ -125,6 +135,7 @@ int main(int argc,char* argv[])
 
 	n=0;
 	while(1) {
+		ticks=SDL_GetTicks();
 		SDL_PollEvent(&event);
 		if(event.type==SDL_QUIT) break;
 		if(_pause) {
@@ -161,30 +172,35 @@ int main(int argc,char* argv[])
 			}
 		} else {
 			for(vy=0,py=0;vy<YSIZE;vy++,py+=2) {
-				for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
-					if(_vram.sp[vp]) {
-						ptr[pp]=ADPAL[_vram.sp[vp]];
-						ptr[pp+1]=ADPAL[_vram.sp[vp]];
-						ptr[pp+320]=ADPAL[_vram.sp[vp]];
-						ptr[pp+321]=ADPAL[_vram.sp[vp]];
-					}
-					vp++;
-					pp+=2;
+			for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
+				if(_vram.sp[vp]) {
+					ptr[pp]=ADPAL[_vram.sp[vp]];
+					ptr[pp+1]=ADPAL[_vram.sp[vp]];
+					ptr[pp+320]=ADPAL[_vram.sp[vp]];
+					ptr[pp+321]=ADPAL[_vram.sp[vp]];
 				}
-				pp+=320;
+				vp++;
+				pp+=2;
 			}
+			pp+=320;
 		}
-		if(SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
-		SDL_UpdateRect(surface,0,0,320,400);
-		n++;
-		switch(n%3) {
-			case 0:
-			case 1:
-				usleep(17000);
-				break;
-			case 2:
-				usleep(16000);
-				break;
+	}
+	if(SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
+	SDL_UpdateRect(surface,0,0,320,400);
+	n++;
+	ticks=SDL_GetTicks()-ticks;
+	switch(n%3) {
+		case 0:
+		case 1:
+			if(ticks<17) {
+				msleep(17-ticks);
+			}
+			break;
+		case 2:
+			if(ticks<16) {
+				msleep(16-ticks);
+			}
+			break;
 		}
 	}
 	puts("End.");
