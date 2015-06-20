@@ -1,19 +1,37 @@
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
+#ifndef MAX_PATH 
+#define MAX_PATH 1023 
+#endif
+
+#ifdef _WIN32
+#define DS '\\'
+#else
+#define DS '/'
+#define lstrlen strlen
+#endif
+
 void cpy(char* from,char* to,char* company,char* project);
 void bin(char* from,char* to);
 void replace(char* src,const char* from,const char* to);
 int isalnum_str(const char* str);
+#ifdef _WIN32
 int isdir_str(const char* str);
+#endif
 int gettoken(char* src,char** token,int max);
 void trimstring(char* src);
 void MakeDirectoryPath(char *szPath);
 char* vgs_home=NULL;
 
+#ifdef _WIN32
 #define myheapalloc(x) (HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, x))
 #define myheapfree(x)  (HeapFree(GetProcessHeap(), 0, x))
 
@@ -354,6 +372,7 @@ BOOL AddAccessRights(TCHAR *lpszFileName, TCHAR *lpszAccountName,
    
    return fResult;
 }
+#endif
 
 /*
  *----------------------------------------------------------------------------
@@ -370,6 +389,9 @@ int main(int argc,char* argv[])
 	int toknum;
 	FILE* fp;
 	char* cp;
+#ifdef _WIN32
+	int i;
+#endif
 
 	umask(0);
 
@@ -402,6 +424,7 @@ int main(int argc,char* argv[])
 	}
 
 	len=strlen(argv[3]);
+#ifdef _WIN32
 	if(63<len || len<4
 	|| !isalpha(argv[3][0])
 	|| ':'!=argv[3][1]
@@ -409,12 +432,15 @@ int main(int argc,char* argv[])
 	|| !isdir_str(&argv[3][3])
 	|| NULL!=strstr(argv[3],"\\\\")
 	) {
+#else
+	if(63<len) {
+#endif
 		puts("ERROR: invalid directory.");
 		return 1;
 	}
 
 	/* テンプレートファイルを開く */
-	sprintf(buf,"%s\\template\\.vgs2mkpj.cfg",vgs_home);
+	sprintf(buf,"%s%ctemplate%c.vgs2mkpj.cfg",vgs_home,DS,DS);
 	fp=fopen(buf,"rt");
 	if(NULL==fp) {
 		puts("ERROR: system file has not exist. (.vgs2mkpj.cfg)");
@@ -425,6 +451,9 @@ int main(int argc,char* argv[])
 		if(NULL!=(cp=strchr(buf,'#'))) {
 			*cp='\0';
 		}
+#ifdef _WIN32
+		for(i=0;buf[i];i++) if('/'==buf[i]) buf[i]='\\';
+#endif
 		trimstring(buf);
 		replace(buf,"{Company}",argv[1]);
 		replace(buf,"{Project}",argv[2]);
@@ -435,8 +464,8 @@ int main(int argc,char* argv[])
 					if(toknum==3) {
 						token[3]=token[1];
 					}
-					sprintf(bufF,"%s\\template\\%s",vgs_home,token[1]);
-					sprintf(bufT,"%s\\%s\\",argv[3],token[2]);
+					sprintf(bufF,"%s%ctemplate%c%s",vgs_home,DS,DS,token[1]);
+					sprintf(bufT,"%s%c%s%c",argv[3],DS,token[2],DS);
 					MakeDirectoryPath(bufT);
 					strcat(bufT,token[3]);
 					printf("creating ... %s\n",bufT);
@@ -448,8 +477,8 @@ int main(int argc,char* argv[])
 					if(toknum==3) {
 						token[3]=token[1];
 					}
-					sprintf(bufF,"%s\\template\\%s",vgs_home,token[1]);
-					sprintf(bufT,"%s\\%s\\",argv[3],token[2]);
+					sprintf(bufF,"%s%ctemplate%c%s",vgs_home,DS,DS,token[1]);
+					sprintf(bufT,"%s%c%s%c",argv[3],DS,token[2],DS);
 					MakeDirectoryPath(bufT);
 					strcat(bufT,token[3]);
 					printf("creating ... %s\n",bufT);
@@ -458,7 +487,7 @@ int main(int argc,char* argv[])
 			}
 			else if(strcmp(token[0],"dir")==0) {
 				if(toknum==2) {
-					sprintf(bufT,"%s\\%s\\",argv[3],token[1]);
+					sprintf(bufT,"%s%c%s%c",argv[3],DS,token[1],DS);
 					MakeDirectoryPath(bufT);
 				}
 			}
@@ -495,7 +524,9 @@ void cpy(char* from,char* to,char* company,char* project)
 	fclose(fpR);
 	fclose(fpW);
 
+#ifdef _WIN32
 	AddAccessRights(to,"Everyone",GENERIC_ALL);
+#endif
 }
 
 /*
@@ -530,7 +561,9 @@ void bin(char* from,char* to)
 	fclose(fpR);
 	fclose(fpW);
 
+#ifdef _WIN32
 	AddAccessRights(to,"Everyone",GENERIC_ALL);
+#endif
 }
 
 /*
@@ -582,6 +615,7 @@ int isalnum_str(const char* str)
  * ディレクトリ文字列かチェック
  *----------------------------------------------------------------------------
  */
+#ifdef _WIN32
 int isdir_str(const char* str)
 {
 	int i;
@@ -597,6 +631,7 @@ int isdir_str(const char* str)
 	}
 	return 1;
 }
+#endif
 
 /*
  *----------------------------------------------------------------------------
@@ -657,7 +692,7 @@ void trimstring(char* src)
 
 /*
  *----------------------------------------------------------------------------
- * ディレクトリ作成
+ * /ディレクトリ作成
  *----------------------------------------------------------------------------
  */
 void MakeDirectoryPath(char *szPath)
@@ -668,18 +703,21 @@ void MakeDirectoryPath(char *szPath)
     for (i = 0; i < lstrlen(szPath); i++) {
         szMakePath[i] = szPath[i];
 
-        if (szPath[i] == '\\') {
+        if (szPath[i] == DS) {
 
             szMakePath[i+1] = '\0';
 
             // 同一名称のファイルやフォルダが存在しなければフォルダ作成
+#ifdef _WIN32
             if ( GetFileAttributes(szMakePath) == 0xFFFFFFFF ) {
                 if ( ! CreateDirectory(szMakePath, NULL) ) {
 					printf("ERROR: could not create directory. (%s)\n",szPath);
 					exit(-1);
                 }
             }
-
+#else
+            mkdir(szMakePath,0775);
+#endif
         }
     }
 }

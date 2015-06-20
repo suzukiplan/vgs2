@@ -31,7 +31,7 @@ clean:
 	rmdir /s /q $(RELDIR)
 
 MKROM:
-	cd ..\romdata && nmake /nologo
+	cd ..\romdata && nmake /nologo /f makefile.win
 
 $(RELDIR):
 	mkdir $(RELDIR)

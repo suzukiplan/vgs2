@@ -1,0 +1,49 @@
+PROJECT={Project}
+SRCDIR=../src
+RELDIR=./Release
+CC=/usr/bin/gcc
+
+OBJS=\
+	$(RELDIR)/vgs2l.o\
+	$(RELDIR)/vgs2api.o\
+	$(RELDIR)/vgs2tone.o\
+	$(RELDIR)/game.o
+
+LIBS=\
+	-lSDL\
+	-lasound\
+	-lpthread
+
+CFLAG=\
+	-I../src\
+	-c
+
+all: MKROM $(RELDIR) $(PROJECT)
+
+clean:
+	\rm -rf $(RELDIR)
+
+MKROM:
+	cd ../romdata && make
+
+$(RELDIR):
+	mkdir $(RELDIR)
+
+$(PROJECT): $(RELDIR)/$(PROJECT)
+	\cp -pf $(RELDIR)/$(PROJECT) $(PROJECT)
+
+$(RELDIR)/$(PROJECT): $(OBJS)
+	$(CC) -o $(RELDIR)/$(PROJECT) $(OBJS) $(LIBS)
+
+$(RELDIR)/vgs2l.o: $(SRCDIR)/vgs2l.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgs2tone.o: $(SRCDIR)/vgs2tone.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/game.o: $(SRCDIR)/game.c
+	$(CC) -o $@ $(CFLAG) $<
+

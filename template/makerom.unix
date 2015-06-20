@@ -1,0 +1,24 @@
+ASSETS=\
+	GSLOT000.CHR\
+	ESLOT000.PCM\
+	BSLOT000.BGM
+
+all: ROMDATA.BIN
+	\cp -pf ROMDATA.BIN ../linux
+	\cp -pf ROMDATA.BIN ../android/res/raw/romdata.bin
+
+.SUFFIXES: .bmp .CHR
+.bmp.CHR:
+	vgs2bmp $< $@
+
+.SUFFIXES: .wav .PCM
+.wav.PCM:
+	vgs2wav $< $@
+
+.SUFFIXES: .mml .BGM
+.mml.BGM:
+	vgs2mml $< $@
+
+ROMDATA.BIN: $(ASSETS)
+	vgs2rom ./ ROMDATA.BIN
+

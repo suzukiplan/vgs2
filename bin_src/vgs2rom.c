@@ -1,13 +1,28 @@
 /* Binaly Builder */
+#ifdef _WIN32
 #include <Windows.h>
 #include <io.h>
+#else
+#include <sys/types.h>
+#include <errno.h>
+#include <dirent.h>
+#include <unistd.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
+#ifdef _WIN32
+#define DS '\\'
+#else
+#define DS '/'
+#endif
+
 int makelist(char* dpath);
+#ifdef _WIN32
 int makelist2(char* path);
+#endif
 void addlist(char* fname);
 
 char g_name[4096][16];
@@ -59,7 +74,7 @@ int main(int argc,char* argv[])
 
 	/* サイズ + 本体 */
 	for(i=0;i<n;i++) {
-		sprintf(path,"%s\\%s",argv[1],g_name[i]);
+		sprintf(path,"%s%c%s",argv[1],DS,g_name[i]);
 		printf("write %s ... ",g_name[i]);
 		if(NULL==(fpR=fopen(path,"rb"))) {
 			puts("open error");
@@ -89,6 +104,7 @@ int main(int argc,char* argv[])
 	return 0;
 }
 
+#ifdef _WIN32
 int makelist(char* dpath)
 {
 	char path[4096];
@@ -144,13 +160,42 @@ int makelist2(char* path)
 	CloseHandle(hList);
 	return ret;
 }
+#else
+int makelist(char* dpath)
+{
+	char fname[1024];
+	DIR* dir=opendir(dpath);
+	struct dirent* ent;
+	int ret=0;
+	if(NULL==dir) {
+		printf("ERROR: Could not open directory. (%d)\n",errno);
+		exit(-1);
+	}
+	do {
+		if(NULL!=(ent=readdir(dir))) {
+			if((strncmp(ent->d_name,"GSLOT",5)==0 && strcmp(&(ent->d_name[8]),".CHR")==0)
+			|| (strncmp(ent->d_name,"ESLOT",5)==0 && strcmp(&(ent->d_name[8]),".PCM")==0)
+                        || (strncmp(ent->d_name,"DSLOT",5)==0 && strcmp(&(ent->d_name[8]),".DAT")==0)
+			|| (strncmp(ent->d_name,"BSLOT",5)==0 && strcmp(&(ent->d_name[8]),".BGM")==0)) {
+				addlist(ent->d_name);
+				ret++;
+			}
+		}
+	} while(ent);
+	
+	closedir(dir);
+	return ret;
+}
+#endif
 
 void addlist(char* fname)
 {
+#ifdef _WIN32
 	int i;
 	for(i=0;fname[i];i++) {
 		fname[i]=toupper(fname[i]);
 	}
+#endif
 	if(!isdigit(fname[5])
 	|| !isdigit(fname[6])
 	|| !isdigit(fname[7])

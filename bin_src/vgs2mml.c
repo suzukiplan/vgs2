@@ -1,5 +1,9 @@
 #include "../template/miniz.h"
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -281,6 +285,7 @@ int main(int argc,char* argv[])
 				);*/
 		}
 		fclose(fp);
+		fp=NULL;
 
 		/* àÍíUÉÅÉÇÉäÇ…ì«Çﬁ */
 		if(NULL==(fp=fopen(tmp,"rb"))) {
@@ -299,7 +304,12 @@ int main(int argc,char* argv[])
 		fseek(fp,0,SEEK_SET);
 		fread(src,size,1,fp);
 		fclose(fp);
+		fp=NULL;
+#ifdef _WIN32
 		DeleteFile(tmp);
+#else
+		unlink(tmp);
+#endif
 
 		/* à≥èkÇ∑ÇÈ */
 		{
@@ -328,6 +338,7 @@ int main(int argc,char* argv[])
 		}
 		fwrite(pCmp,cmp_len,1,fp);
 		fclose(fp);
+		fp=NULL;
 	}
 
 ENDPROC:
