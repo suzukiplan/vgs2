@@ -923,7 +923,7 @@ void vgs2_circle(char*p, int x,int y,int r, unsigned char c)
 	while (!flg) {
 		x2 = x1 - (y1 / 64.0f);
 		y2 = y1 + (x2 / 64.0f);
-		vgs2_pixel(p,(int)x2+x,(int)y2+y,c);
+		vgs2_pixel((unsigned char*)p,(int)x2+x,(int)y2+y,c);
 		x1 = x2;
 		y1 = y2;
 		flg = (((x2 > r - 1.0f) && (x2 < r)) && ((y2 > -1.0f) && (y2 < 0.0f)));
@@ -1256,7 +1256,7 @@ const char* vgs2_getdata(unsigned char n,unsigned int* size)
 {
 	const char* ret;
 	int size2;
-	int* sp=size;
+	int* sp=(int*)size;
 	char name[32];
 	sprintf(name,"DSLOT%03d.DAT",(int)n);
 	if(NULL==sp) {
@@ -1292,7 +1292,7 @@ void vgs2_bplay(unsigned char n)
 	memset(&_psg,0,sizeof(_psg));
 	_psg.notes=_notebuf;
 	nblen=(uLong)sizeof(_notebuf);
-	uncompress((unsigned char *)_notebuf, &nblen, _note[n], _notelen[n]);
+	uncompress((unsigned char *)_notebuf, &nblen, (const unsigned char*)_note[n], _notelen[n]);
 	unlock();
 	_psg.play=1;
 }
