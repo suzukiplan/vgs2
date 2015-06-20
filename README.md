@@ -52,7 +52,7 @@
 ### Macintosh
 - XCODE
 
-## VGSのセットアップ（Linux + Androidアプリ開発環境）
+## VGSのセットアップ（Linux）
 ```bash
 $ sudo yum install SDL
 $ sudo yum install alsa-lib
@@ -66,7 +66,7 @@ $ export VGS2_HOME=~/vgs2
 $ export PATH=$PATH:$VGS2_HOME
 ```
 
-## VGSのセットアップ（Windows + Androidアプリ開発環境）
+## VGSのセットアップ（Windows）
 ### (1) VGS mk-II SRのセットアップ
 ```cmd
 > c:
