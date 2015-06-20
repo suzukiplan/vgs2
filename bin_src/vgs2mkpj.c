@@ -707,7 +707,6 @@ void MakeDirectoryPath(char *szPath)
 
             szMakePath[i+1] = '\0';
 
-            // 同一名称のファイルやフォルダが存在しなければフォルダ作成
 #ifdef _WIN32
             if ( GetFileAttributes(szMakePath) == 0xFFFFFFFF ) {
                 if ( ! CreateDirectory(szMakePath, NULL) ) {

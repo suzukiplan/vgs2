@@ -1,18 +1,20 @@
 # Video Game System mk-II SR
 ## 概要
-- `Linux` , `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
-- `Linux` , `Windows` , `Android` 及び `iOS` 全てのプラットフォームのゲームの実装を一本化できる特徴があります
+- `Linux` , `Mac OS X` , `Windows` , `Android` 及び `iOS` 対応のアプリを開発する `SDK` です
+- 全てのプラットフォームのゲームの実装を一本化できる特徴があります
 - 使用するプログラム言語は `C/C++言語` のみです
+- `Objective-c` などのクソ言語は一切使いません
 
 ## アプリ開発の流れ
-- `Linux版` または `Windows版` のアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
-- [プロジェクト作成](https://github.com/suzukiplan/vgs2#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E4%BD%9C%E6%88%90) の手順でプロジェクトを作成
+- `Linux` , `Mac OS X` または `Windows` でアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
+- VGSでは `Linux` , `Mac OS X` および `Windows` はサンドボックス環境という位置づけで扱います
+- `vgs2mkpj` コマンドでプロジェクトを作成
 - 自プロジェクトの [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) にゲームの処理を記述
   - `vgs2_init` : 初期化処理を記述
   - `vgs2_loop` : メインループの処理(1/60秒間隔で実行される)を記述
   - `vgs2_pause` : ポーズループの処理(ポーズ時に1/60秒間隔で実行される)を記述
   - `vgs2_term` : 終了時処理を記述
-  - [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) 中では 標準関数、OSに依存しない独自実装関数、`VGS mk-II SR` の [API関数](https://github.com/suzukiplan/vgs2/blob/master/API.md) を利用できます
+  - [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) 中では 標準関数、OSに依存しない独自関数、[VGSのAPI関数](https://github.com/suzukiplan/vgs2/blob/master/API.md) を使用できます
 - グラフィックと音のリソースを準備
   - `GSLOTxxx.CHR` に画像リソースを準備
   - `ESLOTxxx.PCM` に効果音リソースを準備
@@ -27,37 +29,57 @@
 - 本リポジトリに含まれるソースコードの 一部 若しくは 全部 を流用 又は `VGS mk-II SR`を用いて製作されたプログラムを配布又は販売の結果発生した損失や損害等につき、当方は一切の責任を負わないものとします
 
 ## 前提ハードウェア
-- Linux or Windows PC
+- Linux , Macintosh or Windows PC
 - Android phone
-- Macintosh
-- iOS device
+- iOS device (iPhone 3GS以降)
 
 ## 前提ソフトウェア
 ### Linux
-- GNU Compiler Collection - C compiler (gcc) 
-- SDL
-- ALSA
-- Java Developer Kit
-- Android SDK + Apache Ant
-- Android NDK
-- Git
+- Linux版のビルドに必要なもの（必須）
+  - GNU Compiler Collection - C compiler (gcc) 
+  - SDL
+  - ALSA
+  - Git
+- Android版をビルドする場合
+  - Java Developer Kit
+  - Apache Ant
+  - Android SDK
+  - Android NDK
+
+### Mac OS X
+- Mac OS X版のビルドに必要なもの（必須）
+  - GNU Compiler Collection - C compiler (gcc) 
+  - SDL
+  - Git
+- Android版のビルドに必要なもの
+  - Java Developer Kit
+  - Apache Ant
+  - Android SDK
+  - Android NDK
+- iOS版のビルドに必要なもの
+  - XCODE
 
 ### Windows
-- Microsoft Visual C++ (コマンドラインで使えるdesktop版)
-- Java Developer Kit
-- Android SDK + Apache Ant
-- Android NDK
-- Git
-
-### Macintosh
-- XCODE
+- Windows版のビルドに必要なもの（必須）
+  - Microsoft Visual C++ (コマンドラインで使えるdesktop版)
+  - Git
+- Android版のビルドに必要なもの
+  - Java Developer Kit
+  - Android SDK + Apache Ant
+  - Android NDK
 
 ## VGSのセットアップ（Linux）
+### Linux版のビルドに必要なものをインストール
 ```bash
+$ sudo yum install git
 $ sudo yum install SDL
 $ sudo yum install alsa-lib
 $ sudo yum install SDL-devel
 $ sudo yum install alsa-lib-devel
+```
+
+### vgs2のセットアップ
+```bash
 $ cd ~/
 $ git clone https://github.com/suzukiplan/vgs2.git vgs2
 $ cd vgs2/bin_src
@@ -68,12 +90,32 @@ $ export PATH=$PATH:$VGS2_HOME/bin
 
 次回ログイン時から自動的に環境変数の設定（export）を省略したい場合は `~/.bash_profile` に以下の定義を追加してください。
 ```text
-export VGS2_HOME=/Users/suzukiplan/vgs2
+export VGS2_HOME=~/vgs2
 export PATH=$PATH:$VGS2_HOME/bin
 ```
 
+## VGSのセットアップ（Mac OS X）
+### SDLのセットアップ
+[https://www.libsdl.org/](https://www.libsdl.org/) の `Download` - `SDL2.0` から最新のソースコードをダウンロードしてビルドしてください。以下、ダウンロード後にターミナルでビルド＆インストールする手順を示します。
+```bash
+$ cd ~/Downloads/
+$ tar xvf SDL2-2.0.3.tar.gz 
+$ cd SDL2-2.0.3
+$ ./configure
+$ make
+$ sudo make install
+```
+
+(TIPS)
+- ターミナルは、Finderで左タブから「アプリケーション」を選び、右タブから「ユーティリティ」を開けば見つかります
+- ターミナルはVGSを使う上で必須なのでDockに追加しておきましょう
+- install後はDownloads以下のファイルは不要なので消しても問題ありません
+
+### vgs2のセットアップ
+_省略（Linux版の「vgs2のセットアップ」と同じ手順を実施）_
+
 ## VGSのセットアップ（Windows）
-### (1) VGS mk-II SRのセットアップ
+### vgs2のセットアップ
 ```cmd
 > c:
 > cd \home
@@ -82,12 +124,12 @@ export PATH=$PATH:$VGS2_HOME/bin
 > make
 ```
 
-### (2) 環境変数の設定
+### システム環境変数の設定
 - `PATH` : `c:\home\vgs2\bin`
 - `VGS2_HOME` : `c:\home\vgs2`
 
 ## プロジェクト作成
-### (1) Linux
+### (1) Linux / Mac OS X
 ```bash
 $ vgs2mkpj company Test ~/test
 ```
@@ -127,6 +169,19 @@ ZIPALIGN=$(SDK)/build-tools/22.0.1/zipalign
 KEYSTORE=./keystore
 ```
 
+## ビルド(Mac OS X)
+### (1) Mac OS X版のビルド
+```bash
+$ cd ~/test/linux
+$ make
+```
+
+### (2) Android版のビルド
+_省略（Linux版の「(2)Android版のビルド」と同じ手順を実施）_
+
+### (3) iOS版のビルド
+_todo: そのうち書く_
+
 ## ビルド(Windows)
 ### (1) Windows版のビルド
 ```cmd
@@ -160,9 +215,6 @@ $ ndk_build
 > jarsigner -sigalg MD5withRSA -digestalg SHA1 -verbose -keystore my_keystore bin/Test-release-unsigned.apk techkey
 > c:\android\sdk\build-tools\21.1.2\zipalign -v 4 bin\Test-release-unsigned.apk bin\Test-release.apk 
 ```
-
-### (3) iPhone版のビルド
-todo: 後で書く
 
 ## API仕様
 [API.md](https://github.com/suzukiplan/vgs2/blob/master/API.md) を参照してください。

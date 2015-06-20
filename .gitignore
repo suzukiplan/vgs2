@@ -1,4 +1,5 @@
 *.exe
 *.obj
 /bin/
+.DS_store
 

@@ -1,0 +1,56 @@
+PROJECT={Project}
+SRCDIR=../src
+RELDIR=./Release
+CC=/usr/bin/gcc
+CXX=/usr/bin/g++
+
+OBJS=\
+	$(RELDIR)/vgs2x.o\
+	$(RELDIR)/vgs2api.o\
+	$(RELDIR)/vgs2tone.o\
+	$(RELDIR)/maincxx.o\
+	$(RELDIR)/game.o
+
+LIBS=\
+	-L /usr/local/lib\
+	-lpthread\
+	-lSDL\
+	-framework OpenAL
+
+CFLAG=\
+	-I/usr/local/include\
+	-I../src\
+	-c
+
+all: MKROM $(RELDIR) $(PROJECT)
+
+clean:
+	\rm -rf $(RELDIR)
+
+MKROM:
+	cd ../romdata && make
+
+$(RELDIR):
+	mkdir $(RELDIR)
+
+$(PROJECT): $(RELDIR)/$(PROJECT)
+	\cp -pf $(RELDIR)/$(PROJECT) $(PROJECT)
+
+$(RELDIR)/$(PROJECT): $(OBJS)
+	$(CC) -o $(RELDIR)/$(PROJECT) $(OBJS) $(LIBS)
+
+$(RELDIR)/vgs2x.o: $(SRCDIR)/vgs2x.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgs2tone.o: $(SRCDIR)/vgs2tone.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/maincxx.o: $(SRCDIR)/maincxx.cpp
+	$(CXX) -o $@ $(CFLAG) $<
+
+$(RELDIR)/game.o: $(SRCDIR)/game.c
+	$(CC) -o $@ $(CFLAG) $<
+
