@@ -262,7 +262,7 @@ int main(int argc,char* argv[])
 		char tmp[1024];
 		uLong src_len;
 		uLong cmp_len;
-		char* pCmp;
+		unsigned char* pCmp;
 		char* src;
 		int size;
 		struct Channel* ch;
@@ -316,7 +316,7 @@ int main(int argc,char* argv[])
 			int cmp_status;
 			src_len = (uLong)size;
 			cmp_len = compressBound(src_len);
-			pCmp=malloc(cmp_len);
+			pCmp=(unsigned char*)malloc(cmp_len);
 			if(NULL==pCmp) {
 				puts("ERROR: No memory.");
 				rc=255;

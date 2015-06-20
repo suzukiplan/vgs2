@@ -12,7 +12,7 @@ all: ../bin\
 	gcc -o ../bin/vgs2bmp vgs2bmp.c
 
 ../bin/vgs2mkpj: vgs2mkpj.c
-	gcc -o ../bin/vgs2mkpj vgs2mkpj.c
+	gcc -ansi -std=c90 -o ../bin/vgs2mkpj vgs2mkpj.c
 
 ../bin/vgs2mml: vgs2mml.c
 	gcc -o ../bin/vgs2mml vgs2mml.c
