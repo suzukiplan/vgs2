@@ -9,12 +9,24 @@
 #include <OpenAL/alc.h>
 #include "vgs2.h"
 
+#define kOutputBus 0
+#define kInputBus 1
 #define BUFNUM 2
+#undef SAMPLE_BITS
+#define SAMPLE_BITS	AL_FORMAT_MONO16	/* redefine sampling bits */
 
 static unsigned short ADPAL[256];
 static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
 static int STALIVE=1;
+static ALCdevice* sndDev;
+static ALCcontext* sndCtx;
+static ALuint sndABuf;
+static ALuint sndASrc;
+static char SBUF[SAMPLE_BUFS];
+
+static int init_openAL();
+static void* sound_thread(void* args);
 typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
 static alBufferDataStaticProcPtr alBufferDataStaticProc;
 
@@ -24,62 +36,6 @@ static void msleep(int msec)
 	tv.tv_sec=0;
 	tv.tv_usec=msec*1000;
 	select(0,NULL,NULL,NULL,&tv);
-}
-
-static void* sound_thread(void* args)
-{
-	ALCdevice* snd;
-	ALCcontext* ctx;
-	ALuint abuf;
-	ALuint asrc;
-	ALint st;
-	char buf[SAMPLE_BUFS];
-
-	puts("Start sound thread.");
-
-	snd=alcOpenDevice(NULL);
-	if(NULL==snd) {
-		fprintf(stderr,"Could not open sound device.\n");
-		return NULL;
-	}
-
-	ctx=alcCreateContext(snd, NULL);
-	if(NULL==ctx) {
-		fprintf(stderr,"Could not create sound context.\n");
-		return NULL;
-	}
-
-	if(!alcMakeContextCurrent(ctx)) {
-		fprintf(stderr,"Could not make context current.\n");
-		return NULL;
-	}
-
-	alBufferDataStaticProc=(alBufferDataStaticProcPtr)alcGetProcAddress(NULL,(const ALCchar *)"alBufferDataStatic");
-	alGenSources(1,&asrc);
-	memset(buf,0,sizeof(buf));
-
-	while(STALIVE) {
-		alGetSourcei(asrc,AL_BUFFERS_QUEUED,&st);
-		if(st<BUFNUM) {
-			alGenBuffers(1,&abuf);
-		} else {
-			alGetSourcei(asrc,AL_SOURCE_STATE,&st);
-			if(st!=AL_PLAYING) {
-				alSourcePlay(asrc);
-			}
-			while(alGetSourcei(asrc,AL_BUFFERS_PROCESSED,&st), st==0) {
-				usleep(1000);
-			}
-			alSourceUnqueueBuffers(asrc,1,&abuf);
-			alDeleteBuffers(1,&abuf);
-			alGenBuffers(1,&abuf);
-		}
-		sndbuf(buf,SAMPLE_BUFS);
-		alBufferData(abuf,SAMPLE_BITS,buf,SAMPLE_BUFS,SAMPLE_RATE);
-		alSourceQueueBuffers(asrc,1,&abuf);
-	}
-	puts("Sound thread now be ended.");
-	return NULL;
 }
 
 int vgs2_main(int argc,char* argv[])
@@ -98,6 +54,7 @@ int vgs2_main(int argc,char* argv[])
 	int mx;
 	int my;
 	pthread_t tid;
+    struct sched_param param;
 
 	puts("Start VGS mk-II SR for Mac OS X.");
 
@@ -193,11 +150,17 @@ int vgs2_main(int argc,char* argv[])
 	printf("Created surface: %dx%d\n",surface->w,surface->h);
 
 	/* Initialize sound system */
-	i=pthread_create(&tid,NULL,sound_thread,NULL);
+    if(init_openAL()) {
+        return 1;
+    }
+    i=pthread_create(&tid,NULL,sound_thread,NULL);
 	if(0!=i) {
 		fprintf(stderr,"Could not create the sound thread.\n");
 		return 1;
 	}
+    memset(&param,0,sizeof(param));
+    param.sched_priority = 46;
+    pthread_setschedparam(tid,SCHED_OTHER,&param);
 
 	/* Initialize user program */
 	if(vgs2_init()) {
@@ -311,6 +274,8 @@ int vgs2_main(int argc,char* argv[])
 	SDL_Quit();
 	STALIVE=0;
 	pthread_join(tid,NULL);
+    alcDestroyContext(sndCtx);
+    alcCloseDevice(sndDev);
 	puts("End.");
 	return 0;
 }
@@ -388,4 +353,60 @@ void vgs2_deleteAds()
 {
 	REQ=2;
 }
+
+/*
+ *-----------------------------------------------------------------------------
+ * Initialize OpenAL
+ *-----------------------------------------------------------------------------
+ */
+static int init_openAL()
+{
+    sndDev=alcOpenDevice(NULL);
+    if(NULL==sndDev) {
+        return -1;
+    }
+    sndCtx=alcCreateContext(sndDev, NULL);
+    if(NULL==sndCtx) {
+        return -1;
+    }
+    if(!alcMakeContextCurrent(sndCtx)) {
+        return -1;
+    }
+    alBufferDataStaticProc=(alBufferDataStaticProcPtr)alcGetProcAddress(NULL,(const ALCchar *)"alBufferDataStatic");
+    return 0;
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ * sound ctrl thread procedure
+ *-----------------------------------------------------------------------------
+ */
+static void* sound_thread(void* args)
+{
+    ALint st;
+    alGenSources(1,&sndASrc);
+    memset(SBUF,0,SAMPLE_BUFS);
+    while(STALIVE) {
+        alGetSourcei(sndASrc, AL_BUFFERS_QUEUED, &st);
+        if (st < BUFNUM) {
+            alGenBuffers(1, &sndABuf);
+        } else {
+            alGetSourcei(sndASrc, AL_SOURCE_STATE, &st);
+            if (st != AL_PLAYING) {
+                alSourcePlay(sndASrc);
+            }
+            while (alGetSourcei(sndASrc, AL_BUFFERS_PROCESSED, &st), st == 0) {
+                usleep(1000);
+            }
+            alSourceUnqueueBuffers(sndASrc, 1, &sndABuf);
+            alDeleteBuffers(1,&sndABuf);
+            alGenBuffers(1, &sndABuf);
+        }
+        sndbuf(SBUF,SAMPLE_BUFS);
+        alBufferData(sndABuf,SAMPLE_BITS,SBUF,SAMPLE_BUFS,SAMPLE_RATE);
+        alSourceQueueBuffers(sndASrc, 1, &sndABuf);
+    }
+    return NULL;
+}
+
 
