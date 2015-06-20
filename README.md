@@ -60,10 +60,14 @@ $ cd ~/
 $ git clone https://github.com/suzukiplan/vgs2.git vgs2
 $ cd vgs2/bin_src
 $ make
-$ echo export VGS2_HOME=~/vgs2 >>~/.bash_profile
-$ echo export PATH=$PATH:$VGS2_HOME >>~/.bash_profile
 $ export VGS2_HOME=~/vgs2
 $ export PATH=$PATH:$VGS2_HOME
+```
+
+次回ログイン時から自動的に環境変数の設定（export）を省略したい場合は `~/.bash_profile` に以下の定義を追加してください。
+```text
+export VGS2_HOME=/Users/suzukiplan/vgs2
+export PATH=$PATH:$VGS2_HOME/bin
 ```
 
 ## VGSのセットアップ（Windows）
