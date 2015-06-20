@@ -5,13 +5,18 @@
 #include <stdio.h>
 #include <time.h>
 #include <SDL/SDL.h>
-#include <alsa/asoundlib.h>
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
 #include "vgs2.h"
+
+#define BUFNUM 2
 
 static unsigned short ADPAL[256];
 static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
 static int STALIVE=1;
+typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
+static alBufferDataStaticProcPtr alBufferDataStaticProc;
 
 static void msleep(int msec)
 {
@@ -23,77 +28,61 @@ static void msleep(int msec)
 
 static void* sound_thread(void* args)
 {
-	int i;
-	snd_pcm_t* snd;
-	snd_pcm_hw_params_t* hwp;
-	int rate=SAMPLE_RATE;
-	int periods=3;
-	short buf[SAMPLE_BUFS/2];
-	puts("Started sound thread.");
-	snd_pcm_hw_params_alloca(&hwp);
-	i=snd_pcm_open(&snd,"default",SND_PCM_STREAM_PLAYBACK,0);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_open error: %d\n",i);
+	ALCdevice* snd;
+	ALCcontext* ctx;
+	ALuint abuf;
+	ALuint asrc;
+	ALint st;
+	char buf[SAMPLE_BUFS];
+
+	puts("Start sound thread.");
+
+	snd=alcOpenDevice(NULL);
+	if(NULL==snd) {
+		fprintf(stderr,"Could not open sound device.\n");
 		return NULL;
 	}
-	i=snd_pcm_hw_params_any(snd,hwp);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_any error: %d\n",i);
+
+	ctx=alcCreateContext(snd, NULL);
+	if(NULL==ctx) {
+		fprintf(stderr,"Could not create sound context.\n");
 		return NULL;
 	}
-	i=snd_pcm_hw_params_set_format(snd,hwp,SND_PCM_FORMAT_S16_LE);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_format error: %d\n",i);
+
+	if(!alcMakeContextCurrent(ctx)) {
+		fprintf(stderr,"Could not make context current.\n");
 		return NULL;
 	}
-	i=snd_pcm_hw_params_set_rate_near(snd,hwp,&rate,0);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_rate_near error: %d\n",i);
-		return NULL;
-	}
-	if(rate!=SAMPLE_RATE) {
-		fprintf(stderr,"This sound hawdware does not supports %dHz mode.\n",SAMPLE_RATE);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_channels(snd,hwp,SAMPLE_CH);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_channels error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_periods(snd,hwp,periods,0);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_periods error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_buffer_size(snd,hwp,(periods*sizeof(buf))/4);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_buffer_size error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params(snd,hwp);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params error: %d\n",i);
-		return NULL;
-	}
+
+	alBufferDataStaticProc=(alBufferDataStaticProcPtr)alcGetProcAddress(NULL,(const ALCchar *)"alBufferDataStatic");
+	alGenSources(1,&asrc);
+	memset(buf,0,sizeof(buf));
+
 	while(STALIVE) {
-		sndbuf((char*)buf,sizeof(buf));
-		while(STALIVE) {
-			i=snd_pcm_writei(snd,buf,sizeof(buf)/2);
-			if(i<0) {
-				snd_pcm_prepare(snd);
-				puts("Buffer underrun");
-			} else {
-				break;
+		alGetSourcei(asrc,AL_BUFFERS_QUEUED,&st);
+		if(st<BUFNUM) {
+			alGenBuffers(1,&abuf);
+		} else {
+			alGetSourcei(asrc,AL_SOURCE_STATE,&st);
+			if(st!=AL_PLAYING) {
+				alSourcePlay(asrc);
 			}
+			while(alGetSourcei(asrc,AL_BUFFERS_PROCESSED,&st), st==0) {
+				usleep(1000);
+			}
+			alSourceUnqueueBuffers(asrc,1,&abuf);
+			alDeleteBuffers(1,&abuf);
+			alGenBuffers(1,&abuf);
 		}
+		sndbuf(buf,SAMPLE_BUFS);
+		alBufferData(abuf,SAMPLE_BITS,buf,SAMPLE_BUFS,SAMPLE_RATE);
+		alSourceQueueBuffers(asrc,1,&abuf);
 	}
 	puts("Sound thread now be ended.");
-	snd_pcm_drain(snd);
-	snd_pcm_close(snd);
 	return NULL;
 }
 
-int main(int argc,char* argv[])
+int vgs2_main(int argc,char* argv[])
 {
 	SDL_Surface* surface;
 	SDL_Event event;

@@ -5,6 +5,7 @@ ASSETS=\
 
 all: ROMDATA.BIN
 	\cp -pf ROMDATA.BIN ../linux
+	\cp -pf ROMDATA.BIN ../mac
 	\cp -pf ROMDATA.BIN ../android/res/raw/romdata.bin
 
 .SUFFIXES: .bmp .CHR
