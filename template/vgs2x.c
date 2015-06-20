@@ -99,7 +99,7 @@ int vgs2_main(int argc,char* argv[])
 	int my;
 	pthread_t tid;
 
-	puts("Start VGS mk-II SR for Linux.");
+	puts("Start VGS mk-II SR for Mac OS X.");
 
 	/* Load ROMDATA.BIN */
 	fp=fopen("ROMDATA.BIN","rb");
