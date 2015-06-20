@@ -115,7 +115,7 @@ $ sudo make install
 _省略（Linux版の「vgs2のセットアップ」と同じ手順を実施）_
 
 ## VGSのセットアップ（Windows）
-### (1) VGS mk-II SRのセットアップ
+### vgs2のセットアップ
 ```cmd
 > c:
 > cd \home
@@ -124,7 +124,7 @@ _省略（Linux版の「vgs2のセットアップ」と同じ手順を実施）_
 > make
 ```
 
-### (2) 環境変数の設定
+### システム環境変数の設定
 - `PATH` : `c:\home\vgs2\bin`
 - `VGS2_HOME` : `c:\home\vgs2`
 
