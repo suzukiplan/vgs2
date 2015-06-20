@@ -1,0 +1,25 @@
+PRJ={Project}
+NDK=~/android/ndk
+SDK=~/android/sdk
+ZIPALIGN=$(SDK)/build-tools/22.0.1/zipalign 
+KEYSTORE=./keystore
+
+all: setup
+	@echo "usage: make {debug|release}"
+
+setup:
+	@echo sdk.dir=`echo $(SDK)`>local.properties
+	@echo ndk.dir=`echo $(NDK)`>>local.properties
+
+debug: setup
+	cd jni && $(NDK)/ndk-build
+	ant debug
+	$(SDK)/platform-tools/adb install -r bin/$(PRJ)-debug.apk
+
+release: setup
+	cd jni && $(NDK)/ndk-build
+	ant release
+	jarsigner -sigalg MD5withRSA -digestalg SHA1 -verbose -keystore $(KEYSTORE) bin/$(PRJ)-release-unsigned.apk techkey
+	$(ZIPALIGN) -v 4 bin/$(PRJ)-release-unsigned.apk bin/$(PRJ)-release.apk 
+	$(SDK)/platform-tools/adb install -r bin/$(PRJ)-release.apk
+

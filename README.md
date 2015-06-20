@@ -108,7 +108,17 @@ $ cd ~/test/android
 $ # デバッグビルドの場合
 $ make debug
 $ # リリースビルドの場合
-$ make release keystore
+$ make release
+```
+
+（補足）
+- AndroidのSDK, NDKのパス、zipalignコマンドのパス、キーストアのパスを予め `android/makefile` に定義する必要があります。
+- キーストアはreleaseビルド時にのみ必要です
+```text
+NDK=~/android/ndk
+SDK=~/android/sdk
+ZIPALIGN=$(SDK)/build-tools/22.0.1/zipalign
+KEYSTORE=./keystore
 ```
 
 ## ビルド(Windows)
