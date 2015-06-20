@@ -178,7 +178,7 @@ int vgs2_main(int argc,char* argv[])
 		fprintf(stderr,"Failed: SDL_Init(SDL_INIT_VIDEO)\n");
 		return 1;
 	}
-	SDL_WM_SetCaption("VGS mk-II SR for Linux",NULL);
+	SDL_WM_SetCaption("VGS mk-II SR for Mac OS X",NULL);
 
 	/* Initialize Surface */
 	surface=SDL_SetVideoMode(XSIZE*2,YSIZE*2,16,SDL_SWSURFACE);
