@@ -10,8 +10,8 @@ OBJS=\
 	$(RELDIR)/game.o
 
 LIBS=\
-	-lc\
 	-lSDL\
+	-lasound\
 	-lpthread
 
 CFLAG=\
