@@ -4,7 +4,7 @@ RELDIR=./Release
 CC=/usr/bin/gcc
 
 OBJS=\
-	$(RELDIR)/vgs2l.o\
+	$(RELDIR)/vgs2x.o\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
 	$(RELDIR)/game.o
@@ -15,6 +15,7 @@ LIBS=\
 	-lpthread
 
 CFLAG=\
+	-I/usr/local/include\
 	-I../src\
 	-c
 
@@ -35,7 +36,7 @@ $(PROJECT): $(RELDIR)/$(PROJECT)
 $(RELDIR)/$(PROJECT): $(OBJS)
 	$(CC) -o $(RELDIR)/$(PROJECT) $(OBJS) $(LIBS)
 
-$(RELDIR)/vgs2l.o: $(SRCDIR)/vgs2l.c
+$(RELDIR)/vgs2x.o: $(SRCDIR)/vgs2x.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
