@@ -56,6 +56,8 @@
 ```bash
 $ sudo yum install SDL
 $ sudo yum install alsa-lib
+$ sudo yum install SDL-devel
+$ sudo yum install alsa-lib-devel
 $ cd ~/
 $ git clone https://github.com/suzukiplan/vgs2.git vgs2
 $ cd vgs2/bin_src
