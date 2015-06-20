@@ -172,7 +172,7 @@ KEYSTORE=./keystore
 ## ビルド(Mac OS X)
 ### (1) Mac OS X版のビルド
 ```bash
-$ cd ~/test/linux
+$ cd ~/test/mac
 $ make
 ```
 
