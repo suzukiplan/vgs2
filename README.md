@@ -1,11 +1,11 @@
 # Video Game System mk-II SR
 ## 概要
-- `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
-- `Windows` , `Android` 及び `iOS` 全てのプラットフォームのゲームの実装を一本化できる特徴があります
+- `Linux` , `Windows` , `Android` 及び `iOS` 対応のアプリケーションを開発するための `SDK` です
+- `Linux` , `Windows` , `Android` 及び `iOS` 全てのプラットフォームのゲームの実装を一本化できる特徴があります
 - 使用するプログラム言語は `C/C++言語` のみです
 
 ## アプリ開発の流れ
-- `Windows版` のアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
+- `Linux版` または `Windows版` のアプリを開発し、完成後 `Android` 版をビルド、その後 `iOS` へポーティングという流れで開発します
 - [プロジェクト作成](https://github.com/suzukiplan/vgs2#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E4%BD%9C%E6%88%90) の手順でプロジェクトを作成
 - 自プロジェクトの [game.c](https://github.com/suzukiplan/vgs2/blob/master/template/game.c) にゲームの処理を記述
   - `vgs2_init` : 初期化処理を記述
@@ -18,7 +18,7 @@
   - `ESLOTxxx.PCM` に効果音リソースを準備
   - `BSLOTxxx.BGM` に音楽リソースを準備
 - `vgs2rom` コマンドで ROMDATA.BIN を生成
-- [ビルド](https://github.com/suzukiplan/vgs2#%E3%83%93%E3%83%AB%E3%83%89)
+- ビルド（後述）
 
 ## ライセンス
 - 2-Clause BSDライセンスで提供しています
@@ -27,12 +27,21 @@
 - 本リポジトリに含まれるソースコードの 一部 若しくは 全部 を流用 又は `VGS mk-II SR`を用いて製作されたプログラムを配布又は販売の結果発生した損失や損害等につき、当方は一切の責任を負わないものとします
 
 ## 前提ハードウェア
-- Windows PC
+- Linux or Windows PC
 - Android phone
 - Macintosh
 - iOS device
 
 ## 前提ソフトウェア
+### Linux
+- GNU Compiler Collection - C compiler (gcc) 
+- SDL
+- ALSA
+- Java Developer Kit
+- Android SDK + Apache Ant
+- Android NDK
+- Git
+
 ### Windows
 - Microsoft Visual C++ (コマンドラインで使えるdesktop版)
 - Java Developer Kit
@@ -43,8 +52,21 @@
 ### Macintosh
 - XCODE
 
-## セットアップ（Windows + Androidアプリ開発環境）
+## VGSのセットアップ（Linux + Androidアプリ開発環境）
+```bash
+$ sudo yum install SDL
+$ sudo yum install alsa-lib
+$ cd ~/
+$ git clone https://github.com/suzukiplan/vgs2.git vgs2
+$ cd vgs2/bin_src
+$ make
+$ echo export VGS2_HOME=~/vgs2 >>~/.bash_profile
+$ echo export PATH=$PATH:$VGS2_HOME >>~/.bash_profile
+$ export VGS2_HOME=~/vgs2
+$ export PATH=$PATH:$VGS2_HOME
+```
 
+## VGSのセットアップ（Windows + Androidアプリ開発環境）
 ### (1) VGS mk-II SRのセットアップ
 ```cmd
 > c:
@@ -59,12 +81,38 @@
 - `VGS2_HOME` : `c:\home\vgs2`
 
 ## プロジェクト作成
+### (1) Linux
+```bash
+$ vgs2mkpj company Test ~/test
+```
+
+_※Linux版の場合、プロジェクトのディレクトリは相対パスでも指定できます_
+
+### (2) Windows
 ```cmd
 > vgs2mkpj company Test c:\home\Test
 ```
 
-## ビルド
-#### (1) Windows版のビルド
+_※Windowsのファイルシステムは残念なのでプロジェクトのディレクトリは絶対パスしか指定できません_
+
+## ビルド(Linux)
+### (1) Linux版のビルド
+```bash
+$ cd ~/test/linux
+$ make
+```
+
+### (2) Android版のビルド
+```bash
+$ cd ~/test/android
+$ # デバッグビルドの場合
+$ make debug
+$ # リリースビルドの場合
+$ make release keystore
+```
+
+## ビルド(Windows)
+### (1) Windows版のビルド
 ```cmd
 > c:
 > cd \home\Test\windows
