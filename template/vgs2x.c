@@ -53,6 +53,7 @@ int vgs2_main(int argc,char* argv[])
 	unsigned int ticks;
 	int mx;
 	int my;
+	int firstMove=0;
 	pthread_t tid;
     struct sched_param param;
 
@@ -170,6 +171,7 @@ int vgs2_main(int argc,char* argv[])
 	make_pallet();
 
 	n=0;
+	firstMove=1;
 	while(1) {
 		ticks=SDL_GetTicks();
 		SDL_PollEvent(&event);
@@ -187,6 +189,15 @@ int vgs2_main(int argc,char* argv[])
 			} else {
 				_touch.dx=mx-_touch.px;
 				_touch.dy=my-_touch.py;
+				if(firstMove) {
+					if(_touch.dx || _touch.dy) {
+						firstMove=0;
+						_touch.dx=0;
+						_touch.dy=0;
+						_touch.cx=mx;
+						_touch.cy=my;
+					}
+				}
 				_touch.px=_touch.cx;
 				_touch.py=_touch.cy;
 				_touch.cx=mx;
@@ -197,6 +208,7 @@ int vgs2_main(int argc,char* argv[])
 		} else {
 			_touch.s=0;
 			_touch.t=0;
+			firstMove=1;
 		}
 		if(_pause) {
 			if(vgs2_pause()) break;
