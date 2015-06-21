@@ -50,6 +50,7 @@ VGSでは、グラフィックス、効果音、音楽、任意データ（ゲ�
 ### BSLOT (BGM)
 - `BSLOT000.mml` 〜 `BSLOT255.mml` というファイル名で `romdata` ディレクトリに配置します
 - `BSLOT000.mml` は VGS独自形式の Music Macro Language です
+- MMLの書き方は[MML.md](https://github.com/suzukiplan/vgs2/blob/master/MML.md)を参照してください
 - 新しい `BSLOTxxx.mml` を追加する場合, `romdata/makefile` ファイルを編集してください
 
 ### romdata/makefile
