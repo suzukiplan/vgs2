@@ -3,6 +3,7 @@
 ## 概要
 - MML(Music Macro Language)とは、マクロを用いて音楽（楽譜）を記述する言語です
 - VGSのMMLは、一般的なMMLと概ね互換性のある標準的な書式になっています
+- [東方BGM on VGSのMML](https://github.com/suzukiplan/Touhou-VGS-MML-data)を全曲公開しているので、そっちを見るのが手っ取り早いです
 
 ## Macro
 VGSのMMLではマクロを定義できます。
