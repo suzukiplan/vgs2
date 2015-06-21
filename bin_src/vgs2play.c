@@ -215,10 +215,9 @@ int main(int argc,char* argv[])
     /* terminate procedure */
     STALIVE=0;
     pthread_join(tid,NULL);
-#if defined(__linux)
+#if defined(__APPLE__)
     alcDestroyContext(sndCtx);
     alcCloseDevice(sndDev);
-#elif defined(__APPLE__)
 #endif
     
     return 0;

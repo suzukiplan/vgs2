@@ -1,6 +1,9 @@
 all:
 	make all-`uname`
 
+all-Linux:
+	make allcom SOUNDLIB=-lasound
+
 all-Darwin:
 	make allcom SOUNDLIB="-framework OpenAL"
 
@@ -31,5 +34,5 @@ allcom: ../bin\
 	gcc -o ../bin/vgs2wav vgs2wav.c
 
 ../bin/vgs2play: vgs2play.c
-	gcc -o ../bin/vgs2play -I../template vgs2play.c ../template/vgs2api.c ../template/vgs2tone.c $(SOUNDLIB)
+	gcc -o ../bin/vgs2play -I../template vgs2play.c ../template/vgs2api.c ../template/vgs2tone.c $(SOUNDLIB) -lpthread
 
