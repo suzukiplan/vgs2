@@ -424,6 +424,37 @@ int bload(unsigned char n,const char* name)
 
 /*
  *----------------------------------------------------------------------------
+ * load a BGM file (direct)
+ *----------------------------------------------------------------------------
+ */
+int bload_direct(unsigned char n,const char* name)
+{
+	FILE* fp;
+	int size;
+	fp=fopen(name,"rb");
+	if(NULL==fp) {
+		return -1;
+	}
+	fseek(fp,0,SEEK_END);
+	size=ftell(fp);
+	if(size<1) {
+		fclose(fp);
+		return -1;
+	}
+	fseek(fp,0,SEEK_SET);
+	_note[n]=(char*)malloc(size);
+	if(NULL==_note[n]) {
+		fclose(fp);
+		return -1;
+	}
+	fread(_note[n],size,1,fp);
+	fclose(fp);
+    _notelen[n]=(uLong)size;
+	return 0;
+}
+
+/*
+ *----------------------------------------------------------------------------
  * get rom data (INTERNAL FUNCTION)
  *----------------------------------------------------------------------------
  */
