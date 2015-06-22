@@ -1417,3 +1417,24 @@ void vgs2_bkoff(int cn,int off)
 		_psg.addKey[cn]=0;
 	}
 }
+
+/*
+ *----------------------------------------------------------------------------
+ * skip notes
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bjump(int sec)
+{
+	int hz=0;
+	if(NULL==_psg.notes) return;
+	lock();
+	_psg.nidx=0;
+	while(0<sec) {
+		hz+=getNextNote();	
+		while(22050<=hz) {
+			hz-=22050;
+			sec--;
+		}
+	}
+	unlock();
+}

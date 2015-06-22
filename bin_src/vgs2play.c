@@ -7,7 +7,6 @@
 #include <time.h>
 #include "vgs2.h"
 
-
 int bload_direct(unsigned char n,const char* name);
 extern struct _PSG _psg;
 
@@ -172,13 +171,15 @@ int main(int argc,char* argv[])
     struct sched_param param;
     char buf[1024];
     int isPlaying=1;
-
+    int i,j;
+    char* cp;
+    
     /* check argument */
     if(argc<2) {
         puts("usage: vgs2play bgm-file");
         return 1;
     }
-
+    
     /* intialize sound system */
     if(sound_init()) {
         fprintf(stderr,"Could not initialize the sound system.\n");
@@ -191,14 +192,14 @@ int main(int argc,char* argv[])
     memset(&param,0,sizeof(param));
     param.sched_priority = 46;
     pthread_setschedparam(tid,SCHED_OTHER,&param);
-
+    
     /* load BGM data and play */
     if(bload_direct(0,argv[1])) {
         fprintf(stderr,"Load error.\n");
         return 2;
     }
-	vgs2_bplay(0);
-
+    vgs2_bplay(0);
+    
     /* show song info */
     puts("Song info:");
     printf("- number of notes = %d\n",_psg.idxnum);
@@ -209,17 +210,29 @@ int main(int argc,char* argv[])
     }
     printf("- play time = %02u:%02u\n",_psg.timeL/22050/60, _psg.timeL/22050%60);
     puts("");
-
+    
     /* show reference */
     puts("Command Reference:");
-    puts("- p : pause / resume");
-    puts("- q : quit playing");
+    puts("- p            : pause / resume");
+    puts("- j{sec|mm:ss} : jump");
+    puts("- q            : quit playing");
     puts("");
-
+    
     /* main loop */
     memset(buf,0,sizeof(buf));
     printf("command: ");
     while(NULL!=fgets(buf,sizeof(buf)-1,stdin)) {
+        for(i=0;buf[i];i++) {
+            if('A'<=buf[i] && buf[i]<='Z') {
+                buf[i]-='a'-'A';
+            }
+            if(' '==buf[i] || '\t'==buf[i]) {
+                for(j=i;;j++) {
+                    buf[j]=buf[j+1];
+                    if(!buf[j]) break;
+                }
+            }
+        }
         if(buf[0]=='p') {
             if(isPlaying) {
                 vgs2_bstop();
@@ -228,13 +241,23 @@ int main(int argc,char* argv[])
                 vgs2_bresume();
                 isPlaying=1;
             }
+        } else if(buf[0]=='j') {
+            i=0;
+            cp=strchr(buf,':');
+            if(NULL==cp) {
+                i=atoi(buf+1);
+            } else {
+                i=atoi(buf+1)*60;
+                i+=atoi(cp+1);
+            }
+            vgs2_bjump(i);
         } else if(buf[0]=='q') {
             break;
         }
         memset(buf,0,sizeof(buf));
         printf("command: ");
     }
-
+    
     /* terminate procedure */
     STALIVE=0;
     pthread_join(tid,NULL);
