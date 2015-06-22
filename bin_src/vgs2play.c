@@ -7,7 +7,9 @@
 #include <time.h>
 #include "vgs2.h"
 
+
 int bload_direct(unsigned char n,const char* name);
+extern struct _PSG _psg;
 
 /* include os depended header files */
 #if defined(__linux)
@@ -179,7 +181,7 @@ int main(int argc,char* argv[])
 
     /* intialize sound system */
     if(sound_init()) {
-        fprintf(stderr,"Could not initialize the sound system.¥n");
+        fprintf(stderr,"Could not initialize the sound system.\n");
         return 2;
     }
     if(0!=pthread_create(&tid,NULL,sound_thread,NULL)) {
@@ -196,6 +198,17 @@ int main(int argc,char* argv[])
         return 2;
     }
 	vgs2_bplay(0);
+
+    /* show song info */
+    puts("Song info:");
+    printf("- number of notes = %d\n",_psg.idxnum);
+    if(_psg.timeI) {
+        printf("- intro time = %02u:%02u\n",_psg.timeI/22050/60, _psg.timeI/22050%60);
+    } else {
+        printf("- acyclic song\n");
+    }
+    printf("- play time = %02u:%02u\n",_psg.timeL/22050/60, _psg.timeL/22050%60);
+    puts("");
 
     /* show reference */
     puts("Command Reference:");

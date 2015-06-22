@@ -116,6 +116,7 @@ struct _PSG {
 	unsigned int timeP;
 	int addKey[6];
 	int addOff[6];
+	int idxnum;
 };
 
 struct _TOUCH {

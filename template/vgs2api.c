@@ -1318,12 +1318,21 @@ void vgs2_interlace(int i)
 void vgs2_bplay(unsigned char n)
 {
 	uLong nblen;
+	int i;
 	vgs2_bstop();
 	lock();
 	memset(&_psg,0,sizeof(_psg));
 	_psg.notes=_notebuf;
 	nblen=(uLong)sizeof(_notebuf);
 	uncompress((unsigned char *)_notebuf, &nblen, (const unsigned char*)_note[n], _notelen[n]);
+	_psg.idxnum=nblen/sizeof(struct _NOTE);
+	for(i=0;i<_psg.idxnum;i++) {
+		if(NTYPE_WAIT==_notebuf[i].type) {
+			_psg.timeL+=_notebuf[i].val;
+		} else if(NTYPE_LABEL==_notebuf[i].type) {
+			_psg.timeI=_psg.timeL;
+		}
+	}
 	unlock();
 	_psg.play=1;
 }
