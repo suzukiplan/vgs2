@@ -163,6 +163,23 @@ static void* sound_thread(void* args)
 }
 
 /**
+ * get secound from text
+ */
+int getsec(const char* text)
+{
+    char* cp;
+    int ret=0;
+    cp=strchr(text,':');
+    if(NULL==cp) {
+        ret=atoi(text);
+    } else {
+        ret=atoi(text)*60;
+        ret+=atoi(cp+1);
+    }
+    return ret;
+}
+
+/**
  * main procedure
  */
 int main(int argc,char* argv[])
@@ -242,15 +259,7 @@ int main(int argc,char* argv[])
                 isPlaying=1;
             }
         } else if(buf[0]=='j') {
-            i=0;
-            cp=strchr(buf,':');
-            if(NULL==cp) {
-                i=atoi(buf+1);
-            } else {
-                i=atoi(buf+1)*60;
-                i+=atoi(cp+1);
-            }
-            vgs2_bjump(i);
+            vgs2_bjump(getsec(buf+1));
         } else if(buf[0]=='q') {
             break;
         }
