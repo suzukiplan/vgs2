@@ -169,6 +169,7 @@ int main(int argc,char* argv[])
     pthread_t tid;
     struct sched_param param;
     char buf[1024];
+    int isPlaying=1;
 
     /* check argument */
     if(argc<2) {
@@ -198,6 +199,7 @@ int main(int argc,char* argv[])
 
     /* show reference */
     puts("Command Reference:");
+    puts("- p : pause / resume");
     puts("- q : quit playing");
     puts("");
 
@@ -205,7 +207,15 @@ int main(int argc,char* argv[])
     memset(buf,0,sizeof(buf));
     printf("command: ");
     while(NULL!=fgets(buf,sizeof(buf)-1,stdin)) {
-        if(buf[0]=='q') {
+        if(buf[0]=='p') {
+            if(isPlaying) {
+                vgs2_bstop();
+                isPlaying=0;
+            } else {
+                vgs2_bresume();
+                isPlaying=1;
+            }
+        } else if(buf[0]=='q') {
             break;
         }
         memset(buf,0,sizeof(buf));
