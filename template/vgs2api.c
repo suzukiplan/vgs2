@@ -142,13 +142,15 @@ void sndbuf(char* buf,size_t size)
 								pw=0;
 							}
 						}
-						bp=(short*)(&buf[i]);
-						wav=(wav*pw/100);
-						wav+=*bp;
-						if(32767<wav) wav=32767;
-						else if(wav<-32768) wav=-32768;
-						(*bp)=(short)wav;
-						_psg.wav[j]=pw;
+						if(!_psg.ch[j].mute) {
+							bp=(short*)(&buf[i]);
+							wav=(wav*pw/100);
+							wav+=*bp;
+							if(32767<wav) wav=32767;
+							else if(wav<-32768) wav=-32768;
+							(*bp)=(short)wav;
+							_psg.wav[j]=pw;
+						}
 						if(_psg.ch[j].pdown) {
 							_psg.ch[j].pcnt++;
 							if(_psg.ch[j].pdown<_psg.ch[j].pcnt) {
@@ -1438,3 +1440,17 @@ void vgs2_bjump(int sec)
 	}
 	unlock();
 }
+
+/*
+ *----------------------------------------------------------------------------
+ * mute channel
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bmute(int ch)
+{
+	if(ch<0 || 5<ch) return;
+	lock();
+	_psg.ch[ch].mute=1-_psg.ch[ch].mute;
+	unlock();
+}
+

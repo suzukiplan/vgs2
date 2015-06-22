@@ -278,6 +278,7 @@ void vgs2_bfade(unsigned int hz);
 void vgs2_bkey(int n);
 void vgs2_bkoff(int cn,int off);
 void vgs2_bjump(int sec);
+void vgs2_bmute(int ch);
 
 #ifdef __cplusplus
 };

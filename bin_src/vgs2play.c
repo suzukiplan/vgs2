@@ -238,6 +238,7 @@ int main(int argc,char* argv[])
     puts("- p            : pause / resume");
     puts("- j{sec|mm:ss} : jump");
     puts("- k{+up|-down} : key change");
+    puts("- m[ch]...     : mute channel");
     puts("- q            : quit playing");
     puts("");
     
@@ -271,6 +272,12 @@ int main(int argc,char* argv[])
                 vgs2_bkey(atoi(&buf[2]));
             } else if(buf[1]=='-') {
                 vgs2_bkey(0-atoi(&buf[2]));
+            }
+        } else if(buf[0]=='m') {
+            for(i=1;buf[i];i++) {
+                if('0'<=buf[i] && buf[i]<='5') {
+                    vgs2_bmute((int)(buf[i]-'0'));
+                }
             }
         } else if(buf[0]=='q') {
             break;
