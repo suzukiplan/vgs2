@@ -22,7 +22,7 @@ allcom: ../bin\
 	gcc -o ../bin/vgs2bmp vgs2bmp.c
 
 ../bin/vgs2mkpj: vgs2mkpj.c
-	gcc -ansi -std=c90 -o ../bin/vgs2mkpj vgs2mkpj.c
+	gcc -ansi -std=c89 -o ../bin/vgs2mkpj vgs2mkpj.c
 
 ../bin/vgs2mml: vgs2mml.c
 	gcc -o ../bin/vgs2mml vgs2mml.c
@@ -33,6 +33,6 @@ allcom: ../bin\
 ../bin/vgs2wav: vgs2wav.c
 	gcc -o ../bin/vgs2wav vgs2wav.c
 
-../bin/vgs2play: vgs2play.c
+../bin/vgs2play: vgs2play.c ../template/vgs2api.c ../template/vgs2tone.c ../template/vgs2.h
 	gcc -o ../bin/vgs2play -I../template vgs2play.c ../template/vgs2api.c ../template/vgs2tone.c $(SOUNDLIB) -lpthread
 

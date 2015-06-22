@@ -142,13 +142,15 @@ void sndbuf(char* buf,size_t size)
 								pw=0;
 							}
 						}
-						bp=(short*)(&buf[i]);
-						wav=(wav*pw/100);
-						wav+=*bp;
-						if(32767<wav) wav=32767;
-						else if(wav<-32768) wav=-32768;
-						(*bp)=(short)wav;
-						_psg.wav[j]=pw;
+						if(!_psg.ch[j].mute) {
+							bp=(short*)(&buf[i]);
+							wav=(wav*pw/100);
+							wav+=*bp;
+							if(32767<wav) wav=32767;
+							else if(wav<-32768) wav=-32768;
+							(*bp)=(short)wav;
+							_psg.wav[j]=pw;
+						}
 						if(_psg.ch[j].pdown) {
 							_psg.ch[j].pcnt++;
 							if(_psg.ch[j].pdown<_psg.ch[j].pcnt) {
@@ -451,6 +453,20 @@ int bload_direct(unsigned char n,const char* name)
 	fclose(fp);
     _notelen[n]=(uLong)size;
 	return 0;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * free a slot (direct)
+ *----------------------------------------------------------------------------
+ */
+void bfree_direct(unsigned char n)
+{
+	vgs2_bstop();
+	lock();
+	free(_note[n]);
+	_notelen[n]=0;
+	unlock();
 }
 
 /*
@@ -1318,12 +1334,21 @@ void vgs2_interlace(int i)
 void vgs2_bplay(unsigned char n)
 {
 	uLong nblen;
+	int i;
 	vgs2_bstop();
 	lock();
 	memset(&_psg,0,sizeof(_psg));
 	_psg.notes=_notebuf;
 	nblen=(uLong)sizeof(_notebuf);
 	uncompress((unsigned char *)_notebuf, &nblen, (const unsigned char*)_note[n], _notelen[n]);
+	_psg.idxnum=nblen/sizeof(struct _NOTE);
+	for(i=0;i<_psg.idxnum;i++) {
+		if(NTYPE_WAIT==_notebuf[i].type) {
+			_psg.timeL+=_notebuf[i].val;
+		} else if(NTYPE_LABEL==_notebuf[i].type) {
+			_psg.timeI=_psg.timeL;
+		}
+	}
 	unlock();
 	_psg.play=1;
 }
@@ -1408,3 +1433,38 @@ void vgs2_bkoff(int cn,int off)
 		_psg.addKey[cn]=0;
 	}
 }
+
+/*
+ *----------------------------------------------------------------------------
+ * skip notes
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bjump(int sec)
+{
+	int hz=0;
+	if(NULL==_psg.notes) return;
+	lock();
+	_psg.nidx=0;
+	while(0<sec) {
+		hz+=getNextNote();	
+		while(22050<=hz) {
+			hz-=22050;
+			sec--;
+		}
+	}
+	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * mute channel
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bmute(int ch)
+{
+	if(ch<0 || 5<ch) return;
+	lock();
+	_psg.ch[ch].mute=1-_psg.ch[ch].mute;
+	unlock();
+}
+
