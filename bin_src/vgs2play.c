@@ -8,6 +8,7 @@
 #include "vgs2.h"
 
 int bload_direct(unsigned char n,const char* name);
+void bfree_direct(unsigned char n);
 extern struct _PSG _psg;
 
 /* include os depended header files */
@@ -191,6 +192,7 @@ int main(int argc,char* argv[])
     int i,j;
     int st=0;
     char* cp;
+    int show=0;
     
     /* check argument */
     if(argc<2) {
@@ -213,7 +215,8 @@ int main(int argc,char* argv[])
     memset(&param,0,sizeof(param));
     param.sched_priority = 46;
     pthread_setschedparam(tid,SCHED_OTHER,&param);
-    
+
+RELOAD:
     /* load BGM data and play */
     if(bload_direct(0,argv[1])) {
         fprintf(stderr,"Load error.\n");
@@ -221,26 +224,30 @@ int main(int argc,char* argv[])
     }
     vgs2_bplay(0);
     if(st) vgs2_bjump(st);
-    
-    /* show song info */
-    puts("Song info:");
-    printf("- number of notes = %d\n",_psg.idxnum);
-    if(_psg.timeI) {
-        printf("- intro time = %02u:%02u\n",_psg.timeI/22050/60, _psg.timeI/22050%60);
-    } else {
-        printf("- acyclic song\n");
+
+    if(!show) {
+        /* show song info */
+        puts("Song info:");
+        printf("- number of notes = %d\n",_psg.idxnum);
+        if(_psg.timeI) {
+            printf("- intro time = %02u:%02u\n",_psg.timeI/22050/60, _psg.timeI/22050%60);
+        } else {
+            printf("- acyclic song\n");
+        }
+        printf("- play time = %02u:%02u\n",_psg.timeL/22050/60, _psg.timeL/22050%60);
+        puts("");
+        
+        /* show reference */
+        puts("Command Reference:");
+        puts("- p            : pause / resume");
+        puts("- j{sec|mm:ss} : jump");
+        puts("- k{+up|-down} : key change");
+        puts("- m[ch]...     : mute channel");
+        puts("- r            : reload");
+        puts("- q            : quit playing");
+        puts("");
+        show=1;
     }
-    printf("- play time = %02u:%02u\n",_psg.timeL/22050/60, _psg.timeL/22050%60);
-    puts("");
-    
-    /* show reference */
-    puts("Command Reference:");
-    puts("- p            : pause / resume");
-    puts("- j{sec|mm:ss} : jump");
-    puts("- k{+up|-down} : key change");
-    puts("- m[ch]...     : mute channel");
-    puts("- q            : quit playing");
-    puts("");
     
     /* main loop */
     memset(buf,0,sizeof(buf));
@@ -279,6 +286,9 @@ int main(int argc,char* argv[])
                     vgs2_bmute((int)(buf[i]-'0'));
                 }
             }
+        } else if(buf[0]=='r') {
+            bfree_direct(0);
+            goto RELOAD;
         } else if(buf[0]=='q') {
             break;
         }
@@ -293,6 +303,7 @@ int main(int argc,char* argv[])
     alcDestroyContext(sndCtx);
     alcCloseDevice(sndDev);
 #endif
+    bfree_direct(0);
     
     return 0;
 }
