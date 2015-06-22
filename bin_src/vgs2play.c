@@ -189,12 +189,16 @@ int main(int argc,char* argv[])
     char buf[1024];
     int isPlaying=1;
     int i,j;
+    int st=0;
     char* cp;
     
     /* check argument */
     if(argc<2) {
-        puts("usage: vgs2play bgm-file");
+        puts("usage: vgs2play bgm-file [mm:ss]");
         return 1;
+    }
+    if(3<=argc) {
+        st=getsec(argv[2]);
     }
     
     /* intialize sound system */
@@ -216,6 +220,7 @@ int main(int argc,char* argv[])
         return 2;
     }
     vgs2_bplay(0);
+    if(st) vgs2_bjump(st);
     
     /* show song info */
     puts("Song info:");
