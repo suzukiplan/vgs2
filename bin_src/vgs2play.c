@@ -237,6 +237,7 @@ int main(int argc,char* argv[])
     puts("Command Reference:");
     puts("- p            : pause / resume");
     puts("- j{sec|mm:ss} : jump");
+    puts("- k{+up|-down} : key change");
     puts("- q            : quit playing");
     puts("");
     
@@ -265,6 +266,12 @@ int main(int argc,char* argv[])
             }
         } else if(buf[0]=='j') {
             vgs2_bjump(getsec(buf+1));
+        } else if(buf[0]=='k') {
+            if(buf[1]=='+') {
+                vgs2_bkey(atoi(&buf[2]));
+            } else if(buf[1]=='-') {
+                vgs2_bkey(0-atoi(&buf[2]));
+            }
         } else if(buf[0]=='q') {
             break;
         }
