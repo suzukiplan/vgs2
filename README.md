@@ -37,23 +37,23 @@
 ## ROMDATA.BIN
 VGSでは、グラフィックス、効果音、音楽、任意データ（ゲームのステージ情報など）を `vgs2rom` コマンドでロムデータ形式に結合したもの ( `ROMDATA.BIN` ) がゲームのアセット情報となります。
 
-### GSLOT (Graphics)
+#### GSLOT (Graphics)
 - `GSLOT000.bmp` 〜 `GSLOT255.bmp` というファイル名で `romdata` ディレクトリに配置します
 - `GSLOTxxx.bmp` は 8bitカラー(256色) かつ 256 x 256 ピクセル以下のbitmap形式にする必要があります
 - 新しい `GSLOTxxx.bmp` を追加する場合, `romdata/makefile` ファイルを編集してください
 
-### ESLOT (Sound Effect)
+#### ESLOT (Sound Effect)
 - `ESLOT000.wav` 〜 `ESLOT255.wav` というファイル名で `romdata` ディレクトリに配置します
 - `ESLOTxxx.wav` は 22050Hz, 16bit, 1ch(mono) の wav形式でなければなりません
 - 新しい `ESLOTxxx.wav` を追加する場合, `romdata/makefile` ファイルを編集してください
 
-### BSLOT (BGM)
+#### BSLOT (BGM)
 - `BSLOT000.mml` 〜 `BSLOT255.mml` というファイル名で `romdata` ディレクトリに配置します
 - `BSLOT000.mml` は VGS独自形式の Music Macro Language です
 - MMLの書き方は[MML.md](https://github.com/suzukiplan/vgs2/blob/master/MML.md)を参照してください
 - 新しい `BSLOTxxx.mml` を追加する場合, `romdata/makefile` ファイルを編集してください
 
-### romdata/makefile
+#### romdata/makefile
 `romdata/makefile` では以下の手続きを実行しています。
 - `GSLOTxxx.bmp` を `vgs2bmp` コマンドで `CHR` 形式というVGS独自形式に変換
 - `ESLOTxxx.wav` を `vgs2wav` コマンドで `PCM` 形式というVGS独自形式に変換
