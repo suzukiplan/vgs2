@@ -63,6 +63,9 @@ VGSでは、グラフィックス、効果音、音楽、任意データ（ゲ�
 ## API仕様
 [API.md](https://github.com/suzukiplan/vgs2/blob/master/API.md) を参照してください。
 
+## Command仕様
+[Command.md](https://github.com/suzukiplan/vgs2/blob/master/Command.md) を参照してください。
+
 ## ハードウェア仕様
 - 最大同時発色数: 16777216色中256色
 - 解像度: 160 x 200
