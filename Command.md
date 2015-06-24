@@ -82,9 +82,10 @@ $ vgs2mkpj company Project directory
 #### Java package name
 Android版のJavaパッケージ名は、`com.company.Project` になる。
 
-## vgs2play (Linux and Mac OS X only)
+## vgs2play
 #### 概要
-BGMファイルをコマンドライン上で再生する。
+- BGMファイルをコマンドライン上で再生する。
+- `Linux` and `Mac OS X` のみサポート
 
 #### usage
 ```bash
