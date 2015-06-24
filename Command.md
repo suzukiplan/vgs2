@@ -95,5 +95,37 @@ $ vgs2play BGM-file [mm:ss]
 - [mm:ss]: _start playing time (optional)_
 
 #### internal commands
-- `vgs2play` で演奏を開始すると 内部コマンド で __演奏の制御__ ができる
-- 制御できる内容は、コマンド起動時に表示される `Reference` を参照
+`vgs2play` で演奏を開始すると 内部コマンド で __演奏の制御__ ができる
+
+##### 時間指定
+```cmd
+Command : j { sec | min:sec }
+```
+で指定した再生時間にジャンプ。
+
+##### キーチェンジ（移調）
+```cmd
+Command : k+ 数字
+Command : k- 数字
+```
+特に実用性はないかもしれないが楽しそう。
+（VGSに移調APIがあるので割と簡単に作れる）
+
+##### 特定チャネルのミュート
+```cmd
+Command : mチャネル { on | off }
+```
+特定パートのみチェックしたい時とかに使いたい。
+
+##### ポーズ/再開
+```cmd
+Command : p
+```
+基本ですね。
+
+##### リロード
+```cmd
+Command : r
+```
+BGMファイル自体を読み直し、ミュートや移調の設定をクリアする。
+割と重要（作業時）
