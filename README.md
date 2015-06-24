@@ -19,6 +19,7 @@
   - `GSLOTxxx.CHR` に画像リソースを準備
   - `ESLOTxxx.PCM` に効果音リソースを準備
   - `BSLOTxxx.BGM` に音楽リソースを準備
+  - `DSLOTxxx.DAT` に任意データリソースを準備
 - `vgs2rom` コマンドで ROMDATA.BIN を生成
 - ビルド（後述）
 
@@ -67,7 +68,7 @@ VGSでは、グラフィックス、効果音、音楽、任意データ（ゲ�
 - `GSLOTxxx.bmp` を `vgs2bmp` コマンドで `CHR` 形式というVGS独自形式に変換
 - `ESLOTxxx.wav` を `vgs2wav` コマンドで `PCM` 形式というVGS独自形式に変換
 - `BSLOTxxx.mml` を `vgs2mml` コマンドで `BGM` 形式というVGS独自形式に変換
-- `GSLOTxxx.CHR` , `ESLOTxxx.PCM` , `BSLOTxxx.BGM` を `vgs2rom` コマンドで `ROMDATA.BIN` に結合
+- `GSLOTxxx.CHR` , `ESLOTxxx.PCM` , `BSLOTxxx.BGM` , `DSLOTxxx.DAT` を `vgs2rom` コマンドで `ROMDATA.BIN` に結合
 
 ## API仕様
 [API.md](https://github.com/suzukiplan/vgs2/blob/master/API.md) を参照してください。
