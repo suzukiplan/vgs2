@@ -39,19 +39,28 @@ VGSでは、グラフィックス、効果音、音楽、任意データ（ゲ�
 
 #### GSLOT (Graphics)
 - `GSLOT000.bmp` 〜 `GSLOT255.bmp` というファイル名で `romdata` ディレクトリに配置します
+- ファイル名の `000` 〜 `255` は `vgs2_putBG関数` や `vgs2_putSP関数` で指定する `slot番号(n)` に対応します
 - `GSLOTxxx.bmp` は 8bitカラー(256色) かつ 256 x 256 ピクセル以下のbitmap形式にする必要があります
 - 新しい `GSLOTxxx.bmp` を追加する場合, `romdata/makefile` ファイルを編集してください
 
 #### ESLOT (Sound Effect)
 - `ESLOT000.wav` 〜 `ESLOT255.wav` というファイル名で `romdata` ディレクトリに配置します
+- ファイル名の `000` 〜 `255` は `vgs2_eff関数` や `vgs2_effstop関数` で指定する `slot番号(n)` に対応します
 - `ESLOTxxx.wav` は 22050Hz, 16bit, 1ch(mono) の wav形式でなければなりません
 - 新しい `ESLOTxxx.wav` を追加する場合, `romdata/makefile` ファイルを編集してください
 
 #### BSLOT (BGM)
 - `BSLOT000.mml` 〜 `BSLOT255.mml` というファイル名で `romdata` ディレクトリに配置します
+- ファイル名の `000` 〜 `255` は `vgs2_bplay関数` で指定する `slot番号(n)` に対応します
 - `BSLOT000.mml` は VGS独自形式の Music Macro Language です
 - MMLの書き方は[MML.md](https://github.com/suzukiplan/vgs2/blob/master/MML.md)を参照してください
 - 新しい `BSLOTxxx.mml` を追加する場合, `romdata/makefile` ファイルを編集してください
+
+#### DSLOT (Data)
+- `DSLOT000.DAT` 〜 `DSLOT255.dat` というファイル名で `romdata` ディレクトリに配置します
+- ファイル名の `000` 〜 `255` は `vgs2_getdata関数` で指定する `slot番号(n)` に対応します
+- DSLOTのファイル内容は不問です
+- マップデータ や キャラクタデータ など、任意形式のデータを VGSアプリ で用いる時に使います
 
 #### romdata/makefile
 `romdata/makefile` では以下の手続きを実行しています。
