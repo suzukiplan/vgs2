@@ -58,6 +58,7 @@ void vgsint_setdir(const char* dir);
     NSString* fullPath;
     fullPath=[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"romdata.bin"];
     if(vgsint_init([fullPath UTF8String])) {
+        NSLog("ERROR: romdata.bin may not placed in the project! please confirm.");
         _exit(-1);
     }
     // set vram window
