@@ -137,7 +137,7 @@ int main(int argc,char* argv[])
 	printf("Created surface: %dx%d\n",surface->w,surface->h);
 
 	/* Initialize sound system */
-	if(sound_init()) {
+	if(init_sound()) {
 		fprintf(stderr,"Could not create the sound thread.\n");
 		return 1;
 	}
