@@ -141,7 +141,7 @@ RELOAD:
     }
     
     /* terminate procedure */
-	term_sound();
+    term_sound();
     bfree_direct(0);
     
     return 0;
