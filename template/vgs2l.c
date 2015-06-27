@@ -1,3 +1,10 @@
+/* (C)2015, SUZUKI PLAN.
+ *----------------------------------------------------------------------------
+ * Description: VGS mk-II SR - emulator
+ *    Platform: Linux
+ *      Author: Yoji Suzuki (SUZUKI PLAN)
+ *----------------------------------------------------------------------------
+ */
 #include <pthread.h>
 #include <unistd.h>
 #include <errno.h>
