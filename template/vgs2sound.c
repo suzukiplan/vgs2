@@ -1,7 +1,7 @@
 /* (C)2015, SUZUKI PLAN.
  *----------------------------------------------------------------------------
- * Description: VGS mk-II SR - emulator / sound system
- *    Platform: iOS and Mac OS X
+ * Description: VGS mk-II SR - sound system abstraction layer for UNIX
+ *    Platform: Android, Linux, iOS and Mac OS X
  *      Author: Yoji Suzuki (SUZUKI PLAN)
  *----------------------------------------------------------------------------
  */
@@ -9,7 +9,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#if defined(__linux__)
+#if defined(__ANDROID__)
+#   include <SLES/OpenSLES.h>
+#   include <SLES/OpenSLES_Android.h>
+#elif defined(__linux__)
 #   include <alsa/asoundlib.h>
 #elif defined(__APPLE__)
 #   include <OpenAL/al.h>
@@ -27,8 +30,21 @@
 #define SAMPLE_BITS	AL_FORMAT_MONO16	/* redefine sampling bits */
 #endif
 
+#ifdef __ANDROID__
+static pthread_mutex_t LCKOBJ2=PTHREAD_MUTEX_INITIALIZER;
+static SLObjectItf g_slEngObj=NULL;
+static SLEngineItf g_slEng;
+static SLObjectItf g_slMixObj=NULL;
+static SLEnvironmentalReverbItf g_slRev;
+static const SLEnvironmentalReverbSettings g_slRevSet=SL_I3DL2_ENVIRONMENT_PRESET_DEFAULT;
+static SLObjectItf g_slPlayObj=NULL;
+static SLPlayItf g_slPlay;
+static SLAndroidSimpleBufferQueueItf g_slBufQ;
+static short g_sndBuf[SAMPLE_BUFS/2];
+#else
 static int STALIVE=1;
 static pthread_t TID;
+#endif
 
 #ifdef __APPLE__
 static ALCdevice* sndDev;
@@ -40,11 +56,163 @@ typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid, ALenum
 static alBufferDataStaticProcPtr alBufferDataStaticProc;
 #endif
 
+#ifndef __ANDROID__
 static void* sound_thread(void* args);
+#endif
 
+#ifdef __ANDROID__
 /*
  *-----------------------------------------------------------------------------
- * Initialize sound system
+ * Initialize sound system of the OpenSL/ES(Android)
+ *-----------------------------------------------------------------------------
+ */
+static void lock2()
+{
+    pthread_mutex_lock(&LCKOBJ2);
+}
+
+static void unlock2()
+{
+    pthread_mutex_unlock(&LCKOBJ2);
+}
+
+/* buffering (callback) */
+static void cbSound(SLAndroidSimpleBufferQueueItf bq, void *context)
+{
+    lock2();
+    if(g_slBufQ) {
+        sndbuf((char*)g_sndBuf,sizeof(g_sndBuf));
+        (*g_slBufQ)->Enqueue(g_slBufQ,g_sndBuf,sizeof(g_sndBuf));
+    }
+    unlock2();
+}
+
+/* initialize OpenSL/ES phase 2 */
+static int init_soundPh2()
+{
+    SLresult res;
+    SLDataFormat_PCM format_pcm = {
+        SL_DATAFORMAT_PCM
+        ,1								/* 1ch */
+        ,SL_SAMPLINGRATE_22_05			/* 22050Hz */
+        ,SL_PCMSAMPLEFORMAT_FIXED_16	/* 16bit */
+        ,SL_PCMSAMPLEFORMAT_FIXED_16	/* 16bit */
+        ,SL_SPEAKER_FRONT_CENTER		/* center */
+        ,SL_BYTEORDER_LITTLEENDIAN		/* little-endian */
+    };
+    SLDataLocator_AndroidSimpleBufferQueue loc_bufq = {
+        SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE
+        ,2
+    };
+    SLDataSource aSrc = {&loc_bufq, &format_pcm};
+    SLDataLocator_OutputMix loc_outmix={SL_DATALOCATOR_OUTPUTMIX,g_slMixObj};
+    SLDataSink aSnk = {&loc_outmix, NULL};
+    const SLInterfaceID ids[2] = {SL_IID_ANDROIDSIMPLEBUFFERQUEUE, SL_IID_EFFECTSEND};
+    const SLboolean req[2] = {SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE};
+    
+    res=(*g_slEng)->CreateAudioPlayer(g_slEng,&g_slPlayObj,&aSrc,&aSnk,2,ids,req);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"CreateAudioPlayer error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slPlayObj)->Realize(g_slPlayObj,SL_BOOLEAN_FALSE);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"Realize(Player) error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slPlayObj)->GetInterface(g_slPlayObj,SL_IID_PLAY,&g_slPlay);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"GetInterface(Player) error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slPlayObj)->GetInterface(g_slPlayObj,SL_IID_ANDROIDSIMPLEBUFFERQUEUE,&g_slBufQ);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"GetInterface(BufQ) error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slBufQ)->RegisterCallback(g_slBufQ,cbSound,NULL);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"RegisterCallback error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slPlay)->SetPlayState(g_slPlay,SL_PLAYSTATE_PLAYING);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"SetPlayState error: result=%d",(int)res);
+        return -1;
+    }
+    
+    memset(g_sndBuf,0,sizeof(g_sndBuf));
+    res=(*g_slBufQ)->Enqueue(g_slBufQ,g_sndBuf,sizeof(g_sndBuf));
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"Enqueue(1st) error: result=%d",(int)res);
+        return -1;
+    }
+    return 0;
+}
+
+/* initialize OpenSL/ES phase 1 */
+int init_sound()
+{
+    SLresult res;
+    const SLInterfaceID ids[1]={SL_IID_ENVIRONMENTALREVERB};
+    const SLboolean req[1]={SL_BOOLEAN_FALSE};
+    
+    res=slCreateEngine(&g_slEngObj,0,NULL,0,NULL,NULL);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"slCreateEngine error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slEngObj)->Realize(g_slEngObj,SL_BOOLEAN_FALSE);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"Realize(Engine) error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slEngObj)->GetInterface(g_slEngObj,SL_IID_ENGINE,&g_slEng);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"GetInterface(Engine) error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slEng)->CreateOutputMix(g_slEng,&g_slMixObj,1,ids,req);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"CreateOutputMix error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slMixObj)->Realize(g_slMixObj,SL_BOOLEAN_FALSE);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"Realize(MixObj) error: result=%d",(int)res);
+        return -1;
+    }
+    
+    res=(*g_slMixObj)->GetInterface(g_slMixObj,SL_IID_ENVIRONMENTALREVERB,&g_slRev);
+    if(SL_RESULT_SUCCESS!=res) {
+        putlog(__FILE__,__LINE__,"GetInterface(Reverb) error: result=%d (continue)",(int)res);
+    } else {
+        res=(*g_slRev)->SetEnvironmentalReverbProperties(g_slRev,&g_slRevSet);
+        if(SL_RESULT_SUCCESS!=res) {
+            putlog(__FILE__,__LINE__,"SetEnvironmentalReverbProperties(default) error: result=%d (continue)",(int)res);
+        }
+    }
+    
+    if(init_soundPh2()) {
+        return -1;
+    }
+    putlog(__FILE__,__LINE__,"GameDaddy sound system has initialized.");
+    return 0;
+}
+
+#else
+/*
+ *-----------------------------------------------------------------------------
+ * Initialize sound system of the ALSA(Linux) or OpenAL(iOS and Mac OS X)
  *-----------------------------------------------------------------------------
  */
 int init_sound()
@@ -78,6 +246,7 @@ int init_sound()
     
     return 0;
 }
+#endif
 
 /*
  *-----------------------------------------------------------------------------
@@ -86,6 +255,39 @@ int init_sound()
  */
 void term_sound()
 {
+#ifdef __ANDROID__
+    SLresult res;
+    lock2();
+    if(g_slBufQ) {
+        res=(*g_slBufQ)->Clear(g_slBufQ);
+        if(SL_RESULT_SUCCESS!=res) {
+            putlog(__FILE__,__LINE__,"Clear error: result=%d",(int)res);
+        }
+    }
+    if(g_slPlay) {
+        res=(*g_slPlay)->SetPlayState(g_slPlay,SL_PLAYSTATE_STOPPED);
+        if(SL_RESULT_SUCCESS!=res) {
+            putlog(__FILE__,__LINE__,"SetPlayState error: result=%d",(int)res);
+        }
+    }
+    g_slBufQ=NULL;
+    unlock2();
+    
+    if(g_slPlayObj) {
+        (*g_slPlayObj)->Destroy(g_slPlayObj);
+        g_slPlayObj=NULL;
+    }
+    
+    if(g_slMixObj) {
+        (*g_slMixObj)->Destroy(g_slMixObj);
+        g_slMixObj=NULL;
+    }
+    
+    if(g_slEngObj) {
+        (*g_slEngObj)->Destroy(g_slEngObj);
+        g_slEngObj=NULL;
+    }
+#else
     STALIVE=0;
     pthread_join(TID,NULL);
 #ifdef __APPLE__
@@ -94,6 +296,7 @@ void term_sound()
     sndCtx=NULL;
     sndDev=NULL;
 #endif
+#endif
 }
 
 /*
@@ -101,6 +304,7 @@ void term_sound()
  * sound ctrl thread procedure
  *-----------------------------------------------------------------------------
  */
+#ifndef __ANDROID__
 static void* sound_thread(void* args)
 {
 #if defined(__linux__)
@@ -204,3 +408,5 @@ static void* sound_thread(void* args)
 #endif
     return NULL;
 }
+#endif
+
