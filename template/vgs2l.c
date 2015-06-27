@@ -12,13 +12,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <SDL/SDL.h>
-#include <alsa/asoundlib.h>
 #include "vgs2.h"
 
 static unsigned short ADPAL[256];
 static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
-static int STALIVE=1;
 
 static void msleep(int msec)
 {
@@ -26,78 +24,6 @@ static void msleep(int msec)
 	tv.tv_sec=0;
 	tv.tv_usec=msec*1000;
 	select(0,NULL,NULL,NULL,&tv);
-}
-
-static void* sound_thread(void* args)
-{
-	int i;
-	snd_pcm_t* snd;
-	snd_pcm_hw_params_t* hwp;
-	int rate=SAMPLE_RATE;
-	int periods=3;
-	short buf[SAMPLE_BUFS/2];
-	puts("Started sound thread.");
-	snd_pcm_hw_params_alloca(&hwp);
-	i=snd_pcm_open(&snd,"default",SND_PCM_STREAM_PLAYBACK,0);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_open error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_any(snd,hwp);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_any error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_format(snd,hwp,SND_PCM_FORMAT_S16_LE);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_format error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_rate_near(snd,hwp,&rate,0);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_rate_near error: %d\n",i);
-		return NULL;
-	}
-	if(rate!=SAMPLE_RATE) {
-		fprintf(stderr,"This sound hawdware does not supports %dHz mode.\n",SAMPLE_RATE);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_channels(snd,hwp,SAMPLE_CH);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_channels error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_periods(snd,hwp,periods,0);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_periods error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params_set_buffer_size(snd,hwp,(periods*sizeof(buf))/4);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params_set_buffer_size error: %d\n",i);
-		return NULL;
-	}
-	i=snd_pcm_hw_params(snd,hwp);
-	if(i<0) {
-		fprintf(stderr,"snd_pcm_hw_params error: %d\n",i);
-		return NULL;
-	}
-	while(STALIVE) {
-		sndbuf((char*)buf,sizeof(buf));
-		while(STALIVE) {
-			i=snd_pcm_writei(snd,buf,sizeof(buf)/2);
-			if(i<0) {
-				snd_pcm_prepare(snd);
-				puts("Buffer underrun");
-			} else {
-				break;
-			}
-		}
-	}
-	puts("Sound thread now be ended.");
-	snd_pcm_drain(snd);
-	snd_pcm_close(snd);
-	return NULL;
 }
 
 int main(int argc,char* argv[])
@@ -211,8 +137,7 @@ int main(int argc,char* argv[])
 	printf("Created surface: %dx%d\n",surface->w,surface->h);
 
 	/* Initialize sound system */
-	i=pthread_create(&tid,NULL,sound_thread,NULL);
-	if(0!=i) {
+	if(sound_init()) {
 		fprintf(stderr,"Could not create the sound thread.\n");
 		return 1;
 	}
@@ -327,8 +252,7 @@ int main(int argc,char* argv[])
 	}
 	vgs2_term();
 	SDL_Quit();
-	STALIVE=0;
-	pthread_join(tid,NULL);
+	term_sound();
 	puts("End.");
 	return 0;
 }
