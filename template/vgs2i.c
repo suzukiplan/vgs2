@@ -6,10 +6,6 @@
  *----------------------------------------------------------------------------
  */
 #include <pthread.h>
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#include <CoreAudio/CoreAudioTypes.h>
-#include <AudioUnit/AudioUnit.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,38 +13,15 @@
 #include <sys/stat.h>
 #include "vgs2.h"
 
-#define kOutputBus 0
-#define kInputBus 1
-#define BUFNUM 2
-
-#undef SAMPLE_BITS
-#define SAMPLE_BITS	AL_FORMAT_MONO16	/* redefine sampling bits */
-
 /*
  *-----------------------------------------------------------------------------
  * Variables
  *-----------------------------------------------------------------------------
  */
 static pthread_mutex_t sndLock;
-static pthread_t sndTid;
-static ALCdevice* sndDev;
-static ALCcontext* sndCtx;
-static ALuint sndABuf;
-static ALuint sndASrc;
-static char SBUF[SAMPLE_BUFS];
 unsigned short ADPAL[256];
 static char pathbuf[4096];
 int isIphone5;
-
-/*
- *-----------------------------------------------------------------------------
- * Functions
- *-----------------------------------------------------------------------------
- */
-static int init_openAL();
-static void* sound_thread(void* args);
-typedef ALvoid AL_APIENTRY (*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
-static alBufferDataStaticProcPtr alBufferDataStaticProc;
 
 /*
  *-----------------------------------------------------------------------------
@@ -67,7 +40,6 @@ int vgsint_init(const char* rompath)
     unsigned char s[4];
     char path[80];
     struct stat stbuf;
-    struct sched_param param;
 
     /* initialize mutex */
     pthread_mutex_init(&sndLock,NULL);
@@ -163,92 +135,11 @@ int vgsint_init(const char* rompath)
 	make_pallet();
 
 	/* initialize OpenAL */
-	if(0!=init_openAL()) {
+	if(0!=init_sound()) {
 		return -1;
 	}
 
-	/* start sound ctrl thread */
-	pthread_create(&sndTid, NULL, sound_thread, NULL);
-	memset(&param,0,sizeof(param));
-	param.sched_priority = 46;
-	pthread_setschedparam(sndTid,SCHED_OTHER,&param);
 	return 0;
-}
-
-/*
- *-----------------------------------------------------------------------------
- * Initialize OpenAL
- *-----------------------------------------------------------------------------
- */
-static int init_openAL()
-{
-    sndDev=alcOpenDevice(NULL);
-    if(NULL==sndDev) {
-        return -1;
-    }
-    sndCtx=alcCreateContext(sndDev, NULL);
-    if(NULL==sndCtx) {
-        return -1;
-    }
-    if(!alcMakeContextCurrent(sndCtx)) {
-        return -1;
-    }
-    alBufferDataStaticProc=(alBufferDataStaticProcPtr)alcGetProcAddress(nil,(const ALCchar *)"alBufferDataStatic");
-    return 0;
-}
-
-/*
- *-----------------------------------------------------------------------------
- * sound ctrl thread procedure
- *-----------------------------------------------------------------------------
- */
-static void* sound_thread(void* args)
-{
-    ALint st;
-    alGenSources(1,&sndASrc);
-    memset(SBUF,0,SAMPLE_BUFS);
-    while(1) {
-        alGetSourcei(sndASrc, AL_BUFFERS_QUEUED, &st);
-        if (st < BUFNUM) {
-            alGenBuffers(1, &sndABuf);
-        } else {
-            alGetSourcei(sndASrc, AL_SOURCE_STATE, &st);
-            if (st != AL_PLAYING) {
-                alSourcePlay(sndASrc);
-            }
-            while (alGetSourcei(sndASrc, AL_BUFFERS_PROCESSED, &st), st == 0) {
-                usleep(1000);
-            }
-            alSourceUnqueueBuffers(sndASrc, 1, &sndABuf);
-            alDeleteBuffers(1,&sndABuf);
-            alGenBuffers(1, &sndABuf);
-        }
-        sndbuf(SBUF,SAMPLE_BUFS);
-        alBufferData(sndABuf,SAMPLE_BITS,SBUF,SAMPLE_BUFS,SAMPLE_RATE);
-        alSourceQueueBuffers(sndASrc, 1, &sndABuf);
-    }
-    return NULL;
-}
-
-
-/*
- *-----------------------------------------------------------------------------
- * inter thread lock
- *-----------------------------------------------------------------------------
- */
-void lock()
-{
-    pthread_mutex_lock(&sndLock);
-}
-
-/*
- *-----------------------------------------------------------------------------
- * unlock inter thread lock
- *-----------------------------------------------------------------------------
- */
-void unlock()
-{
-    pthread_mutex_unlock(&sndLock);
 }
 
 /*
@@ -321,4 +212,24 @@ void vgs2_deleteAds()
 void vgs2_showAds()
 {
     ;
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ * inter thread lock
+ *-----------------------------------------------------------------------------
+ */
+void lock()
+{
+    pthread_mutex_lock(&sndLock);
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ * unlock inter thread lock
+ *-----------------------------------------------------------------------------
+ */
+void unlock()
+{
+    pthread_mutex_unlock(&sndLock);
 }

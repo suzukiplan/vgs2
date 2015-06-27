@@ -6,6 +6,7 @@ CXX=/usr/bin/g++
 
 OBJS=\
 	$(RELDIR)/vgs2x.o\
+	$(RELDIR)/vgs2sound.o\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
 	$(RELDIR)/maincxx.o\
@@ -40,6 +41,9 @@ $(RELDIR)/$(PROJECT): $(OBJS)
 	$(CC) -o $(RELDIR)/$(PROJECT) $(OBJS) $(LIBS)
 
 $(RELDIR)/vgs2x.o: $(SRCDIR)/vgs2x.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgs2sound.o: $(SRCDIR)/vgs2sound.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c

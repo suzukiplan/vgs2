@@ -22,7 +22,7 @@ extern "C" {
  * definition
  *----------------------------------------------------------------------------
  */
-#define APPNAME "{Project}"
+#define APPNAME "Test"
 
 #define XSIZE 160
 #define YSIZE 200
@@ -158,12 +158,12 @@ void eff_flag(struct _EFF* e,unsigned int f);
 void eff_pos(struct _EFF* e,unsigned int f);
 void lock();
 void unlock();
-void lock2();
-void unlock2();
 void make_pallet();
 int gload(unsigned char n,const char* name);
 int eload(unsigned char n,const char* name);
 int bload(unsigned char n,const char* name);
+int init_sound();
+void term_sound();
 
 /*
  *----------------------------------------------------------------------------
