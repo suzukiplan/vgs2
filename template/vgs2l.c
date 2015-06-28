@@ -188,10 +188,10 @@ int main(int argc,char* argv[])
 			usleep(100000);
 			continue;
 		}
+		ptr=(unsigned short*)surface->pixels;
+		vp=0;
+		pp=0;
 		if(_interlace) {
-			ptr=(unsigned short*)surface->pixels;
-			vp=0;
-			pp=0;
 			for(vy=0;vy<YSIZE;vy++) {
 				for(vx=0;vx<XSIZE;vx++) {
 					if(_vram.sp[vp]) {
