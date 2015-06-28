@@ -36,7 +36,7 @@ int main(int argc,char* argv[])
 	char path[16];
 	int cn,pn,bn;
 	unsigned short* ptr;
-	int vx,vy,px,py,vp,pp;
+	int vx,vy,vp,pp;
 	unsigned int n;
 	unsigned int ticks;
 	int mx;
@@ -188,12 +188,12 @@ int main(int argc,char* argv[])
 			usleep(100000);
 			continue;
 		}
+		ptr=(unsigned short*)surface->pixels;
+		vp=0;
+		pp=0;
 		if(_interlace) {
-			ptr=(unsigned short*)surface->pixels;
-			vp=0;
-			pp=0;
-			for(vy=0,py=0;vy<YSIZE;vy++,py+=2) {
-				for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
+			for(vy=0;vy<YSIZE;vy++) {
+				for(vx=0;vx<XSIZE;vx++) {
 					if(_vram.sp[vp]) {
 						ptr[pp]=ADPAL[_vram.sp[vp]];
 						ptr[pp+1]=ADPAL[_vram.sp[vp]];
@@ -212,8 +212,8 @@ int main(int argc,char* argv[])
 				pp+=320;
 			}
 		} else {
-			for(vy=0,py=0;vy<YSIZE;vy++,py+=2) {
-				for(vx=0,px=0;vx<XSIZE;vx++,px+=2) {
+			for(vy=0;vy<YSIZE;vy++) {
+				for(vx=0;vx<XSIZE;vx++) {
 					if(_vram.sp[vp]) {
 						ptr[pp]=ADPAL[_vram.sp[vp]];
 						ptr[pp+1]=ADPAL[_vram.sp[vp]];
