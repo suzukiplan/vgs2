@@ -4,6 +4,7 @@ RELDIR=.\Release
 
 OBJS=\
 	$(RELDIR)\vgs2w.obj\
+	$(RELDIR)\vgs2soundw.obj\
 	$(RELDIR)\vgs2api.obj\
 	$(RELDIR)\vgs2tone.obj\
 	$(RELDIR)\game.obj\
@@ -59,6 +60,10 @@ $(RELDIR)\$(PROJECT).EXE: $(OBJS)
 	KERNEL32.lib
 
 T=vgs2w
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).cpp
+	CL $(CFLAG) $(SRCDIR)\$(T).cpp
+
+T=vgs2soundw
 $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).cpp
 	CL $(CFLAG) $(SRCDIR)\$(T).cpp
 
