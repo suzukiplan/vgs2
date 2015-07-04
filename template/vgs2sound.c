@@ -30,6 +30,8 @@
 #define SAMPLE_BITS	AL_FORMAT_MONO16	/* redefine sampling bits */
 #endif
 
+static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
+
 #ifdef __ANDROID__
 static pthread_mutex_t LCKOBJ2=PTHREAD_MUTEX_INITIALIZER;
 static SLObjectItf g_slEngObj=NULL;
@@ -60,12 +62,22 @@ static alBufferDataStaticProcPtr alBufferDataStaticProc;
 static void* sound_thread(void* args);
 #endif
 
-#ifdef __ANDROID__
 /*
  *-----------------------------------------------------------------------------
- * Initialize sound system of the OpenSL/ES(Android)
+ * lock / unlock
  *-----------------------------------------------------------------------------
  */
+void lock()
+{
+    pthread_mutex_lock(&LCKOBJ);
+}
+
+void unlock()
+{
+    pthread_mutex_unlock(&LCKOBJ);
+}
+
+#ifdef __ANDROID__
 static void lock2()
 {
     pthread_mutex_lock(&LCKOBJ2);
@@ -75,6 +87,14 @@ static void unlock2()
 {
     pthread_mutex_unlock(&LCKOBJ2);
 }
+#endif
+
+#ifdef __ANDROID__
+/*
+ *-----------------------------------------------------------------------------
+ * Initialize sound system of the OpenSL/ES(Android)
+ *-----------------------------------------------------------------------------
+ */
 
 /* buffering (callback) */
 static void cbSound(SLAndroidSimpleBufferQueueItf bq, void *context)

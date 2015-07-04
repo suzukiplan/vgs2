@@ -15,7 +15,6 @@
 #include "vgs2.h"
 
 static unsigned short ADPAL[256];
-static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
 
 static void msleep(int msec)
@@ -291,16 +290,6 @@ void putlog(const char* fn,int ln,const char* msg,...)
     vsprintf(buf+strlen(buf),msg,args);
     va_end(args);
     fprintf(stderr,"%s",buf);
-}
-
-void lock()
-{
-    pthread_mutex_lock(&LCKOBJ);
-}
-
-void unlock()
-{
-    pthread_mutex_unlock(&LCKOBJ);
 }
 
 void make_pallet()

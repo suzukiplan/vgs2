@@ -84,8 +84,7 @@ Android版のJavaパッケージ名は、`com.company.Project` になる。
 
 ## vgs2play
 #### 概要
-- BGMファイルをコマンドライン上で再生する。
-- `Linux` and `Mac OS X` のみサポート
+BGMファイルをコマンドライン上で再生します。
 
 #### usage
 ```bash
@@ -95,7 +94,7 @@ $ vgs2play BGM-file [mm:ss]
 - [mm:ss]: _start playing time (optional)_
 
 #### internal commands
-`vgs2play` で演奏を開始すると 内部コマンド で __演奏の制御__ ができる
+`vgs2play` で演奏を開始すると 内部コマンド で __演奏の制御__ ができます。
 
 ##### 時間指定
 ```cmd
@@ -108,24 +107,19 @@ Command : j { sec | min:sec }
 Command : k+ 数字
 Command : k- 数字
 ```
-特に実用性はないかもしれないが楽しそう。
-（VGSに移調APIがあるので割と簡単に作れる）
 
-##### 特定チャネルのミュート
+##### 特定チャネルのミュート・ミュート解除
 ```cmd
-Command : mチャネル { on | off }
+Command : mチャネル ch...
 ```
-特定パートのみチェックしたい時とかに使いたい。
 
 ##### ポーズ/再開
 ```cmd
 Command : p
 ```
-基本ですね。
 
 ##### リロード
 ```cmd
 Command : r
 ```
-BGMファイル自体を読み直し、ミュートや移調の設定をクリアする。
-割と重要（作業時）
+BGMファイル自体を読み直し、ミュートや移調の設定をクリア

@@ -20,7 +20,6 @@
  *----------------------------------------------------------------------------
  */
 static unsigned short ADPAL[256];
-static pthread_mutex_t LCKOBJ=PTHREAD_MUTEX_INITIALIZER;
 static int REQ;
 
 /*
@@ -294,26 +293,6 @@ void putlog(const char* fn,int ln,const char* msg,...)
 	vsprintf(buf+strlen(buf),msg,args);
 	va_end(args);
 	__android_log_write(ANDROID_LOG_INFO,"GameDaddy",buf);
-}
-
-/*
- *----------------------------------------------------------------------------
- * inter thread lock
- *----------------------------------------------------------------------------
- */
-void lock()
-{
-	pthread_mutex_lock(&LCKOBJ);
-}
-
-/*
- *----------------------------------------------------------------------------
- * inter thread unlock
- *----------------------------------------------------------------------------
- */
-void unlock()
-{
-	pthread_mutex_unlock(&LCKOBJ);
 }
 
 /*
