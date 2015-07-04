@@ -54,11 +54,7 @@ int main(int argc,char* argv[])
     }
     
     /* intialize sound system */
-#ifdef _WIN32
-    if(init_sound(NULL)) {
-#else
-    if(init_sound()) {
-#endif
+    if(init_sound_cli()) {
         fprintf(stderr,"Could not initialize the sound system.\n");
         return 2;
     }

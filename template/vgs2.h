@@ -162,6 +162,7 @@ void make_pallet();
 int gload(unsigned char n,const char* name);
 int eload(unsigned char n,const char* name);
 int bload(unsigned char n,const char* name);
+int init_sound_cli();
 #ifdef _WIN32
 int init_sound(HWND);
 #else
