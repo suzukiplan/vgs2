@@ -457,6 +457,22 @@ int bload_direct(unsigned char n,const char* name)
 
 /*
  *----------------------------------------------------------------------------
+ * load a BGM from memory (direct)
+ *----------------------------------------------------------------------------
+ */
+int bload_direct2(unsigned char n,const char* src,int size)
+{
+	_note[n]=(char*)malloc(size);
+	if(NULL==_note[n]) {
+		return -1;
+	}
+	memcpy(_note[n],src,size);
+	_notelen[n]=(uLong)size;
+	return 0;
+}
+
+/*
+ *----------------------------------------------------------------------------
  * free a slot (direct)
  *----------------------------------------------------------------------------
  */
@@ -464,8 +480,10 @@ void bfree_direct(unsigned char n)
 {
 	vgs2_bstop();
 	lock();
-	free(_note[n]);
-	_notelen[n]=0;
+	if(_note[n]) {
+		free(_note[n]);
+		_notelen[n]=0;
+	}
 	unlock();
 }
 
