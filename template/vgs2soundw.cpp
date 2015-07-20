@@ -108,6 +108,7 @@ extern "C" int init_sound(HWND hWnd)
 	memset(&desc,0,sizeof(desc));
 	desc.dwSize=(DWORD)sizeof(desc);
 	desc.dwFlags=DSBCAPS_CTRLPOSITIONNOTIFY;
+	desc.dwFlags|=DSBCAPS_GLOBALFOCUS;
 	desc.dwBufferBytes=SAMPLE_BUFS;
 	desc.lpwfxFormat=&wFmt;
 	desc.guid3DAlgorithm=GUID_NULL;
