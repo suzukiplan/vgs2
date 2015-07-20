@@ -86,6 +86,7 @@ RELOAD:
         puts("- j{sec|mm:ss} : jump");
         puts("- k{+up|-down} : key change");
         puts("- m[ch]...     : mute channel");
+        puts("- f            : fadeout");
         puts("- r            : reload");
         puts("- q            : quit playing");
         puts("");
@@ -132,6 +133,8 @@ RELOAD:
         } else if(buf[0]=='r') {
             bfree_direct(0);
             goto RELOAD;
+        } else if(buf[0]=='f') {
+            vgs2_bfade2();
         } else if(buf[0]=='q') {
             break;
         }

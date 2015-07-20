@@ -280,6 +280,7 @@ int vgs2_bchk(unsigned char n);
 void vgs2_bstop();
 void vgs2_bresume();
 void vgs2_bfade(unsigned int hz);
+void vgs2_bfade2();
 void vgs2_bkey(int n);
 void vgs2_bkoff(int cn,int off);
 void vgs2_bjump(int sec);
