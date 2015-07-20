@@ -148,6 +148,10 @@ void sndbuf(char* buf,size_t size)
 							wav+=*bp;
 							if(32767<wav) wav=32767;
 							else if(wav<-32768) wav=-32768;
+							if(_psg.fade2) {
+								wav*=100-_psg.fade2;
+								wav/=100;
+							}
 							(*bp)=(short)wav;
 							_psg.wav[j]=pw;
 						}
@@ -172,6 +176,13 @@ void sndbuf(char* buf,size_t size)
 					}
 				}
 				/* fade out */
+				if(_psg.fade2 && _psg.fade2<100) {
+					_psg.fcnt++;
+					if(1023<_psg.fcnt) {
+						_psg.fcnt=0;
+						_psg.fade2++;
+					}
+				}
 				if(_psg.fade) {
 					_psg.fcnt++;
 					if(_psg.fade<_psg.fcnt) {
@@ -1420,6 +1431,18 @@ void vgs2_bfade(unsigned int hz)
 {
 	lock();
 	_psg.fade=hz;
+	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * fade out the BGM (2)
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bfade2()
+{
+	lock();
+	_psg.fade2=1;
 	unlock();
 }
 
