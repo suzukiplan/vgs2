@@ -14,6 +14,7 @@ VGS-SALを用いて作成したPSG音源のサンプルです。
 
 ### 実践編1（VGS-SAL）
 - [ソフトシンセの作り方(6) - 音を鳴らす方法](http://suzukiplan.blogspot.jp/2015/08/6.html)
+- [ソフトシンセの作り方(7) - VGS-SAL](http://suzukiplan.blogspot.jp/2015/08/7-vgs-sal.html)
 
 (準備中)
 
