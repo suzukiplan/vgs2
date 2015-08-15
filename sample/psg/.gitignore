@@ -1,0 +1,11 @@
+psg-test-001
+psg-test-002
+psg-test-003
+psg-test-004
+psg-test-005
+*.o
+*.obj
+*.exe
+*.swp
+*.bak
+
