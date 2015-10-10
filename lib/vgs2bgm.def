@@ -1,0 +1,17 @@
+EXPORTS
+	bgmInitWithHwnd
+	bgmInit
+	bgmTerm
+	bgmLoad
+	bgmFree
+	bgmIsExit
+	bgmPlay
+	bgmGetTime
+	bgmStop
+	bgmResume
+	bgmFadeout
+	bgmJump
+	bgmMuteChannel
+	bgmChangeKey
+	bgmMaskChangeKey
+
