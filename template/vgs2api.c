@@ -1536,6 +1536,8 @@ void vgs2_bmute(int ch)
  */
 void vgs2_bmvol(int rate)
 {
+	if(rate<0) rate=0;
+	else if(100<rate) rate=100;
 	_psg.volumeRate=rate;
 }
 
@@ -1546,6 +1548,9 @@ void vgs2_bmvol(int rate)
  */
 void vgs2_bcvol(int ch,int rate)
 {
+	if(ch<0 || 5<ch) return;
+	if(rate<0) rate=0;
+	else if(100<rate) rate=100;
 	_psg.ch[ch].volumeRate=rate;
 }
 
