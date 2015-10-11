@@ -146,8 +146,8 @@ void sndbuf(char* buf,size_t size)
 							bp=(short*)(&buf[i]);
 							wav=(wav*pw/100);
 							if(_psg.ch[j].volumeRate!=100) {
-								wav*=_psg.ch[j].volumeRate;
-								wav/=100;
+								wav*=100;
+								wav/=_psg.ch[j].volumeRate;
 							}
 							wav+=*bp;
 							if(32767<wav) wav=32767;
@@ -173,8 +173,8 @@ void sndbuf(char* buf,size_t size)
 				}
 				if(_psg.volumeRate!=100) {
 					bp=(short*)(&buf[i]);
-					wav=(*bp)*_psg.volumeRate;
-					wav/=100;
+					wav=(*bp)*100;
+					wav/=_psg.volumeRate;
 					if(32767<wav) wav=32767;
 					else if(wav<-32768) wav=-32768;
 					(*bp)=(short)wav;
@@ -291,6 +291,7 @@ static int getNextNote()
 	if(ret) {
 		_psg.nidx++;
 	}
+	_psg.timeP+=ret;
 	return ret;
 }
 
@@ -1535,8 +1536,6 @@ void vgs2_bmute(int ch)
  */
 void vgs2_bmvol(int rate)
 {
-	if(rate<0) rate=0;
-	else if(100<rate) rate=100;
 	_psg.volumeRate=rate;
 }
 
@@ -1547,9 +1546,6 @@ void vgs2_bmvol(int rate)
  */
 void vgs2_bcvol(int ch,int rate)
 {
-	if(ch<0 || 5<ch) return;
-	if(rate<0) rate=0;
-	else if(100<rate) rate=100;
 	_psg.ch[ch].volumeRate=rate;
 }
 
