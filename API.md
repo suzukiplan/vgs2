@@ -422,7 +422,7 @@ void vgs2_bkoff(int cn,int off);
 void vgs2_bmvol(int rate);
 ```
 > `引数`
-> - rate: ボリューム
+> - rate: ボリューム（0〜100 単位=％）
 
 ### vgs2_bcvol
 > - チャネル毎のボリュームを指定します
@@ -434,4 +434,4 @@ void vgs2_bcvol(int cn,int rate);
 ```
 > `引数`
 > - cn: 変更対象外にするチャネル番号
-> - rate: ボリューム
+> - rate: ボリューム（0〜100 単位=％）
