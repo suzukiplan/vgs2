@@ -23,7 +23,7 @@
 - ビルド（後述）
 
 ## BGM機能だけ使いたい場合（Windowsのみ）
-- VGSのBGM機能だけ抜き出したDLLを [libディレクトリ](https://github.com/suzukiplan/vgs2/tree/master/lib) も提供しているので、そちらをお使いください。
+- VGSのBGM機能だけ抜き出したDLLを [libディレクトリ](https://github.com/suzukiplan/vgs2/tree/master/lib) で提供しているので、そちらをお使いください。
 - このDLLのライセンスは後述のVGS本体のライセンスと同じです
 
 ## ライセンス
