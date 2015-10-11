@@ -21,6 +21,8 @@ void __stdcall bgmJump(int sec);
 void __stdcall bgmMuteChannel(int cn);
 void __stdcall bgmChangeKey(int n);
 void __stdcall bgmMaskChangeKey(int n,int off);
+void __stdcall bgmMasterVolume(int rate);
+void __stdcall bgmChannelVolume(int cn,int rate);
 
 #ifdef __cplusplus
 };

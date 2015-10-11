@@ -83,6 +83,8 @@ RELOAD:
         /* show reference */
         puts("Command Reference:");
         puts("- p            : pause / resume");
+        puts("- v rate       : master volume");
+        puts("- c ch rate    : channel volume");
         puts("- j{sec|mm:ss} : jump");
         puts("- k{+up|-down} : key change");
         puts("- m[ch]...     : mute channel");
@@ -115,6 +117,12 @@ RELOAD:
             } else {
                 vgs2_bresume();
                 isPlaying=1;
+            }
+        } else if(buf[0]=='v') {
+            vgs2_bmvol(atoi(buf+1));
+        } else if(buf[0]=='c') {
+            if(3<=strlen(buf)) {
+                vgs2_bcvol((int)buf[1]-'0',atoi(buf+2));
             }
         } else if(buf[0]=='j') {
             vgs2_bjump(getsec(buf+1));
