@@ -280,6 +280,8 @@ static int getNextNote()
 				break;
 			case NTYPE_JUMP: /* val=address */
 				_psg.nidx=_psg.notes[_psg.nidx].val;
+				_psg.loop++;
+				_psg.timeP=_psg.timeI;
 				break;
 			case NTYPE_LABEL:
 				break;
@@ -1506,6 +1508,7 @@ void vgs2_bjump(int sec)
 	if(NULL==_psg.notes) return;
 	lock();
 	_psg.timeP=0;
+	_psg.loop=0;
 	_psg.nidx=0;
 	while(0<sec) {
 		hz+=getNextNote();	

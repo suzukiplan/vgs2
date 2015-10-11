@@ -60,7 +60,9 @@ __declspec(dllexport) void __stdcall bgmPlay(int slot)
 
 __declspec(dllexport) double __stdcall bgmGetTime()
 {
-	return _psg.timeP / 22050.0;
+	double ret = _psg.timeP / 22050.0;
+	ret += _psg.loop * _psg.timeL;
+	return ret;
 }
 
 double __stdcall bgmGetIntroLength()
