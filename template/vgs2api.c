@@ -145,6 +145,10 @@ void sndbuf(char* buf,size_t size)
 						if(!_psg.ch[j].mute) {
 							bp=(short*)(&buf[i]);
 							wav=(wav*pw/100);
+							if(_psg.ch[j].volumeRate!=100) {
+								wav*=100;
+								wav/=_psg.ch[j].volumeRate;
+							}
 							wav+=*bp;
 							if(32767<wav) wav=32767;
 							else if(wav<-32768) wav=-32768;
@@ -166,6 +170,14 @@ void sndbuf(char* buf,size_t size)
 							}
 						}
 					}
+				}
+				if(_psg.volumeRate!=100) {
+					bp=(short*)(&buf[i]);
+					wav=(*bp)*100;
+					wav/=_psg.volumeRate;
+					if(32767<wav) wav=32767;
+					else if(wav<-32768) wav=-32768;
+					(*bp)=(short)wav;
 				}
 				_psg.waitTime--;
 				if(0==_psg.waitTime) {
@@ -1367,6 +1379,13 @@ void vgs2_bplay(unsigned char n)
 	vgs2_bstop();
 	lock();
 	memset(&_psg,0,sizeof(_psg));
+	_psg.volumeRate=100;
+	_psg.ch[0].volumeRate=100;
+	_psg.ch[1].volumeRate=100;
+	_psg.ch[2].volumeRate=100;
+	_psg.ch[3].volumeRate=100;
+	_psg.ch[4].volumeRate=100;
+	_psg.ch[5].volumeRate=100;
 	_psg.notes=_notebuf;
 	nblen=(uLong)sizeof(_notebuf);
 	uncompress((unsigned char *)_notebuf, &nblen, (const unsigned char*)_note[n], _notelen[n]);
@@ -1507,5 +1526,25 @@ void vgs2_bmute(int ch)
 	lock();
 	_psg.ch[ch].mute=1-_psg.ch[ch].mute;
 	unlock();
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * master volume
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bmvol(int rate)
+{
+	_psg.volumeRate=rate;
+}
+
+/*
+ *----------------------------------------------------------------------------
+ * channel volume
+ *----------------------------------------------------------------------------
+ */
+void vgs2_bcvol(int ch,int rate)
+{
+	_psg.ch[ch].volumeRate=rate;
 }
 

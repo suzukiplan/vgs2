@@ -105,6 +105,18 @@ __declspec(dllexport) void __stdcall bgmMaskChangeKey(int n,int off)
 	vgs2_bkoff(n,off);
 }
 
+__declspec(dllexport) void __stdcall bgmMasterVolume(int rate)
+{
+	if(!_initialized) return;
+	vgs2_bmvol(rate);
+}
+
+__declspec(dllexport) void __stdcall bgmChannelVolume(int cn,int rate)
+{
+	if(!_initialized) return;
+	vgs2_bcvol(cn,rate);
+}
+
 void putlog(const char* fn,int ln,const char* msg,...)
 {
 }

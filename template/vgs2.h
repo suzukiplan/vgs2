@@ -94,6 +94,7 @@ struct _PSGCH {
 	unsigned char toneK;
 	unsigned int pdown;
 	unsigned int pcnt;
+	int volumeRate;
 };
 
 struct _PSG {
@@ -117,6 +118,7 @@ struct _PSG {
 	int addKey[6];
 	int addOff[6];
 	int idxnum;
+	int volumeRate;
 };
 
 struct _TOUCH {
@@ -285,6 +287,8 @@ void vgs2_bkey(int n);
 void vgs2_bkoff(int cn,int off);
 void vgs2_bjump(int sec);
 void vgs2_bmute(int ch);
+void vgs2_bmvol(int rate);
+void vgs2_bcvol(int ch,int rate);
 
 #ifdef __cplusplus
 };
