@@ -22,6 +22,10 @@
 - `vgs2rom` コマンドで ROMDATA.BIN を生成
 - ビルド（後述）
 
+## BGM機能だけ使いたい場合（Windowsのみ）
+- VGSのBGM機能だけ抜き出したDLLを [libディレクトリ](https://github.com/suzukiplan/vgs2/tree/master/lib) も提供しているので、そちらをお使いください。
+- このDLLのライセンスは後述のVGS本体のライセンスと同じです
+
 ## ライセンス
 - 2-Clause BSDライセンスで提供しています
 - [LICENSE.txt](https://github.com/suzukiplan/vgs2/blob/master/LICENSE.txt)を参照してください
