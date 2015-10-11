@@ -14,6 +14,7 @@ void __stdcall bgmFree(int slot);
 int __stdcall bgmIsExit(int slot);
 void __stdcall bgmPlay(int slot);
 double __stdcall bgmGetTime();
+int __stdcall bgmGetLoopCount();
 double __stdcall bgmGetIntroLength();
 double __stdcall bgmGetLoopLength();
 void __stdcall bgmStop();

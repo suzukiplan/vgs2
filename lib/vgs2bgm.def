@@ -7,6 +7,7 @@ EXPORTS
 	bgmIsExit
 	bgmPlay
 	bgmGetTime
+	bgmGetLoopCount
 	bgmGetIntroLength
 	bgmGetLoopLength
 	bgmStop
