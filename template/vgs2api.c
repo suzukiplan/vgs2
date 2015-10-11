@@ -1505,6 +1505,7 @@ void vgs2_bjump(int sec)
 	int hz=0;
 	if(NULL==_psg.notes) return;
 	lock();
+	_psg.timeP=0;
 	_psg.nidx=0;
 	while(0<sec) {
 		hz+=getNextNote();	
