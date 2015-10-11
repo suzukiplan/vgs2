@@ -146,8 +146,8 @@ void sndbuf(char* buf,size_t size)
 							bp=(short*)(&buf[i]);
 							wav=(wav*pw/100);
 							if(_psg.ch[j].volumeRate!=100) {
-								wav*=100;
-								wav/=_psg.ch[j].volumeRate;
+								wav*=_psg.ch[j].volumeRate;
+								wav/=100;
 							}
 							wav+=*bp;
 							if(32767<wav) wav=32767;
@@ -173,8 +173,8 @@ void sndbuf(char* buf,size_t size)
 				}
 				if(_psg.volumeRate!=100) {
 					bp=(short*)(&buf[i]);
-					wav=(*bp)*100;
-					wav/=_psg.volumeRate;
+					wav=(*bp)*_psg.volumeRate;
+					wav/=100;
 					if(32767<wav) wav=32767;
 					else if(wav<-32768) wav=-32768;
 					(*bp)=(short)wav;
