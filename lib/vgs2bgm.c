@@ -58,9 +58,19 @@ __declspec(dllexport) void __stdcall bgmPlay(int slot)
 	vgs2_bplay(slot&0xff);
 }
 
-__declspec(dllexport) int __stdcall bgmGetTime()
+__declspec(dllexport) double __stdcall bgmGetTime()
 {
-	return _psg.timeP / 22050;
+	return _psg.timeP / 22050.0;
+}
+
+double __stdcall bgmGetIntroLength()
+{
+	return _psg.timeI / 22050.0;
+}
+
+double __stdcall bgmGetLoopLength()
+{
+	return _psg.timeL / 22050.0;
 }
 
 __declspec(dllexport) void __stdcall bgmStop()
