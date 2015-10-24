@@ -5,6 +5,7 @@ all:\
 	..\bin\vgs2bmp.exe \
 	..\bin\vgs2mkpj.exe \
 	..\bin\vgs2rom.exe \
+	..\bin\vgs2pack.exe \
 	..\bin\vgs2wav.exe
 
 clean:
@@ -19,6 +20,8 @@ clean:
 	-@del vgs2wav.exe
 	-@del vgs2mml.obj
 	-@del vgs2mml.exe
+	-@del vgs2pack.obj
+	-@del vgs2pack.exe
 
 ..\bin:
 	mkdir ..\bin
@@ -46,6 +49,11 @@ T=vgs2wav
 T=vgs2mml
 ..\bin\$(T).exe: $(T).c
 	CL /MT $(T).c
+	copy $(T).exe ..\bin\$(T).exe
+
+T=vgs2pack
+..\bin\$(T).exe: $(T).c vgs2pack.h ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c ../template/vgs2.h
+	CL /I../template /MT $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2play
