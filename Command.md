@@ -140,4 +140,3 @@ $ vgs2pack base-filename
 - .BGM: vgs2mml コマンドで生成したBGMデータ
 - .meta: [VGS Meta Data](https://github.com/suzukiplan/vgs2/blob/master/META.md)
 - .vgs: VGS BGM Playerにインポートできる形式のファイル
-- 
