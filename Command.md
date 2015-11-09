@@ -123,3 +123,21 @@ Command : p
 Command : r
 ```
 BGMファイル自体を読み直し、ミュートや移調の設定をクリア
+
+## vgs2pack
+#### 概要
+BGMファイルとmetaファイルを結合します。
+
+#### usage
+```
+$ vgs2pack base-filename
+```
+- input(1): `base-filename.BGM`
+- input(2): `base-filename.meta`
+- output: `base-filename.vgs`
+
+（補足）
+- .BGM: vgs2mml コマンドで生成したBGMデータ
+- .meta: [VGS Meta Data](https://github.com/suzukiplan/vgs2/blob/master/META.md)
+- .vgs: VGS BGM Playerにインポートできる形式のファイル
+- 
