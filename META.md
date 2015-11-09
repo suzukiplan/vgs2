@@ -1,8 +1,8 @@
 # VGS BGM Meta Data Specification
 
 ## 解説
-- vgs2mmlコマンドで生成したBGMファイルには, 音楽の演奏情報のみが格納されています
-- vgs2packコマンドを用いることで, BGMファイルにメタ情報を付与した `.vgsファイル` を生成できます
+- [vgs2mmlコマンド](https://github.com/suzukiplan/vgs2/blob/master/Command.md#vgs2mml)で生成したBGMファイルには, 音楽の演奏情報のみが格納されています
+- [vgs2packコマンド](https://github.com/suzukiplan/vgs2/blob/master/Command.md#vgs2pack)を用いることで, BGMファイルにメタ情報を付与した `.vgsファイル` を生成できます
 - VGS BGM Player では, メタ情報が付与された `.vgsファイル` のみインポートできます
 
 ## メタ情報
