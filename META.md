@@ -24,9 +24,9 @@
 |パラメタ|設定例|最大サイズ|解説|
 |---|---|---|---|
 |year|2004|16bit uint|曲のCopyright年|
-|aid|128|16bit uint|アルバム種別識別子（東方BGM on VGS専用パラメタ）|
+|aid|128|16bit uint|アルバム種別識別子<br>※東方BGM on VGS専用パラメタ|
 |track|4|8bit uint|曲のトラック番号|
-|album|東方永夜抄　〜 Imperishable Night.|55byte|曲が格納されているアルバム｜
+|album|東方永夜抄　〜 Imperishable Night.|55byte|曲が格納されているアルバム|
 |song|夜雀の歌声　〜 Night Bird|63byte|曲の名称|
 |team|上海アリス幻樂団|31byte|曲作成者の所属団体など|
 |creator|ZUN|31byte|曲作成者|
