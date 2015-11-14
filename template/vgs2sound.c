@@ -321,10 +321,10 @@ void term_sound()
     STALIVE=0;
     pthread_join(TID,NULL);
 #ifdef __APPLE__
-    alcDestroyContext(sndCtx);
-    alcCloseDevice(sndDev);
-    sndCtx=NULL;
-    sndDev=NULL;
+    // alcDestroyContext(sndCtx);
+    // alcCloseDevice(sndDev);
+    // sndCtx=NULL;
+    // sndDev=NULL;
 #endif
 #endif
 }
