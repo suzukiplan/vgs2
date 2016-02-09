@@ -12,6 +12,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "vgs2.h"
+#include "vgsdec.h"
 
 /*
  *-----------------------------------------------------------------------------
@@ -21,6 +22,7 @@
 unsigned short ADPAL[256];
 static char pathbuf[4096];
 int isIphone5;
+void* _psg;
 
 /*
  *-----------------------------------------------------------------------------
@@ -39,6 +41,12 @@ int vgsint_init(const char* rompath)
     unsigned char s[4];
     char path[80];
     struct stat stbuf;
+
+    /* initialize vgs-bgm-decoder */
+    _psg = vgsdec_create_context();
+    if (NULL == _psg) {
+        return -1;
+    }
 
     /* initialize mutex */
     pthread_mutex_init(&sndLock, NULL);
