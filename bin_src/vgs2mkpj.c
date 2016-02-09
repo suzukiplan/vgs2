@@ -405,7 +405,12 @@ int main(int argc, char* argv[])
             if (strcmp(token[0], "cpy") == 0) {
                 if (toknum == 3 || toknum == 4) {
                     if (toknum == 3) {
-                        token[3] = token[1];
+                        cp = strrchr(token[1], '/');
+                        if (NULL == cp) {
+                            token[3] = token[1];
+                        } else {
+                            token[3] = ++cp;
+                        }
                     }
                     sprintf(bufF, "%s%ctemplate%c%s", vgs_home, DS, DS, token[1]);
                     sprintf(bufT, "%s%c%s%c", argv[3], DS, token[2], DS);
@@ -417,7 +422,12 @@ int main(int argc, char* argv[])
             } else if (strcmp(token[0], "bin") == 0) {
                 if (toknum == 3 || toknum == 4) {
                     if (toknum == 3) {
-                        token[3] = token[1];
+                        cp = strrchr(token[1], '/');
+                        if (NULL == cp) {
+                            token[3] = token[1];
+                        } else {
+                            token[3] = ++cp;
+                        }
                     }
                     sprintf(bufF, "%s%ctemplate%c%s", vgs_home, DS, DS, token[1]);
                     sprintf(bufT, "%s%c%s%c", argv[3], DS, token[2], DS);
