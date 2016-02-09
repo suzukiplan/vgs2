@@ -13,6 +13,9 @@
 #include <android/log.h>
 #include <android/bitmap.h>
 #include "vgs2.h"
+#include "vgsdec.h"
+
+void* _psg;
 
 /*
  *----------------------------------------------------------------------------
@@ -46,6 +49,13 @@ JNIEXPORT jint JNICALL Java_com_{Company}_{Project}_{Project}_setRomData(JNIEnv*
 	char path[16];
 
 	putlog(__FILE__,__LINE__,"*** SUZUKI PLAN - Video Game System mk-II (GameDaddy) ***");
+
+	/* initialize vgs-bgm-decoder */
+	_psg = vgsdec_create_context();
+	if (NULL == _psg) {
+		putlog(__FILE__,__LINE__,"Could not initialize vgs-bgm-decoder: errno=%d",errno);
+		return -1;
+	}
 
 	/* get romdata from raw area */
 	BN=0;
@@ -250,6 +260,7 @@ JNIEXPORT void JNICALL Java_com_{Company}_{Project}_{Project}_term(JNIEnv* env,j
 {
 	vgs2_term();
 	term_sound();
+	vgsdec_release_context(_psg);
 }
 
 /*
