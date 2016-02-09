@@ -23,6 +23,8 @@ struct _VRAM _vram;
 struct _TOUCH _touch;
 unsigned char _mute;
 unsigned char _pause;
+static int _bstop;
+static int _bkoff[6];
 unsigned char _interlace = 1;
 int _PAL[256] = {0x00000000, 0x00003F00, 0x00005F00, 0x00007F00, 0x00009F00, 0x0000BF00, 0x0000DF00, 0x0000FF00};
 extern void* _psg;
@@ -148,6 +150,9 @@ void sndbuf(char* buf, size_t size)
             eff_pos(&_eff[i], 0);
         }
     }
+
+    if (_bstop || !vgsdec_get_value(_psg, VGSDEC_REG_PLAYING)) return;
+    vgsdec_execute(_psg, buf, size);
 }
 
 /*
@@ -1188,8 +1193,15 @@ void vgs2_interlace(int i)
  */
 void vgs2_bplay(unsigned char n)
 {
+    void* data = _BGM[n];
+    size_t size = _BGMSIZE[n];
+    if (null == data || size < 1) {
+        _bstop = 1;
+        return;
+    }
+    vgsdec_load_bgm_from_memory(_psg, data, size);
     vgsdec_set_value(_psg, VGSDEC_REG_SYNTHESIS_BUFFER, 1);
-#error : need to use vgsdec
+    _bstop = 0;
 }
 
 /*
@@ -1210,7 +1222,7 @@ int vgs2_bchk(unsigned char n)
  */
 void vgs2_bstop()
 {
-#error : need to use vgsdec
+    _bstop = 1;
 }
 
 /*
@@ -1220,7 +1232,7 @@ void vgs2_bstop()
  */
 void vgs2_bresume()
 {
-#error : need to use vgsdec
+    _bstop = 0;
 }
 
 /*
@@ -1230,7 +1242,7 @@ void vgs2_bresume()
  */
 void vgs2_bfade(unsigned int hz)
 {
-#error : need to use vgsdec
+    vgsdec_set_value(_psg, VGSDEC_REG_FADEOUT, 1);
 }
 
 /*
@@ -1240,7 +1252,7 @@ void vgs2_bfade(unsigned int hz)
  */
 void vgs2_bfade2()
 {
-#error : need to use vgsdec
+    vgsdec_set_value(_psg, VGSDEC_REG_FADEOUT, 1);
 }
 
 /*
@@ -1250,7 +1262,13 @@ void vgs2_bfade2()
  */
 void vgs2_bkey(int n)
 {
-#error : need to use vgsdec
+    for (int i = 0; i < 6; i++) {
+        if (_bkoff[i]) {
+            vgsdec_set_value(_psg, VGSDEC_REG_ADD_KEY_0 + i, 0);
+        } else {
+            vgsdec_set_value(_psg, VGSDEC_REG_ADD_KEY_0 + i, n);
+        }
+    }
 }
 
 /*
@@ -1260,7 +1278,8 @@ void vgs2_bkey(int n)
  */
 void vgs2_bkoff(int cn, int off)
 {
-#error : need to use vgsdec
+    if (cn < 0 || 5 < cn) return;
+    _bkoff[cn] = off;
 }
 
 /*
@@ -1270,7 +1289,11 @@ void vgs2_bkoff(int cn, int off)
  */
 void vgs2_bjump(int sec)
 {
-#error : need to use vgsdec
+    int length = vgsdec_get_value(_psg, VGSDEC_REG_TIME_LENGTH) / 22050;
+    while (length < sec) {
+        sec -= length;
+    }
+    vgsdec_set_value(_psg, VGSDEC_REG_TIME, sec * 22050);
 }
 
 /*
@@ -1280,7 +1303,10 @@ void vgs2_bjump(int sec)
  */
 void vgs2_bmute(int ch)
 {
-#error : need to use vgsdec
+    int v;
+    if (ch < 0 || 5 < ch) return;
+    v = !vgsdec_get_value(_psg, VGSDEC_REG_MUTE_0 + ch);
+    vgsdec_set_value(_psg, VGSDEC_REG_MUTE_0 + ch, v);
 }
 
 /*
@@ -1290,7 +1316,7 @@ void vgs2_bmute(int ch)
  */
 void vgs2_bmvol(int rate)
 {
-#error : need to use vgsdec
+    vgsdec_set_value(_psg, VGSDEC_REG_VOLUME_RATE, rate);
 }
 
 /*
@@ -1300,5 +1326,6 @@ void vgs2_bmvol(int rate)
  */
 void vgs2_bcvol(int ch, int rate)
 {
-#error : need to use vgsdec
+    if (ch < 0 || 5 < ch) return;
+    vgsdec_set_value(_psg, VGSDEC_REG_VOLUME_RATE_0 + ch, rate);
 }
