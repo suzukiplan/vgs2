@@ -11,6 +11,9 @@
 #include <d3d9.h>
 #include <d2d1.h>
 #include "vgs2.h"
+#include "vgsdec.h"
+
+void* _psg;
 
 /*
  *----------------------------------------------------------------------------
@@ -96,6 +99,14 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns, HINSTANCE hPIns, LPSTR lpCmd, i
     SetCurrentDirectory("DATA");
     DeleteFile("LOG.TXT");
     putlog(NULL, 0, "Executes \"%s\" on Windows", APPNAME);
+
+    /* initialize vgs-bgm-decoder */
+    _psg = vgsdec_create_context();
+    if (NULL == _psg) {
+        putlog(__FILE__, __LINE__, "vgs-bgm-decoder error.");
+        MessageBox(NULL, "Could not initialize vgs-bgm-decoder.", "ERROR", MB_OK | MB_ICONERROR);
+        return FALSE;
+    }
 
     /* load romdata */
     if (loadrom("..\\ROMDATA.BIN")) {
@@ -609,6 +620,9 @@ static void term()
 
     /* release DirectGraphic */
     gterm();
+
+    /* release vgs-bgm-decoder */
+    vgsdec_release_context(_psg);
 }
 
 /*
