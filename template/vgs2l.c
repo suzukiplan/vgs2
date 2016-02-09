@@ -13,9 +13,11 @@
 #include <time.h>
 #include <SDL/SDL.h>
 #include "vgs2.h"
+#include "vgsdec.h"
 
 static unsigned short ADPAL[256];
 static int REQ;
+void* _psg;
 
 static void msleep(int msec)
 {
@@ -43,6 +45,13 @@ int main(int argc, char* argv[])
     pthread_t tid;
 
     puts("Start VGS mk-II SR for Linux.");
+
+    /* initialize vgs-bgm-decoder */
+    _psg = vgsdec_create_context();
+    if (NULL == _psg) {
+        fprintf(stderr, "Could not initialize vgs-bgm-decoder\n");
+        return 1;
+    }
 
     /* Load ROMDATA.BIN */
     fp = fopen("ROMDATA.BIN", "rb");
@@ -252,6 +261,7 @@ int main(int argc, char* argv[])
     vgs2_term();
     SDL_Quit();
     term_sound();
+    vgsdec_release_context(_psg);
     puts("End.");
     return 0;
 }
