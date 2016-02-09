@@ -25,6 +25,7 @@ unsigned char _mute;
 unsigned char _pause;
 unsigned char _interlace = 1;
 int _PAL[256] = {0x00000000, 0x00003F00, 0x00005F00, 0x00007F00, 0x00009F00, 0x0000BF00, 0x0000DF00, 0x0000FF00};
+extern void* _psg;
 
 /*
  *----------------------------------------------------------------------------
@@ -1187,6 +1188,7 @@ void vgs2_interlace(int i)
  */
 void vgs2_bplay(unsigned char n)
 {
+    vgsdec_set_value(_psg, VGSDEC_REG_SYNTHESIS_BUFFER, 1);
 #error : need to use vgsdec
 }
 
