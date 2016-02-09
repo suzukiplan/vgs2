@@ -8,6 +8,7 @@ OBJS=\
 	$(RELDIR)/vgs2sound.o\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
+	$(RELDIR)/vgsdec.o\
 	$(RELDIR)/game.o
 
 LIBS=\
@@ -46,6 +47,9 @@ $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2tone.o: $(SRCDIR)/vgs2tone.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgsdec.o: $(SRCDIR)/vgsdec.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/game.o: $(SRCDIR)/game.c
