@@ -17,8 +17,8 @@ int BN;
 struct _BINREC* BR;
 struct _SLOT _slot[256];
 struct _EFF _eff[256];
-char* _note[256];
-static uLong _notelen[256];
+void* _BGM[256];
+static size_t _BGMSIZE[256];
 struct _VRAM _vram;
 struct _TOUCH _touch;
 unsigned char _mute;
@@ -294,13 +294,13 @@ ENDPROC:
  */
 int bload(unsigned char n, const char* name)
 {
-#error todo: need to use vgsdec
     int size;
-    char* data = (char*)getbin(name, &size);
+    _BGM[n] = (char*)getbin(name, &size);
     if (NULL == _note[n]) {
+        _BGMSIZE[n] = 0;
         return -1;
     }
-    _notelen[n] = (uLong)size;
+    _BGMSIZE[n] = (size_t)size;
     return 0;
 }
 
