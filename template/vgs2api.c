@@ -6,7 +6,7 @@
  *----------------------------------------------------------------------------
  */
 #include "vgs2.h"
-#include "miniz.h"
+#include "vgsdec.h"
 
 /*
  *----------------------------------------------------------------------------
@@ -301,7 +301,7 @@ int bload(unsigned char n, const char* name)
 {
     int size;
     _BGM[n] = (char*)getbin(name, &size);
-    if (NULL == _note[n]) {
+    if (NULL == _BGM[n] ) {
         _BGMSIZE[n] = 0;
         return -1;
     }
@@ -1195,7 +1195,7 @@ void vgs2_bplay(unsigned char n)
 {
     void* data = _BGM[n];
     size_t size = _BGMSIZE[n];
-    if (null == data || size < 1) {
+    if (NULL == data || size < 1) {
         _bstop = 1;
         return;
     }
@@ -1211,7 +1211,7 @@ void vgs2_bplay(unsigned char n)
  */
 int vgs2_bchk(unsigned char n)
 {
-    if (_note[n]) return 1;
+    if (_BGM[n]) return 1;
     return 0;
 }
 

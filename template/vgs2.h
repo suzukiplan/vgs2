@@ -5,6 +5,9 @@
  *      Author: Yoji Suzuki (SUZUKI PLAN)
  *----------------------------------------------------------------------------
  */
+#ifndef _WIN32
+#include <pthread.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -70,55 +73,6 @@ struct _EFF {
 struct _VRAM {
 	unsigned char bg[0x10000];
 	unsigned char sp[0x10000];
-};
-
-struct _NOTE {
-	unsigned char type;
-	unsigned char op1;
-	unsigned char op2;
-	unsigned char op3;
-	unsigned int val;
-};
-
-struct _PSGCH {
-	short* tone;
-	unsigned char vol;
-	unsigned char key;
-	unsigned char keyOn;
-	unsigned char mute;
-	unsigned int cur;
-	unsigned int count;
-	unsigned int env1;
-	unsigned int env2;
-	unsigned char toneT;
-	unsigned char toneK;
-	unsigned int pdown;
-	unsigned int pcnt;
-	int volumeRate;
-};
-
-struct _PSG {
-	struct _NOTE* notes;
-	unsigned char play;
-	unsigned char mask;
-	unsigned short mvol;
-	unsigned int waitTime;
-	short wav[6];
-	int nidx;
-	int stopped;
-	unsigned int fade;
-	unsigned int fcnt;
-	struct _PSGCH ch[6];
-	int mute;
-	int loop;
-	int fade2;
-	unsigned int timeI;
-	unsigned int timeL;
-	unsigned int timeP;
-	int addKey[6];
-	int addOff[6];
-	int idxnum;
-	int volumeRate;
 };
 
 struct _TOUCH {

@@ -9,11 +9,11 @@
 #endif
 #include <stdio.h>
 #include <time.h>
+#include "vgsdec.c"
+#include "vgsmml.c"
 #include "vgs2.h"
 
-int bload_direct(unsigned char n, const char* name);
-void bfree_direct(unsigned char n);
-extern struct _PSG _psg;
+void* _psg;
 
 /**
  * get secound from text
@@ -30,6 +30,32 @@ int getsec(const char* text)
         ret += atoi(cp + 1);
     }
     return ret;
+}
+
+int isMML(const char* file)
+{
+    const char* cp;
+    cp = strrchr(file, '.');
+    if (NULL == cp) {
+        return 0;
+    }
+    cp++;
+    if (*cp != 'm' && *cp != 'M') {
+        return 0;
+    }
+    cp++;
+    if (*cp != 'm' && *cp != 'M') {
+        return 0;
+    }
+    cp++;
+    if (*cp != 'l' && *cp != 'L') {
+        return 0;
+    }
+    cp++;
+    if (*cp != '\0') {
+        return 0;
+    }
+    return 1;
 }
 
 /**
@@ -53,7 +79,14 @@ int main(int argc, char* argv[])
         st = getsec(argv[2]);
     }
 
-    /* intialize sound system */
+    /* initialize vgs-bgm-decoder */
+    _psg = vgsdec_create_context();
+    if (NULL == _psg) {
+        fprintf(stderr, "Could not initialize the vgs-bgm-decoder.\n");
+        return 2;
+    }
+
+    /* initialize sound system */
     if (init_sound_cli()) {
         fprintf(stderr, "Could not initialize the sound system.\n");
         return 2;
@@ -61,23 +94,79 @@ int main(int argc, char* argv[])
 
 RELOAD:
     /* load BGM data and play */
-    if (bload_direct(0, argv[1])) {
-        fprintf(stderr, "Load error.\n");
-        return 2;
+    if (isMML(argv[1])) {
+        struct VgsMmlErrorInfo err;
+        struct VgsBgmData* bgm;
+        bgm = vgsmml_compile_from_file(argv[1], &err);
+        if (NULL == bgm) {
+            if (err.line) {
+                fprintf(stderr, "MML compile error (line=%d): %s\n", err.line, err.message);
+            } else {
+                fprintf(stderr, "MML compile error: %s\n", err.message);
+            }
+            return 2;
+        }
+        if (vgsdec_load_bgm_from_memory(_psg, bgm->data, bgm->size)) {
+            fprintf(stderr, "Load error.\n");
+            return 2;
+        }
+        vgsmml_free_bgm_data(bgm);
+    } else {
+        if (vgsdec_load_bgm_from_file(_psg, argv[1])) {
+            fprintf(stderr, "Load error.\n");
+            return 2;
+        }
     }
-    vgs2_bplay(0);
-    if (st) vgs2_bjump(st);
+    if (st) {
+        vgs2_bjump(st);
+    } else {
+        vgs2_bjump(0);
+    }
 
     if (!show) {
+        /* meta data */
+        struct VgsMetaHeader* mhead;
+        struct VgsMetaData* mdata;
+
+        /* meta header if exist */
+        mhead = vgsdec_get_meta_header(_psg);
+        printf("META-HEADER: ");
+        if (NULL != mhead) {
+            printf("\n");
+            printf(" - format: %s\n", mhead->format);
+            printf(" - genre: %s\n", mhead->genre);
+            printf(" - data count: %d\n", (int)mhead->num);
+        } else {
+            printf("n/a\n");
+        }
+        puts("");
+
+        /* meta data if exist */
+        for (i = 0; NULL != (mdata = vgsdec_get_meta_data(_psg, i)); i++) {
+            printf("META-DATA #%d:\n", i + 1);
+            printf(" - year: %d\n", (int)mdata->year);
+            printf(" - aid: %d\n", (int)mdata->aid);
+            printf(" - track: %d\n", (int)mdata->track);
+            printf(" - album: %s\n", mdata->album);
+            printf(" - song: %s\n", mdata->song);
+            printf(" - team: %s\n", mdata->team);
+            printf(" - creator: %s\n", mdata->creator);
+            printf(" - right: %s\n", mdata->right);
+            printf(" - code: %s\n", mdata->code);
+            puts("");
+        }
+
         /* show song info */
-        puts("Song info:");
-        printf("- number of notes = %d\n", _psg.idxnum);
-        if (_psg.timeI) {
-            printf("- intro time = %02u:%02u\n", _psg.timeI / 22050 / 60, _psg.timeI / 22050 % 60);
+        puts("SONG-DATA:");
+        printf("- number of notes = %d\n", vgsdec_get_value(_psg, VGSDEC_REG_LENGTH));
+        if (-1 != vgsdec_get_value(_psg, VGSDEC_REG_LOOP_INDEX)) {
+            i = vgsdec_get_value(_psg, VGSDEC_REG_LOOP_TIME) / 22050;
+            printf("- intro time = %02u:%02u\n", i / 60, i % 60);
         } else {
             printf("- acyclic song\n");
         }
-        printf("- play time = %02u:%02u\n", _psg.timeL / 22050 / 60, _psg.timeL / 22050 % 60);
+        i = vgsdec_get_value(_psg, VGSDEC_REG_TIME_LENGTH) / 22050;
+        printf("- play time = %02u:%02u\n", i / 60, i % 60);
         puts("");
 
         /* show reference */
@@ -139,7 +228,6 @@ RELOAD:
                 }
             }
         } else if (buf[0] == 'r') {
-            bfree_direct(0);
             goto RELOAD;
         } else if (buf[0] == 'f') {
             vgs2_bfade2();
@@ -152,8 +240,7 @@ RELOAD:
 
     /* terminate procedure */
     term_sound();
-    bfree_direct(0);
-
+    vgsdec_release_context(_psg);
     return 0;
 }
 
