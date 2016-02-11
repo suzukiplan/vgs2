@@ -9,6 +9,7 @@ OBJS=\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
 	$(RELDIR)/vgsdec.o\
+	$(RELDIR)/miniz.o\
 	$(RELDIR)/game.o
 
 LIBS=\
@@ -50,6 +51,9 @@ $(RELDIR)/vgs2tone.o: $(SRCDIR)/vgs2tone.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgsdec.o: $(SRCDIR)/vgsdec.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/miniz.o: $(SRCDIR)/miniz.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/game.o: $(SRCDIR)/game.c

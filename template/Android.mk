@@ -9,6 +9,7 @@ LOCAL_SRC_FILES :=\
 	../../src/vgs2api.c\
 	../../src/vgs2tone.c\
 	../../src/vgsdec.c\
+	../../src/miniz.c\
 	../../src/game.c
 LOCAL_C_INCLUDES := $(JNI_H_INCLUDE) ../../src
 LOCAL_LDLIBS := -ljnigraphics -lOpenSLES -llog

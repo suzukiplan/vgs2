@@ -8,6 +8,7 @@ OBJS=\
 	$(RELDIR)\vgs2api.obj\
 	$(RELDIR)\vgs2tone.obj\
 	$(RELDIR)\vgsdec.obj\
+	$(RELDIR)\miniz.obj\
 	$(RELDIR)\game.obj\
 	$(RELDIR)\game.res
 
@@ -77,6 +78,10 @@ $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
 	CL $(CFLAG) $(SRCDIR)\$(T).c
 
 T=vgsdec
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
+	CL $(CFLAG) $(SRCDIR)\$(T).c
+
+T=miniz
 $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
 	CL $(CFLAG) $(SRCDIR)\$(T).c
 
