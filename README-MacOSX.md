@@ -50,7 +50,10 @@ $ brew install ant
 ```bash
 $ cd ~/
 $ git clone https://github.com/suzukiplan/vgs2.git vgs2
-$ cd vgs2/bin_src
+$ cd vgs2
+$ git submodule init
+$ git submodule update
+$ cd bin_src
 $ make
 $ export VGS2_HOME=~/vgs2
 $ export PATH=$PATH:$VGS2_HOME/bin

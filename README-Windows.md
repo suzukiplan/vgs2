@@ -15,7 +15,10 @@
 > c:
 > cd \home
 > git clone https://github.com/suzukiplan/vgs2.git vgs2
-> cd vgs2\bin_src
+> cd vgs2
+> git submodule init
+> git submodule update
+> cd bin_src
 > make
 ```
 
