@@ -7,11 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "vgs2pack.h"
 #include "vgs2.h"
+#include "vgsdec.h"
 
-int bload_direct(unsigned char n, const char* name);
-extern struct _PSG _psg;
+void* _psg;
 
 static int getInfoNum(FILE* fp);
 static int cpy(char* to, size_t size, char* from, int line);
@@ -30,6 +29,7 @@ int main(int argc, char* argv[])
     int st = 0;
     int line = 0;
     int size;
+    int i;
 
     int result = 1;
 
@@ -41,6 +41,12 @@ int main(int argc, char* argv[])
         goto ENDPROC;
     }
 
+    _psg = vgsdec_create_context();
+    if (NULL == _psg) {
+        puts("could not create vgs-bgm-decoder");
+        goto ENDPROC;
+    }
+
     if (NULL != (cp = strchr(argv[1], '.'))) *cp = '\0';
 
     sprintf(buf, "%s.BGM", argv[1]);
@@ -48,7 +54,7 @@ int main(int argc, char* argv[])
         puts("BGM file not found.");
         goto ENDPROC;
     }
-    if (bload_direct(0, buf)) {
+    if (vgsdec_load_bgm_from_file(_psg, buf)) {
         puts("Could not read the BGM file.");
         goto ENDPROC;
     }
@@ -74,11 +80,13 @@ int main(int argc, char* argv[])
         goto ENDPROC;
     }
 
-    head.secIi = htons((unsigned short)(_psg.timeI / 22050));
-    head.secIf = htons((unsigned short)(_psg.timeI % 22050 * 0.0453514739229));
+    i = vgsdec_get_value(_psg, VGSDEC_REG_LOOP_TIME);
+    head.secIi = htons((unsigned short)(i / 22050));
+    head.secIf = htons((unsigned short)(i % 22050 * 0.0453514739229));
     if (999 < head.secIf) head.secIf = 999;
-    head.secLi = htons((unsigned short)(_psg.timeL / 22050));
-    head.secLf = htons((unsigned short)(_psg.timeL % 22050 * 0.0453514739229));
+    i = vgsdec_get_value(_psg, VGSDEC_REG_TIME_LENGTH);
+    head.secLi = htons((unsigned short)(i / 22050));
+    head.secLf = htons((unsigned short)(i % 22050 * 0.0453514739229));
     if (999 < head.secLf) head.secLf = 999;
 
     strcpy(head.eyecatch, "VGSPACK");
@@ -151,6 +159,7 @@ ENDPROC:
     if (bgm) fclose(bgm);
     if (meta) fclose(meta);
     if (pack) fclose(pack);
+    if (_psg) vgsdec_release_context(_psg);
     return result;
 }
 

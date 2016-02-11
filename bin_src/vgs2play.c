@@ -9,8 +9,8 @@
 #endif
 #include <stdio.h>
 #include <time.h>
-#include "vgsdec.c"
-#include "vgsmml.c"
+#include "vgsdec.h"
+#include "vgsmml.h"
 #include "vgs2.h"
 
 void* _psg;
