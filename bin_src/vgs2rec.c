@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
 
     /* waiting for end of decoding */
     while (vgsdec_get_value(context, VGSDEC_REG_PLAYING) && !err_flag) {
-        usleep(1000);
+        usleep(20000);
         printf(".");
         fflush(stdout);
     }
