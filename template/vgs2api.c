@@ -1263,7 +1263,8 @@ void vgs2_bfade2()
  */
 void vgs2_bkey(int n)
 {
-    for (int i = 0; i < 6; i++) {
+    int i;
+    for (i = 0; i < 6; i++) {
         if (_bkoff[i]) {
             vgsdec_set_value(_psg, VGSDEC_REG_ADD_KEY_0 + i, 0);
         } else {
