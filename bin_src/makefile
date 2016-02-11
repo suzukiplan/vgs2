@@ -47,8 +47,8 @@ vgsmml.c:
 ../bin/vgs2tar: vgs2tar.c
 	gcc -o ../bin/vgs2tar vgs2tar.c
 
-../bin/vgs2pack: vgs2pack.c ../template/vgs2api.c ../template/vgs2.h
-	gcc -o ../bin/vgs2pack -I../vgs-bgm-decoder/src -I../template vgs2pack.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c ../vgs-bgm-decoder/src/vgsdec.c $(SOUNDLIB) -lpthread
+../bin/vgs2pack: vgs2pack.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c ../vgs-bgm-decoder/src/vgsdec.c 
+	gcc -o ../bin/vgs2pack -I../vgs-bgm-decoder/src -I../template vgs2pack.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c ../vgs-bgm-decoder/src/vgsdec.c -lpthread
 
 ../bin/vgs2play: vgs2play.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c ../template/vgs2.h
 	gcc -o ../bin/vgs2play -I../template -I../vgs-bgm-decoder/src -I../vgs-mml-compiler/src vgs2play.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c $(SOUNDLIB) -lpthread

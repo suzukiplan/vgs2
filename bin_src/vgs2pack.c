@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "vgs2.h"
 #include "vgsdec.h"
 
 void* _psg;
