@@ -301,7 +301,7 @@ int bload(unsigned char n, const char* name)
 {
     int size;
     _BGM[n] = (char*)getbin(name, &size);
-    if (NULL == _BGM[n] ) {
+    if (NULL == _BGM[n]) {
         _BGMSIZE[n] = 0;
         return -1;
     }
@@ -1200,6 +1200,7 @@ void vgs2_bplay(unsigned char n)
         return;
     }
     vgsdec_load_bgm_from_memory(_psg, data, size);
+    vgsdec_set_value(_psg, VGSDEC_REG_RESET, 1);
     vgsdec_set_value(_psg, VGSDEC_REG_SYNTHESIS_BUFFER, 1);
     _bstop = 0;
 }
