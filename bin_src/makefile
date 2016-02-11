@@ -15,7 +15,8 @@ allcom: ../bin\
 	../bin/vgs2wav\
 	../bin/vgs2tar\
 	../bin/vgs2pack\
-	../bin/vgs2play
+	../bin/vgs2play\
+	../bin/vgs2rec
 
 ../bin:
 	mkdir ../bin
@@ -52,4 +53,7 @@ vgsmml.c:
 
 ../bin/vgs2play: vgs2play.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c ../template/vgs2.h
 	gcc -o ../bin/vgs2play -I../template -I../vgs-bgm-decoder/src -I../vgs-mml-compiler/src vgs2play.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c $(SOUNDLIB) -lpthread
+
+../bin/vgs2rec: vgs2rec.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c
+	gcc -o ../bin/vgs2rec -I../vgs-bgm-decoder/src -I../vgs-mml-compiler/src vgs2rec.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c
 
