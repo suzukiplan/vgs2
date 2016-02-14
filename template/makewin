@@ -26,6 +26,8 @@ CFLAG=\
 	/MT\
 	/D_CRT_SECURE_NO_WARNINGS\
 	/I..\src\
+	/I..\vgs-bgm-decoder\src\
+	/I..\vgs-spu\src\
 	/c
 
 all: MKROM $(RELDIR) $(PROJECT).EXE
