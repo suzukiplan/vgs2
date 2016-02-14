@@ -14,6 +14,7 @@
 #include "vgsdec.h"
 #include "vgsspu.h"
 
+static CRITICAL_SECTION lckobj;
 void* _psg;
 
 /*
@@ -805,4 +806,14 @@ void vgs2_showAds()
  */
 void vgs2_deleteAds()
 {
+}
+
+void lock()
+{
+    EnterCriticalSection(&lckobj);
+}
+
+void unlock()
+{
+    LeaveCriticalSection(&lckobj);
 }
