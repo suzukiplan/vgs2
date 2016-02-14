@@ -1,7 +1,0 @@
-all:
-	CL /MT /I$(VGS2_HOME)/template\
-	saltest.c\
-	$(VGS2_HOME)/template/vgs2soundw.cpp\
-	dxguid.lib\
-	dsound.lib\
-	user32.lib

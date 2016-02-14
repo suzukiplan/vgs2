@@ -1,0 +1,9 @@
+[submodule "vgs-bgm-decoder"]
+	path = vgs-bgm-decoder
+	url = https://github.com/suzukiplan/vgs-bgm-decoder.git
+[submodule "vgs-mml-compiler"]
+	path = vgs-mml-compiler
+	url = https://github.com/suzukiplan/vgs-mml-compiler.git
+[submodule "vgs-spu"]
+	path = vgs-spu
+	url = https://github.com/suzukiplan/vgs-spu.git

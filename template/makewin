@@ -4,9 +4,11 @@ RELDIR=.\Release
 
 OBJS=\
 	$(RELDIR)\vgs2w.obj\
-	$(RELDIR)\vgs2soundw.obj\
+	$(RELDIR)\vgsspu_dsound.obj\
 	$(RELDIR)\vgs2api.obj\
 	$(RELDIR)\vgs2tone.obj\
+	$(RELDIR)\vgsdec.obj\
+	$(RELDIR)\miniz.obj\
 	$(RELDIR)\game.obj\
 	$(RELDIR)\game.res
 
@@ -24,6 +26,8 @@ CFLAG=\
 	/MT\
 	/D_CRT_SECURE_NO_WARNINGS\
 	/I..\src\
+	/I..\vgs-bgm-decoder\src\
+	/I..\vgs-spu\src\
 	/c
 
 all: MKROM $(RELDIR) $(PROJECT).EXE
@@ -50,6 +54,7 @@ $(RELDIR)\$(PROJECT).EXE: $(OBJS)
 	/MACHINE:X86\
 	/SUBSYSTEM:WINDOWS\
 	$(OBJS)\
+	ws2_32.lib\
 	dxguid.lib\
 	dsound.lib\
 	WINMM.lib\
@@ -63,7 +68,7 @@ T=vgs2w
 $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).cpp
 	CL $(CFLAG) $(SRCDIR)\$(T).cpp
 
-T=vgs2soundw
+T=vgsspu_dsound
 $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).cpp
 	CL $(CFLAG) $(SRCDIR)\$(T).cpp
 
@@ -72,6 +77,14 @@ $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
 	CL $(CFLAG) $(SRCDIR)\$(T).c
 
 T=vgs2tone
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
+	CL $(CFLAG) $(SRCDIR)\$(T).c
+
+T=vgsdec
+$(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
+	CL $(CFLAG) $(SRCDIR)\$(T).c
+
+T=miniz
 $(RELDIR)\$(T).obj: $(SRCDIR)\$(T).c
 	CL $(CFLAG) $(SRCDIR)\$(T).c
 

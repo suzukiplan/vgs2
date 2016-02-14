@@ -1,5 +1,8 @@
-all:\
-	..\bin \
+all:
+	nmake /nologo /f makefile.win clean
+	nmake /nologo /f makefile.win build
+
+build: ..\bin \
 	..\bin\vgs2play.exe \
 	..\bin\vgs2mml.exe \
 	..\bin\vgs2bmp.exe \
@@ -9,22 +12,12 @@ all:\
 	..\bin\vgs2wav.exe
 
 clean:
-	-@rmdir /s /q ..\bin
-	-@del vgs2bmp.obj
-	-@del vgs2bmp.exe
-	-@del vgs2mkpj.obj
-	-@del vgs2mkpj.exe
-	-@del vgs2rom.obj
-	-@del vgs2rom.exe
-	-@del vgs2wav.obj
-	-@del vgs2wav.exe
-	-@del vgs2mml.obj
-	-@del vgs2mml.exe
-	-@del vgs2pack.obj
-	-@del vgs2pack.exe
+	-del ..\bin\*.exe
+	-del *.obj
+	-del *.exe
 
 ..\bin:
-	mkdir ..\bin
+	md ..\bin
 
 T=vgs2bmp
 ..\bin\$(T).exe: $(T).c
@@ -47,17 +40,18 @@ T=vgs2wav
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2mml
-..\bin\$(T).exe: $(T).c
-	CL /MT $(T).c
+..\bin\$(T).exe: ../vgs-mml-compiler/src/vgsmml.c ../vgs-mml-compiler/src/cli.c 
+	CL /I../vgs-bgm-decoder/src /I../vgs-mml-compiler/src /MT ../vgs-mml-compiler/src/vgsmml.c ../vgs-mml-compiler/src/cli.c ../vgs-bgm-decoder/src/miniz.c
+	REN vgsmml.exe $(T).exe
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2pack
-..\bin\$(T).exe: $(T).c vgs2pack.h ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c ../template/vgs2.h
-	CL /I../template /MT $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
+..\bin\$(T).exe: $(T).c
+	CL /I../template /I../vgs-bgm-decoder/src /MT $(T).c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c dxguid.lib dsound.lib user32.lib ws2_32.lib
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2play
-..\bin\$(T).exe: $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c ../template/vgs2.h
-	CL /I../template /MT $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
+..\bin\$(T).exe: $(T).c
+	CL /I../template /I../vgs-bgm-decoder/src /I../vgs-mml-compiler/src /I../vgs-spu/src /MT $(T).c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-spu/src/vgsspu_dsound.cpp ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c dxguid.lib dsound.lib user32.lib ws2_32.lib
 	copy $(T).exe ..\bin\$(T).exe
 

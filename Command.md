@@ -84,13 +84,13 @@ Android版のJavaパッケージ名は、`com.company.Project` になる。
 
 ## vgs2play
 #### 概要
-BGMファイルをコマンドライン上で再生します。
+MMLファイル、BGMファイルまたはvgsファイルをコマンドライン上で再生します。
 
 #### usage
 ```bash
 $ vgs2play BGM-file [mm:ss]
 ```
-- BGM-file: _input file_
+- BGM-file: _input file (.mml, .BGM or .vgs)_
 - [mm:ss]: _start playing time (optional)_
 
 #### internal commands
@@ -140,3 +140,15 @@ $ vgs2pack base-filename
 - .BGM: vgs2mml コマンドで生成したBGMデータ
 - .meta: [VGS Meta Data](https://github.com/suzukiplan/vgs2/blob/master/META.md)
 - .vgs: VGS BGM Playerにインポートできる形式のファイル
+
+## vgs2rec
+#### 概要
+MMLファイル、BGMファイルまたはvgsファイルをwavファイルに変換します。
+
+#### usage
+```
+$ vgs2rec bgm_file wav_file [loop-count]
+```
+- bgm_file: _input file (.mml, .BGM or .vgs)_
+- wav_file: _output file (wav file of 22050Hz, 16bit, 1ch)_
+

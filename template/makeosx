@@ -6,10 +6,12 @@ CXX=/usr/bin/g++
 
 OBJS=\
 	$(RELDIR)/vgs2x.o\
-	$(RELDIR)/vgs2sound.o\
+	$(RELDIR)/vgsspu_al.o\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
+	$(RELDIR)/vgsdec.o\
 	$(RELDIR)/maincxx.o\
+	$(RELDIR)/miniz.o\
 	$(RELDIR)/game.o
 
 LIBS=\
@@ -43,7 +45,7 @@ $(RELDIR)/$(PROJECT): $(OBJS)
 $(RELDIR)/vgs2x.o: $(SRCDIR)/vgs2x.c
 	$(CC) -o $@ $(CFLAG) $<
 
-$(RELDIR)/vgs2sound.o: $(SRCDIR)/vgs2sound.c
+$(RELDIR)/vgsspu_al.o: $(SRCDIR)/vgsspu_al.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
@@ -52,8 +54,14 @@ $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
 $(RELDIR)/vgs2tone.o: $(SRCDIR)/vgs2tone.c
 	$(CC) -o $@ $(CFLAG) $<
 
+$(RELDIR)/vgsdec.o: $(SRCDIR)/vgsdec.c
+	$(CC) -o $@ $(CFLAG) $<
+
 $(RELDIR)/maincxx.o: $(SRCDIR)/maincxx.cpp
 	$(CXX) -o $@ $(CFLAG) $<
+
+$(RELDIR)/miniz.o: $(SRCDIR)/miniz.c
+	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/game.o: $(SRCDIR)/game.c
 	$(CC) -o $@ $(CFLAG) $<

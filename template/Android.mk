@@ -3,7 +3,14 @@ LOCAL_PATH := $(call my-dir)
 # libvge.so
 include $(CLEAR_VARS)
 LOCAL_MODULE    := vgs2
-LOCAL_SRC_FILES :=../../src/vgs2a.c ../../src/vgs2sound.c ../../src/vgs2api.c ../../src/vgs2tone.c ../../src/game.c
+LOCAL_SRC_FILES :=\
+	../../src/vgs2a.c\
+	../../src/vgsspu_sles.c\
+	../../src/vgs2api.c\
+	../../src/vgs2tone.c\
+	../../src/vgsdec.c\
+	../../src/miniz.c\
+	../../src/game.c
 LOCAL_C_INCLUDES := $(JNI_H_INCLUDE) ../../src
 LOCAL_LDLIBS := -ljnigraphics -lOpenSLES -llog
 LOCAL_LDFLAGS := 

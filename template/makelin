@@ -5,9 +5,11 @@ CC=/usr/bin/gcc
 
 OBJS=\
 	$(RELDIR)/vgs2l.o\
-	$(RELDIR)/vgs2sound.o\
+	$(RELDIR)/vgsspu_alsa.o\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
+	$(RELDIR)/vgsdec.o\
+	$(RELDIR)/miniz.o\
 	$(RELDIR)/game.o
 
 LIBS=\
@@ -39,13 +41,19 @@ $(RELDIR)/$(PROJECT): $(OBJS)
 $(RELDIR)/vgs2l.o: $(SRCDIR)/vgs2l.c
 	$(CC) -o $@ $(CFLAG) $<
 
-$(RELDIR)/vgs2sound.o: $(SRCDIR)/vgs2sound.c
+$(RELDIR)/vgsspu_alsa.o: $(SRCDIR)/vgsspu_alsa.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2tone.o: $(SRCDIR)/vgs2tone.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/vgsdec.o: $(SRCDIR)/vgsdec.c
+	$(CC) -o $@ $(CFLAG) $<
+
+$(RELDIR)/miniz.o: $(SRCDIR)/miniz.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/game.o: $(SRCDIR)/game.c
