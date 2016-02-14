@@ -1,13 +1,19 @@
 #ifdef _WIN32
 #include <winsock2.h>
 #else
+#include <pthread.h>
 #include <arpa/inet.h>
 #endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "vgsdec.h"
+
+#ifdef _WIN32
+static CRITICAL_SECTION lckobj;
+#else
+static pthread_mutex_t lckobj = PTHREAD_MUTEX_INITIALIZER;
+#endif
 
 void* _psg;
 
@@ -224,4 +230,22 @@ void vgs2_showAds()
 
 void vgs2_deleteAds()
 {
+}
+
+void lock()
+{
+#ifdef _WIN32
+    EnterCriticalSection(&lckobj);
+#else
+    pthread_mutex_lock(&lckobj);
+#endif
+}
+
+void unlock()
+{
+#ifdef _WIN32
+    LeaveCriticalSection(&lckobj);
+#else
+    pthread_mutex_unlock(&lckobj);
+#endif
 }
