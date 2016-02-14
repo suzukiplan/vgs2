@@ -405,7 +405,11 @@ int main(int argc, char* argv[])
             if (strcmp(token[0], "cpy") == 0) {
                 if (toknum == 3 || toknum == 4) {
                     if (toknum == 3) {
+#ifdef _WIN32
+                        cp = strrchr(token[1], '\\');
+#else
                         cp = strrchr(token[1], '/');
+#endif
                         if (NULL == cp) {
                             token[3] = token[1];
                         } else {
