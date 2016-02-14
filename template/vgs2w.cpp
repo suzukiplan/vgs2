@@ -12,6 +12,7 @@
 #include <d2d1.h>
 #include "vgs2.h"
 #include "vgsdec.h"
+#include "vgsspu.h"
 
 void* _psg;
 
@@ -68,7 +69,6 @@ static int d3d_init(HWND, const RECT*);
 static int d3d_init9(HWND, const RECT*);
 static int d2d_init(HWND hWnd, const RECT*);
 static void term();
-static void gterm();
 static void vtrans(int, int*);
 
 struct binrec {
@@ -94,6 +94,7 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns, HINSTANCE hPIns, LPSTR lpCmd, i
     int i;
     int cn, pn, bn;
     char path[256];
+    void* spu;
 
     CreateDirectory("DATA", NULL);
     SetCurrentDirectory("DATA");
@@ -177,7 +178,8 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns, HINSTANCE hPIns, LPSTR lpCmd, i
     }
 
     /* initialize sounds */
-    if (init_sound(hwnd)) {
+    spu = vgsspu_init(sndbuf);
+    if (NULL == spu) {
         putlog(__FILE__, __LINE__, "init_sound error.");
         term();
         return FALSE;
@@ -187,6 +189,8 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns, HINSTANCE hPIns, LPSTR lpCmd, i
     if (vgs2_init()) {
         putlog(__FILE__, __LINE__, "vge_init error.");
         term();
+        vgsspu_end(spu);
+        vgsdec_release_context(_psg);
         return FALSE;
     }
 
@@ -279,6 +283,8 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns, HINSTANCE hPIns, LPSTR lpCmd, i
     vgs2_term();
 
     term();
+    vgsspu_end(spu);
+    vgsdec_release_context(_psg);
     putlog(__FILE__, __LINE__, "Exit program.");
     return TRUE;
 }
@@ -610,27 +616,10 @@ static int d3d_init9(HWND hWnd, const RECT* rect)
 
 /*
  *----------------------------------------------------------------------------
- * release DirectX objects
- *----------------------------------------------------------------------------
- */
-static void term()
-{
-    /* release DirectSound */
-    term_sound();
-
-    /* release DirectGraphic */
-    gterm();
-
-    /* release vgs-bgm-decoder */
-    vgsdec_release_context(_psg);
-}
-
-/*
- *----------------------------------------------------------------------------
  * release DirectGraphic objects
  *----------------------------------------------------------------------------
  */
-static void gterm()
+static void term()
 {
     if (_useD2D) {
         /* release Direct2D */

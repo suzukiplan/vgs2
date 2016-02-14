@@ -11,7 +11,14 @@
 #include <time.h>
 #include "vgsdec.h"
 #include "vgsmml.h"
+#include "vgsspu.h"
 #include "vgs2.h"
+
+#ifdef _WIN32
+static CRITICAL_SECTION lckobj;
+#else
+static pthread_mutex_t lckobj = PTHREAD_MUTEX_INITIALIZER;
+#endif
 
 void* _psg;
 
@@ -69,6 +76,11 @@ int main(int argc, char* argv[])
     int st = 0;
     char* cp;
     int show = 0;
+    void* spu;
+
+#ifdef _WIN32
+    InitializeCriticalSection(&lckobj);
+#endif
 
     /* check argument */
     if (argc < 2) {
@@ -87,7 +99,8 @@ int main(int argc, char* argv[])
     }
 
     /* initialize sound system */
-    if (init_sound_cli()) {
+    spu = vgsspu_start(sndbuf);
+    if (NULL == spu) {
         fprintf(stderr, "Could not initialize the sound system.\n");
         return 2;
     }
@@ -239,7 +252,7 @@ RELOAD:
     }
 
     /* terminate procedure */
-    term_sound();
+    vgsspu_end(spu);
     vgsdec_release_context(_psg);
     return 0;
 }
@@ -263,4 +276,22 @@ void vgs2_showAds()
 
 void vgs2_deleteAds()
 {
+}
+
+void lock()
+{
+#ifdef _WIN32
+    EnterCriticalSection(&lckobj);
+#else
+    pthread_mutex_lock(&lckobj);
+#endif
+}
+
+void unlock()
+{
+#ifdef _WIN32
+    LeaveCriticalSection(&lckobj);
+#else
+    pthread_mutex_unlock(&lckobj);
+#endif
 }

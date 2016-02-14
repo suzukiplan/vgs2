@@ -30,21 +30,21 @@ extern "C" {
 #define XSIZE 160
 #define YSIZE 200
 
-#define SAMPLE_RATE	22050
-#define SAMPLE_BITS	16
-#define SAMPLE_CH	1
-#define SAMPLE_BUFS	4410
+#define SAMPLE_RATE 22050
+#define SAMPLE_BITS 16
+#define SAMPLE_CH 1
+#define SAMPLE_BUFS 4410
 
-#define NTYPE_ENV1		1
-#define NTYPE_ENV2		2
-#define NTYPE_VOL		3
-#define NTYPE_MVOL		4
-#define NTYPE_KEYON		5
-#define NTYPE_KEYOFF	6
-#define NTYPE_WAIT		7
-#define NTYPE_PDOWN		8
-#define NTYPE_JUMP		9
-#define NTYPE_LABEL		10
+#define NTYPE_ENV1 1
+#define NTYPE_ENV2 2
+#define NTYPE_VOL 3
+#define NTYPE_MVOL 4
+#define NTYPE_KEYON 5
+#define NTYPE_KEYOFF 6
+#define NTYPE_WAIT 7
+#define NTYPE_PDOWN 8
+#define NTYPE_JUMP 9
+#define NTYPE_LABEL 10
 
 /*
  *----------------------------------------------------------------------------
@@ -52,38 +52,38 @@ extern "C" {
  *----------------------------------------------------------------------------
  */
 struct _BINREC {
-	char name[16];
-	int size;
-	char* data;
+    char name[16];
+    int size;
+    char* data;
 };
 
 struct _SLOT {
-	int xs;
-	int ys;
-	unsigned char* dat;
+    int xs;
+    int ys;
+    unsigned char* dat;
 };
 
 struct _EFF {
-	unsigned int size;
-	unsigned short flag;
-	unsigned int pos;
-	unsigned char* dat;
+    unsigned int size;
+    unsigned short flag;
+    unsigned int pos;
+    unsigned char* dat;
 };
 
 struct _VRAM {
-	unsigned char bg[0x10000];
-	unsigned char sp[0x10000];
+    unsigned char bg[0x10000];
+    unsigned char sp[0x10000];
 };
 
 struct _TOUCH {
-	int s;
-	int t;
-	int dx;
-	int dy;
-	int cx;
-	int cy;
-	int px;
-	int py;
+    int s;
+    int t;
+    int dx;
+    int dy;
+    int cx;
+    int cy;
+    int px;
+    int py;
 };
 
 /*
@@ -109,22 +109,15 @@ extern short* TONE4[85];
  * Internal functions
  *----------------------------------------------------------------------------
  */
-void sndbuf(char* buf,size_t size);
-void eff_flag(struct _EFF* e,unsigned int f);
-void eff_pos(struct _EFF* e,unsigned int f);
+void sndbuf(void* buf, size_t size);
+void eff_flag(struct _EFF* e, unsigned int f);
+void eff_pos(struct _EFF* e, unsigned int f);
 void lock();
 void unlock();
 void make_pallet();
-int gload(unsigned char n,const char* name);
-int eload(unsigned char n,const char* name);
-int bload(unsigned char n,const char* name);
-int init_sound_cli();
-#ifdef _WIN32
-int init_sound(HWND);
-#else
-int init_sound();
-#endif
-void term_sound();
+int gload(unsigned char n, const char* name);
+int eload(unsigned char n, const char* name);
+int bload(unsigned char n, const char* name);
 
 /*
  *----------------------------------------------------------------------------
@@ -143,17 +136,17 @@ void vgs2_term();
  */
 
 /* input */
-void vgs2_touch(int* s,int* cx,int* cy,int* dx,int* dy);
+void vgs2_touch(int* s, int* cx, int* cy, int* dx, int* dy);
 void vgs2_setPause(unsigned char c);
 
 /* file */
-FILE* vgs2_fopen(const char* n,const char* p);
+FILE* vgs2_fopen(const char* n, const char* p);
 
 /* math */
-#define vgs2_abs(x) (x>=0?(x):-(x))
-#define vgs2_sgn(x) (x>=0?(1):(-1))
-int vgs2_rad(int x1,int y1,int x2,int y2);
-int vgs2_deg(int x1,int y1,int x2,int y2);
+#define vgs2_abs(x) (x >= 0 ? (x) : -(x))
+#define vgs2_sgn(x) (x >= 0 ? (1) : (-1))
+int vgs2_rad(int x1, int y1, int x2, int y2);
+int vgs2_deg(int x1, int y1, int x2, int y2);
 int vgs2_deg2rad(int deg);
 int vgs2_rad2deg(int rad);
 void vgs2_rands();
@@ -179,53 +172,53 @@ int vgs2_pallet256(unsigned char n);
 void vgs2_clear(unsigned char c);
 
 /* raster scroll */
-void vgs2_scroll(int x,int y);
+void vgs2_scroll(int x, int y);
 
 /* draw pixel */
-void vgs2_pixel(unsigned char* p,int x,int y,unsigned char c);
-#define vgs2_pixelBG(X,Y,C) vgs2_pixel(_vram.bg,X,Y,C)
-#define vgs2_pixelSP(X,Y,C) vgs2_pixel(_vram.sp,X,Y,C)
+void vgs2_pixel(unsigned char* p, int x, int y, unsigned char c);
+#define vgs2_pixelBG(X, Y, C) vgs2_pixel(_vram.bg, X, Y, C)
+#define vgs2_pixelSP(X, Y, C) vgs2_pixel(_vram.sp, X, Y, C)
 
 /* draw line */
-void vgs2_line(unsigned char* p,int fx,int fy,int tx,int ty,unsigned char c);
-#define vgs2_lineBG(FX,FY,TX,TY,C) vgs2_line(_vram.bg,FX,FY,TX,TY,C)
-#define vgs2_lineSP(FX,FY,TX,TY,C) vgs2_line(_vram.sp,FX,FY,TX,TY,C)
+void vgs2_line(unsigned char* p, int fx, int fy, int tx, int ty, unsigned char c);
+#define vgs2_lineBG(FX, FY, TX, TY, C) vgs2_line(_vram.bg, FX, FY, TX, TY, C)
+#define vgs2_lineSP(FX, FY, TX, TY, C) vgs2_line(_vram.sp, FX, FY, TX, TY, C)
 
 /* draw circle */
-void vgs2_circle(char*p, int x,int y,int r, unsigned char c);
-#define vgs2_circleBG(X,Y,R,C) vgs2_circle(_vram.bg,X,Y,R,C)
-#define vgs2_circleSP(X,Y,R,C) vgs2_circle(_vram.sp,X,Y,R,C)
+void vgs2_circle(char* p, int x, int y, int r, unsigned char c);
+#define vgs2_circleBG(X, Y, R, C) vgs2_circle(_vram.bg, X, Y, R, C)
+#define vgs2_circleSP(X, Y, R, C) vgs2_circle(_vram.sp, X, Y, R, C)
 
 /* draw box */
-#define vgs2_boxBG(FX,FY,TX,TY,C) \
-	vgs2_line(_vram.bg,FX,FY,TX,FY,C);\
-	vgs2_line(_vram.bg,FX,TY,TX,TY,C);\
-	vgs2_line(_vram.bg,FX,FY,FX,TY,C);\
-	vgs2_line(_vram.bg,TX,FY,TX,TY,C)
-#define vgs2_boxSP(FX,FY,TX,TY,C) \
-	vgs2_line(_vram.sp,FX,FY,TX,FY,C);\
-	vgs2_line(_vram.sp,FX,TY,TX,TY,C);\
-	vgs2_line(_vram.sp,FX,FY,FX,TY,C);\
-	vgs2_line(_vram.sp,TX,FY,TX,TY,C)
+#define vgs2_boxBG(FX, FY, TX, TY, C)       \
+    vgs2_line(_vram.bg, FX, FY, TX, FY, C); \
+    vgs2_line(_vram.bg, FX, TY, TX, TY, C); \
+    vgs2_line(_vram.bg, FX, FY, FX, TY, C); \
+    vgs2_line(_vram.bg, TX, FY, TX, TY, C)
+#define vgs2_boxSP(FX, FY, TX, TY, C)       \
+    vgs2_line(_vram.sp, FX, FY, TX, FY, C); \
+    vgs2_line(_vram.sp, FX, TY, TX, TY, C); \
+    vgs2_line(_vram.sp, FX, FY, FX, TY, C); \
+    vgs2_line(_vram.sp, TX, FY, TX, TY, C)
 
 /* draw filled box */
-void vgs2_boxf(unsigned char* p,int fx,int fy,int tx,int ty,unsigned char c);
-#define vgs2_boxfBG(FX,FY,TX,TY,C) vgs2_boxf(_vram.bg,FX,FY,TX,TY,C)
-#define vgs2_boxfSP(FX,FY,TX,TY,C) vgs2_boxf(_vram.sp,FX,FY,TX,TY,C)
+void vgs2_boxf(unsigned char* p, int fx, int fy, int tx, int ty, unsigned char c);
+#define vgs2_boxfBG(FX, FY, TX, TY, C) vgs2_boxf(_vram.bg, FX, FY, TX, TY, C)
+#define vgs2_boxfSP(FX, FY, TX, TY, C) vgs2_boxf(_vram.sp, FX, FY, TX, TY, C)
 
 /* background and sprite */
-void vgs2_putBG(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
-void vgs2_putBG2(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
-void vgs2_putSP(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
-void vgs2_putSPM(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsigned char c);
-void vgs2_putSPH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy);
-void vgs2_putSPMH(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,unsigned char c);
-void vgs2_putSPR(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r);
-void vgs2_putSPE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int dxs,int dys);
-void vgs2_putSPRE(unsigned char n,int sx,int sy,int xs,int ys,int dx,int dy,int r,int dxs,int dys);
+void vgs2_putBG(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy);
+void vgs2_putBG2(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy);
+void vgs2_putSP(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy);
+void vgs2_putSPM(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy, unsigned char c);
+void vgs2_putSPH(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy);
+void vgs2_putSPMH(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy, unsigned char c);
+void vgs2_putSPR(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy, int r);
+void vgs2_putSPE(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy, int dxs, int dys);
+void vgs2_putSPRE(unsigned char n, int sx, int sy, int xs, int ys, int dx, int dy, int r, int dxs, int dys);
 
 /* get data */
-const char* vgs2_getdata(unsigned char n,unsigned int* size);
+const char* vgs2_getdata(unsigned char n, unsigned int* size);
 
 /* set interlace */
 void vgs2_interlace(int i);
@@ -238,11 +231,11 @@ void vgs2_bresume();
 void vgs2_bfade(unsigned int hz);
 void vgs2_bfade2();
 void vgs2_bkey(int n);
-void vgs2_bkoff(int cn,int off);
+void vgs2_bkoff(int cn, int off);
 void vgs2_bjump(int sec);
 void vgs2_bmute(int ch);
 void vgs2_bmvol(int rate);
-void vgs2_bcvol(int ch,int rate);
+void vgs2_bcvol(int ch, int rate);
 
 #ifdef __cplusplus
 };

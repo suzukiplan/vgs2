@@ -47,17 +47,17 @@ T=vgs2wav
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2mml
-..\bin\$(T).exe: $(T).c
-	CL /MT $(T).c
+..\bin\$(T).exe: ../vgs-mml-compiler/src/vgsmml.c ../vgs-mml-compiler/src/cli.c 
+	CL /I../vgs-bgm-decoder/src /I../vgs-mml-compiler/src /MT ../vgs-mml-compiler/src/vgsmml.c ../vgs-mml-compiler/src/cli.c
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2pack
-..\bin\$(T).exe: $(T).c vgs2pack.h ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c ../template/vgs2.h
-	CL /I../template /MT $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
+..\bin\$(T).exe: $(T).c
+	CL /I../template /MT $(T).c ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
 	copy $(T).exe ..\bin\$(T).exe
 
 T=vgs2play
-..\bin\$(T).exe: $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c ../template/vgs2.h
-	CL /I../template /MT $(T).c ../template/vgs2soundw.cpp ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
+..\bin\$(T).exe: $(T).c
+	CL /I../template /I../vgs-bgm-decoder/src /I../vgs-mml-compiler/src /I../vgs-spu/src /MT $(T).c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-spu/src/vgsspu_dsound.cpp ../template/vgs2api.c ../template/vgs2tone.c dxguid.lib dsound.lib user32.lib
 	copy $(T).exe ..\bin\$(T).exe
 

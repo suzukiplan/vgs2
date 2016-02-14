@@ -2,10 +2,10 @@ all:
 	make all-`uname`
 
 all-Linux:
-	make allcom SOUNDLIB=-lasound
+	make allcom SOUNDLIB=-lasound SPU=vgsspu_alsa
 
 all-Darwin:
-	make allcom SOUNDLIB="-framework OpenAL"
+	make allcom SOUNDLIB="-framework OpenAL" SPU=vgsspu_al
 
 allcom: ../bin\
 	../bin/vgs2bmp\
@@ -51,8 +51,8 @@ vgsmml.c:
 ../bin/vgs2pack: vgs2pack.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c ../vgs-bgm-decoder/src/vgsdec.c 
 	gcc -o ../bin/vgs2pack -I../vgs-bgm-decoder/src -I../template vgs2pack.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/miniz.c ../vgs-bgm-decoder/src/vgsdec.c -lpthread
 
-../bin/vgs2play: vgs2play.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c ../template/vgs2.h
-	gcc -o ../bin/vgs2play -I../template -I../vgs-bgm-decoder/src -I../vgs-mml-compiler/src vgs2play.c ../template/vgs2sound.c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c $(SOUNDLIB) -lpthread
+../bin/vgs2play: vgs2play.c ../vgs-spu/src/$(SPU).c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c ../template/vgs2.h
+	gcc -o ../bin/vgs2play -I../template -I../vgs-bgm-decoder/src -I../vgs-mml-compiler/src -I../vgs-spu/src vgs2play.c ../vgs-spu/src/$(SPU).c ../template/vgs2api.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c $(SOUNDLIB) -lpthread
 
 ../bin/vgs2rec: vgs2rec.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c
 	gcc -o ../bin/vgs2rec -I../vgs-bgm-decoder/src -I../vgs-mml-compiler/src vgs2rec.c ../vgs-bgm-decoder/src/vgs2tone.c ../vgs-bgm-decoder/src/vgsdec.c ../vgs-mml-compiler/src/vgsmml.c ../vgs-bgm-decoder/src/miniz.c

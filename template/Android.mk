@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := vgs2
 LOCAL_SRC_FILES :=\
 	../../src/vgs2a.c\
-	../../src/vgs2sound.c\
+	../../src/vgsspu_sles.c\
 	../../src/vgs2api.c\
 	../../src/vgs2tone.c\
 	../../src/vgsdec.c\

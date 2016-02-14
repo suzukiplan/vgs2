@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include "vgs2.h"
 #include "vgsdec.h"
+#include "vgsspu.h"
 
 /*
  *-----------------------------------------------------------------------------
@@ -23,6 +24,8 @@ unsigned short ADPAL[256];
 static char pathbuf[4096];
 int isIphone5;
 void* _psg;
+static void* _spu;
+static pthread_mutex_t lckobj = PTHREAD_MUTEX_INITIALIZER;
 
 /*
  *-----------------------------------------------------------------------------
@@ -47,9 +50,6 @@ int vgsint_init(const char* rompath)
     if (NULL == _psg) {
         return -1;
     }
-
-    /* initialize mutex */
-    pthread_mutex_init(&sndLock, NULL);
 
     /* get rom file size */
     stat(rompath, &stbuf);
@@ -141,8 +141,9 @@ int vgsint_init(const char* rompath)
     /* create 16bit color palette */
     make_pallet();
 
-    /* initialize OpenAL */
-    if (0 != init_sound()) {
+    /* initialize vgs-spu */
+    _spu = vgsspu_start(sndbuf);
+    if (NULL == _spu) {
         return -1;
     }
 
@@ -219,4 +220,14 @@ void vgs2_deleteAds()
 void vgs2_showAds()
 {
     ;
+}
+
+void lock()
+{
+    pthread_mutex_lock(&lckobj);
+}
+
+void unlock()
+{
+    pthread_mutex_unlock(&lckobj);
 }

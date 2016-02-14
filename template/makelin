@@ -5,7 +5,7 @@ CC=/usr/bin/gcc
 
 OBJS=\
 	$(RELDIR)/vgs2l.o\
-	$(RELDIR)/vgs2sound.o\
+	$(RELDIR)/vgsspu_alsa.o\
 	$(RELDIR)/vgs2api.o\
 	$(RELDIR)/vgs2tone.o\
 	$(RELDIR)/vgsdec.o\
@@ -41,7 +41,7 @@ $(RELDIR)/$(PROJECT): $(OBJS)
 $(RELDIR)/vgs2l.o: $(SRCDIR)/vgs2l.c
 	$(CC) -o $@ $(CFLAG) $<
 
-$(RELDIR)/vgs2sound.o: $(SRCDIR)/vgs2sound.c
+$(RELDIR)/vgsspu_alsa.o: $(SRCDIR)/vgsspu_alsa.c
 	$(CC) -o $@ $(CFLAG) $<
 
 $(RELDIR)/vgs2api.o: $(SRCDIR)/vgs2api.c

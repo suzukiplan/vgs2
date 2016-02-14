@@ -14,10 +14,12 @@
 #include <SDL/SDL.h>
 #include "vgs2.h"
 #include "vgsdec.h"
+#include "vgsspu.h"
 
 static unsigned short ADPAL[256];
 static int REQ;
 void* _psg;
+static pthread_mutex_t lckobj = PTHREAD_MUTEX_INITIALIZER;
 
 static void msleep(int msec)
 {
@@ -30,6 +32,7 @@ static void msleep(int msec)
 int main(int argc, char* argv[])
 {
     SDL_Surface* surface;
+    void* spu;
     SDL_Event event;
     FILE* fp;
     int i, j;
@@ -145,7 +148,8 @@ int main(int argc, char* argv[])
     printf("Created surface: %dx%d\n", surface->w, surface->h);
 
     /* Initialize sound system */
-    if (init_sound()) {
+    spu = vgsspu_start(sndbuf);
+    if (NULL == spu) {
         fprintf(stderr, "Could not create the sound thread.\n");
         return 1;
     }
@@ -260,7 +264,7 @@ int main(int argc, char* argv[])
     }
     vgs2_term();
     SDL_Quit();
-    term_sound();
+    vgsspu_end(spu);
     vgsdec_release_context(_psg);
     puts("End.");
     return 0;
@@ -320,4 +324,14 @@ void vgs2_showAds()
 void vgs2_deleteAds()
 {
     REQ = 2;
+}
+
+void lock()
+{
+    pthread_mutex_lock(&lckobj);
+}
+
+void unlock()
+{
+    pthread_mutex_unlock(&lckobj);
 }
