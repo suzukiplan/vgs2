@@ -178,7 +178,7 @@ extern "C" int __stdcall WinMain(HINSTANCE hIns, HINSTANCE hPIns, LPSTR lpCmd, i
     }
 
     /* initialize sounds */
-    spu = vgsspu_init(sndbuf);
+    spu = vgsspu_start(sndbuf);
     if (NULL == spu) {
         putlog(__FILE__, __LINE__, "init_sound error.");
         term();
