@@ -1,4 +1,4 @@
-all:\
+all: clean\
 	..\bin \
 	..\bin\vgs2play.exe \
 	..\bin\vgs2mml.exe \

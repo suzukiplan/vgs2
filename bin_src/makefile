@@ -1,4 +1,5 @@
 all:
+	-rm -rf ../bin
 	make all-`uname`
 
 all-Linux:
