@@ -108,7 +108,6 @@ void sndbuf(void* data, size_t size)
     static int an;
     char* buf = (char*)data;
     int i, j;
-    int pw;
     int wav;
     int cs;
     short* bp;
