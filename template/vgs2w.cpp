@@ -369,7 +369,7 @@ static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, UINT wParam, LONG lPara
             return DefWindowProc(hWnd, msg, wParam, lParam);
         case WM_SIZE:
             if (need_restore) {
-                gterm();
+                term();
                 if (d3d_init(hwndMain, &_rectConst)) {
                     putlog(__FILE__, __LINE__, "Failed restoring graphics.");
                     PostQuitMessage(0);
