@@ -54,6 +54,7 @@ $(RELDIR)\$(PROJECT).EXE: $(OBJS)
 	/MACHINE:X86\
 	/SUBSYSTEM:WINDOWS\
 	$(OBJS)\
+	ws2_32.lib\
 	dxguid.lib\
 	dsound.lib\
 	WINMM.lib\

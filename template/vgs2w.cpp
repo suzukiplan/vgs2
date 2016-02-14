@@ -15,7 +15,7 @@
 #include "vgsspu.h"
 
 static CRITICAL_SECTION lckobj;
-void* _psg;
+extern "C" void* _psg;
 
 /*
  *----------------------------------------------------------------------------
